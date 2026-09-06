@@ -13,6 +13,4 @@ const roleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-roleSchema.index({ slug: 1 }, { unique: true });
-
 module.exports = mongoose.model('Role', roleSchema);

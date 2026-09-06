@@ -34,4 +34,15 @@ Default Super Admin:
 - Password: `ChangeMeNow!123`
 
 API: `http://localhost:5000/api/v1`  
-App: `http://localhost:5173`
+App (dev): `http://localhost:5173`
+
+## Serve the frontend from the API
+
+```bash
+cd frontend
+npm run build
+cd ../backend
+npm run start
+```
+
+The built app is then available at `http://localhost:5000`. API routes stay under `/api/v1`.

@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
@@ -36,9 +37,15 @@ app.use((req, res, next) => {
 });
 
 app.use(helmet());
+const allowedOrigins = [...new Set([env.clientUrl, env.appUrl].filter(Boolean))];
 app.use(
   cors({
-    origin: env.clientUrl,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, false);
+    },
     credentials: true,
   })
 );
@@ -72,6 +79,22 @@ app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/reports', reportRoutes);
+
+const clientDist = path.resolve(__dirname, '../../frontend/dist');
+const clientIndex = path.join(clientDist, 'index.html');
+
+if (fs.existsSync(clientIndex)) {
+  app.use(express.static(clientDist, { index: false }));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path === '/health') {
+      return next();
+    }
+    return res.sendFile(clientIndex);
+  });
+  logger.info(`Serving frontend static build from ${clientDist}`);
+} else {
+  logger.warn('Frontend build not found. Run `npm run build` in frontend, then restart the API.');
+}
 
 app.use(notFoundHandler);
 app.use(errorMiddleware);

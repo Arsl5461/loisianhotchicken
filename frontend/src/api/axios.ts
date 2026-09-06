@@ -3,7 +3,14 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { logout } from '../features/auth/authSlice';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+function resolveApiUrl() {
+  const backendUrl = String(import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
+  if (backendUrl) return `${backendUrl}/api/v1`;
+  if (import.meta.env.VITE_API_URL) return String(import.meta.env.VITE_API_URL).replace(/\/$/, '');
+  return '/api/v1';
+}
+
+const API_URL = resolveApiUrl();
 
 export const axiosClient = axios.create({
   baseURL: API_URL,
