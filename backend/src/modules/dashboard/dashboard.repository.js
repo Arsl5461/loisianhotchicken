@@ -292,10 +292,141 @@ async function countActiveStores(auth, storeId) {
   return Store.countDocuments(filter);
 }
 
+function money(value) {
+  return Number((value || 0).toFixed(2));
+}
+
+function percent(part, whole) {
+  return whole ? Number(((part / whole) * 100).toFixed(2)) : 0;
+}
+
+function matchesCategory(name, patterns) {
+  const value = String(name || '').toLowerCase();
+  return patterns.some((pattern) => value.includes(pattern));
+}
+
+async function aggregateIncomeExpenseStatement(auth, { storeId, start, end }) {
+  const salesMatch = matchStage(auth, storeId, 'saleDate', start, end);
+  const expenseMatch = matchStage(auth, storeId, 'expenseDate', start, end);
+
+  const [salesByMethod, expenses] = await Promise.all([
+    Sale.aggregate([
+      { $match: salesMatch },
+      {
+        $group: {
+          _id: { $ifNull: ['$paymentMethod', 'Unspecified'] },
+          amount: { $sum: '$totalAmount' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { amount: -1 } },
+    ]),
+    Expense.find(expenseMatch).sort({ category: 1, expenseDate: 1, title: 1 }).lean(),
+  ]);
+
+  const totalSales = money(salesByMethod.reduce((sum, row) => sum + (row.amount || 0), 0));
+  const totalExpenses = money(expenses.reduce((sum, row) => sum + (row.amount || 0), 0));
+  const operatingProfit = money(totalSales - totalExpenses);
+  const profitMargin = percent(operatingProfit, totalSales);
+
+  const revenueSources = salesByMethod
+    .map((row) => ({
+      name: row._id,
+      amount: money(row.amount),
+      percentOfSales: percent(row.amount, totalSales),
+      count: row.count,
+    }))
+    .filter((row) => row.amount > 0);
+
+  const categoryMap = new Map();
+  const methodMap = new Map();
+
+  expenses.forEach((expense) => {
+    const category = expense.category || 'Uncategorized';
+    const method = expense.paymentMethod || 'Unspecified';
+    const currentCategory = categoryMap.get(category) || { name: category, amount: 0, count: 0, items: [] };
+    currentCategory.amount += expense.amount;
+    currentCategory.count += 1;
+    currentCategory.items.push({
+      date: expense.expenseDate,
+      payee: expense.title,
+      paymentMethod: method,
+      description: expense.description || '',
+      amount: money(expense.amount),
+      percentOfSales: percent(expense.amount, totalSales),
+    });
+    categoryMap.set(category, currentCategory);
+
+    const currentMethod = methodMap.get(method) || { name: method, amount: 0, count: 0 };
+    currentMethod.amount += expense.amount;
+    currentMethod.count += 1;
+    methodMap.set(method, currentMethod);
+  });
+
+  const expenseCategories = Array.from(categoryMap.values())
+    .map((row) => ({
+      name: row.name,
+      amount: money(row.amount),
+      percentOfExpenses: percent(row.amount, totalExpenses),
+      percentOfSales: percent(row.amount, totalSales),
+      count: row.count,
+      items: row.items,
+    }))
+    .sort((a, b) => b.amount - a.amount);
+
+  const expenseMethods = Array.from(methodMap.values())
+    .map((row) => ({
+      name: row.name,
+      amount: money(row.amount),
+      percentOfExpenses: percent(row.amount, totalExpenses),
+      count: row.count,
+    }))
+    .sort((a, b) => b.amount - a.amount);
+
+  const foodCost = money(
+    expenseCategories
+      .filter((row) => matchesCategory(row.name, ['food']))
+      .reduce((sum, row) => sum + row.amount, 0)
+  );
+  const payroll = money(
+    expenseCategories
+      .filter((row) => matchesCategory(row.name, ['payroll', 'wage', 'labor', 'salary']))
+      .reduce((sum, row) => sum + row.amount, 0)
+  );
+  const rentUtilities = money(
+    expenseCategories
+      .filter((row) => matchesCategory(row.name, ['rent', 'utilit']))
+      .reduce((sum, row) => sum + row.amount, 0)
+  );
+  const primeCost = money(foodCost + payroll);
+
+  return {
+    totalSales,
+    totalExpenses,
+    operatingProfit,
+    profitMargin,
+    expenseCount: expenses.length,
+    ratios: {
+      foodCost: percent(foodCost, totalSales),
+      payroll: percent(payroll, totalSales),
+      primeCost: percent(primeCost, totalSales),
+      rentUtilities: percent(rentUtilities, totalSales),
+      foodCostAmount: foodCost,
+      payrollAmount: payroll,
+      primeCostAmount: primeCost,
+      rentUtilitiesAmount: rentUtilities,
+    },
+    revenueSources,
+    expenseCategories,
+    expenseMethods,
+  };
+}
+
 module.exports = {
   aggregateSales,
   aggregateExpenses,
   aggregateOrders,
   aggregateTenderTypes,
+  aggregateIncomeExpenseStatement,
   countActiveStores,
 };

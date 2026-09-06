@@ -17,4 +17,9 @@ const tenderTypes = asyncHandler(async (req, res) => {
   return ApiResponse.success(res, { message: 'Tender types report fetched', data });
 });
 
-module.exports = { profitLoss, storeComparison, tenderTypes };
+const incomeExpenseStatement = asyncHandler(async (req, res) => {
+  const data = await reportsService.incomeExpenseStatement(req.auth, req.query);
+  return ApiResponse.success(res, { message: 'Income and expense statement fetched', data });
+});
+
+module.exports = { profitLoss, storeComparison, tenderTypes, incomeExpenseStatement };

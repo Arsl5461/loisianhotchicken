@@ -1,5 +1,6 @@
 const dashboardService = require('../dashboard/dashboard.service');
 const dashboardRepository = require('../dashboard/dashboard.repository');
+const { resolveDateRange } = require('../../utils/dateHelper');
 
 async function profitLoss(auth, query) {
   const overview = await dashboardService.getOverview(auth, query);
@@ -38,18 +39,38 @@ function monthBounds(month) {
 }
 
 async function tenderTypes(auth, query) {
-  const { month, start, end } = monthBounds(query.month);
+  const range =
+    query.startDate && query.endDate
+      ? resolveDateRange({ range: 'custom', startDate: query.startDate, endDate: query.endDate })
+      : monthBounds(query.month);
   const data = await dashboardRepository.aggregateTenderTypes(auth, {
     storeId: query.storeId,
-    start,
-    end,
+    start: range.start,
+    end: range.end,
   });
   return {
-    month,
-    start,
-    end,
+    month: range.month,
+    start: range.start,
+    end: range.end,
     ...data,
   };
 }
 
-module.exports = { profitLoss, storeComparison, tenderTypes };
+async function incomeExpenseStatement(auth, query) {
+  const range =
+    query.startDate && query.endDate
+      ? resolveDateRange({ range: 'custom', startDate: query.startDate, endDate: query.endDate })
+      : monthBounds(query.month);
+  const data = await dashboardRepository.aggregateIncomeExpenseStatement(auth, {
+    storeId: query.storeId,
+    start: range.start,
+    end: range.end,
+  });
+  return {
+    start: range.start,
+    end: range.end,
+    ...data,
+  };
+}
+
+module.exports = { profitLoss, storeComparison, tenderTypes, incomeExpenseStatement };

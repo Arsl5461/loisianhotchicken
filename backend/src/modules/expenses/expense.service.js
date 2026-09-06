@@ -2,6 +2,7 @@ const expenseRepository = require('./expense.repository');
 const expenseCategoryService = require('../expenseCategories/expenseCategory.service');
 const paymentMethodService = require('../paymentMethods/paymentMethod.service');
 const { NotFoundError } = require('../../utils/AppError');
+const { startOfDay } = require('../../utils/dateHelper');
 
 async function listExpenses(auth, query) {
   return expenseRepository.list(auth, query);
@@ -23,7 +24,7 @@ async function createExpense(auth, payload, receiptUrl = '') {
     receiptUrl,
     organizationId: auth.organizationId,
     createdBy: auth.userId,
-    expenseDate: payload.expenseDate ? new Date(payload.expenseDate) : new Date(),
+    expenseDate: payload.expenseDate ? startOfDay(payload.expenseDate) : new Date(),
   });
 }
 
@@ -34,7 +35,7 @@ async function updateExpense(auth, id, payload, receiptUrl) {
   if (payload.paymentMethod) {
     update.paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
   }
-  if (payload.expenseDate) update.expenseDate = new Date(payload.expenseDate);
+  if (payload.expenseDate) update.expenseDate = startOfDay(payload.expenseDate);
   if (receiptUrl) update.receiptUrl = receiptUrl;
   return expenseRepository.updateById(id, auth.organizationId, update);
 }

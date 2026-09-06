@@ -7,7 +7,7 @@ const createExpenseSchema = z.object({
   category: z.string().min(1),
   amount: z.coerce.number().positive(),
   paymentMethod: z.string().min(1),
-  expenseDate: z.string().optional(),
+  expenseDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Select an expense date'),
 });
 
 const updateExpenseSchema = createExpenseSchema.partial();
