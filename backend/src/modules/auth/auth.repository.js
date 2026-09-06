@@ -1,18 +1,24 @@
 const bcrypt = require('bcryptjs');
 const { User } = require('../../database/models');
 
+const storePopulate = {
+  path: 'stores',
+  select: 'name storeCode status city',
+  match: { deletedAt: null },
+};
+
 async function findByEmail(email) {
   return User.findOne({ email: email.toLowerCase() })
     .select('+password +refreshTokenHash')
     .populate('roleId')
-    .populate('stores', 'name storeCode status city');
+    .populate(storePopulate);
 }
 
 async function findByIdForAuth(id) {
   return User.findById(id)
     .select('+refreshTokenHash')
     .populate('roleId')
-    .populate('stores', 'name storeCode status city');
+    .populate(storePopulate);
 }
 
 async function saveRefreshToken(userId, tokenHash) {

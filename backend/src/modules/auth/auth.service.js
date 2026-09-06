@@ -22,7 +22,7 @@ function serializeUser(user) {
       slug: role?.slug,
     },
     permissions: role?.permissions || [],
-    stores: user.stores || [],
+    stores: (user.stores || []).filter(Boolean),
     defaultStore: user.defaultStore,
     isSuperAdmin: role?.slug === ROLE_SLUGS.SUPER_ADMIN,
     isActive: user.isActive,

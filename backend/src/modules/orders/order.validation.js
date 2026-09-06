@@ -1,5 +1,5 @@
 const { z } = require('zod');
-const { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_METHODS } = require('../../constants/enums');
+const { ORDER_STATUS, PAYMENT_STATUS } = require('../../constants/enums');
 
 const itemLine = z.object({
   productId: z.string().optional(),
@@ -19,7 +19,7 @@ const createOrderSchema = z.object({
   items: z.array(itemLine).min(1),
   status: z.enum(Object.values(ORDER_STATUS)).optional(),
   paymentStatus: z.enum(Object.values(PAYMENT_STATUS)).optional(),
-  paymentMethod: z.enum(Object.values(PAYMENT_METHODS)).optional(),
+  paymentMethod: z.string().min(1).optional(),
   orderDate: z.string().optional(),
 });
 

@@ -1,4 +1,6 @@
 const expenseRepository = require('./expense.repository');
+const expenseCategoryService = require('../expenseCategories/expenseCategory.service');
+const paymentMethodService = require('../paymentMethods/paymentMethod.service');
 const { NotFoundError } = require('../../utils/AppError');
 
 async function listExpenses(auth, query) {
@@ -12,8 +14,12 @@ async function getExpense(auth, id) {
 }
 
 async function createExpense(auth, payload, receiptUrl = '') {
+  const category = await expenseCategoryService.assertActiveCategory(auth, payload.category);
+  const paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
   return expenseRepository.create({
     ...payload,
+    category,
+    paymentMethod,
     receiptUrl,
     organizationId: auth.organizationId,
     createdBy: auth.userId,
@@ -24,6 +30,10 @@ async function createExpense(auth, payload, receiptUrl = '') {
 async function updateExpense(auth, id, payload, receiptUrl) {
   await getExpense(auth, id);
   const update = { ...payload };
+  if (payload.category) update.category = await expenseCategoryService.assertActiveCategory(auth, payload.category);
+  if (payload.paymentMethod) {
+    update.paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
+  }
   if (payload.expenseDate) update.expenseDate = new Date(payload.expenseDate);
   if (receiptUrl) update.receiptUrl = receiptUrl;
   return expenseRepository.updateById(id, auth.organizationId, update);

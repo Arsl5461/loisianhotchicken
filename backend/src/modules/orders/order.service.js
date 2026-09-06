@@ -1,4 +1,5 @@
 const orderRepository = require('./order.repository');
+const paymentMethodService = require('../paymentMethods/paymentMethod.service');
 const { NotFoundError, ValidationError } = require('../../utils/AppError');
 
 function computeItems(items = []) {
@@ -24,6 +25,9 @@ async function getOrder(auth, id) {
 async function createOrder(auth, payload) {
   const { lines, total } = computeItems(payload.items);
   const orderNumber = await orderRepository.nextOrderNumber(auth.organizationId);
+  if (payload.paymentMethod) {
+    payload.paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
+  }
   return orderRepository.create({
     ...payload,
     items: lines,
@@ -42,6 +46,9 @@ async function updateOrder(auth, id, payload) {
     const computed = computeItems(payload.items);
     update.items = computed.lines;
     update.total = computed.total;
+  }
+  if (payload.paymentMethod) {
+    update.paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
   }
   if (payload.orderDate) update.orderDate = new Date(payload.orderDate);
   return orderRepository.updateById(id, auth.organizationId, update);

@@ -10,5 +10,6 @@ router.use(authenticateUser, checkStoreAccess);
 
 router.get('/profit-loss', checkPermission(PERMISSIONS.REPORTS_READ), controller.profitLoss);
 router.get('/store-comparison', checkPermission(PERMISSIONS.REPORTS_READ), controller.storeComparison);
+router.get('/tender-types', checkPermission(PERMISSIONS.REPORTS_READ), controller.tenderTypes);
 
 module.exports = router;

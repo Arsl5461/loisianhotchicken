@@ -12,4 +12,9 @@ const storeComparison = asyncHandler(async (req, res) => {
   return ApiResponse.success(res, { message: 'Store comparison fetched', data });
 });
 
-module.exports = { profitLoss, storeComparison };
+const tenderTypes = asyncHandler(async (req, res) => {
+  const data = await reportsService.tenderTypes(req.auth, req.query);
+  return ApiResponse.success(res, { message: 'Tender types report fetched', data });
+});
+
+module.exports = { profitLoss, storeComparison, tenderTypes };

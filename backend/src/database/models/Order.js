@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_METHODS } = require('../../constants/enums');
+const { ORDER_STATUS, PAYMENT_STATUS } = require('../../constants/enums');
 
 const orderItemSchema = new mongoose.Schema(
   {
@@ -39,8 +39,8 @@ const orderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: Object.values(PAYMENT_METHODS),
-      default: PAYMENT_METHODS.CASH,
+      trim: true,
+      default: '',
     },
     orderDate: { type: Date, required: true, default: Date.now },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

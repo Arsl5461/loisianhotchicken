@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Sale, Expense, Order, Store } = require('../../database/models');
+const { Sale, Expense, Order, Store, PaymentMethod } = require('../../database/models');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
 const { dateTruncUnit } = require('../../utils/dateHelper');
 
@@ -204,6 +204,78 @@ async function aggregateOrders(auth, { storeId, start, end }) {
   return result || { totals: [], byStore: [] };
 }
 
+async function aggregateTenderTypes(auth, { storeId, start, end }) {
+  const salesMatch = matchStage(auth, storeId, 'saleDate', start, end);
+  const refundsMatch = {
+    ...matchStage(auth, storeId, 'orderDate', start, end),
+    paymentStatus: 'REFUNDED',
+  };
+
+  const [sales, refunds, methods] = await Promise.all([
+    Sale.aggregate([
+      { $match: salesMatch },
+      {
+        $group: {
+          _id: { $ifNull: ['$paymentMethod', 'Unspecified'] },
+          salesTotal: { $sum: '$totalAmount' },
+        },
+      },
+    ]),
+    Order.aggregate([
+      { $match: refundsMatch },
+      {
+        $group: {
+          _id: { $ifNull: ['$paymentMethod', 'Unspecified'] },
+          refundTotal: { $sum: '$total' },
+        },
+      },
+    ]),
+    PaymentMethod.find({ organizationId: auth.organizationId, isActive: true }).select('name').sort({ name: 1 }),
+  ]);
+
+  const map = new Map();
+  methods.forEach((method) => {
+    map.set(method.name, { tenderType: method.name, salesTotal: 0, refundTotal: 0, amountCollected: 0 });
+  });
+  sales.forEach((row) => {
+    const current = map.get(row._id) || { tenderType: row._id, salesTotal: 0, refundTotal: 0, amountCollected: 0 };
+    current.salesTotal = Number(row.salesTotal || 0);
+    map.set(row._id, current);
+  });
+  refunds.forEach((row) => {
+    const current = map.get(row._id) || { tenderType: row._id, salesTotal: 0, refundTotal: 0, amountCollected: 0 };
+    current.refundTotal = Number(row.refundTotal || 0);
+    map.set(row._id, current);
+  });
+
+  const rows = Array.from(map.values())
+    .map((row) => ({
+      ...row,
+      salesTotal: Number(row.salesTotal.toFixed(2)),
+      refundTotal: Number(row.refundTotal.toFixed(2)),
+      amountCollected: Number((row.salesTotal - row.refundTotal).toFixed(2)),
+    }))
+    .sort((a, b) => b.salesTotal - a.salesTotal);
+
+  const totals = rows.reduce(
+    (sum, row) => ({
+      salesTotal: sum.salesTotal + row.salesTotal,
+      refundTotal: sum.refundTotal + row.refundTotal,
+      amountCollected: sum.amountCollected + row.amountCollected,
+    }),
+    { salesTotal: 0, refundTotal: 0, amountCollected: 0 }
+  );
+
+  return {
+    rows,
+    totals: {
+      salesTotal: Number(totals.salesTotal.toFixed(2)),
+      refundTotal: Number(totals.refundTotal.toFixed(2)),
+      amountCollected: Number(totals.amountCollected.toFixed(2)),
+    },
+  };
+}
+
 async function countActiveStores(auth, storeId) {
   const filter = {
     organizationId: auth.organizationId,
@@ -224,5 +296,6 @@ module.exports = {
   aggregateSales,
   aggregateExpenses,
   aggregateOrders,
+  aggregateTenderTypes,
   countActiveStores,
 };

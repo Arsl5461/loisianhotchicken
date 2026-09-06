@@ -20,19 +20,22 @@ const authenticateUser = asyncHandler(async (req, res, next) => {
     throw new UnauthorizedError('Invalid or expired access token');
   }
 
-  const user = await User.findById(decoded.sub).populate('roleId').populate('stores', 'name storeCode status');
+  const user = await User.findById(decoded.sub)
+    .populate('roleId')
+    .populate({ path: 'stores', select: 'name storeCode status', match: { deletedAt: null } });
   if (!user || !user.isActive) {
     throw new UnauthorizedError('Account is inactive or does not exist');
   }
 
   const role = user.roleId instanceof Role ? user.roleId : await Role.findById(user.roleId);
+  const assignedStores = (user.stores || []).filter(Boolean);
   req.user = user;
   req.auth = {
     userId: user._id,
     organizationId: user.organizationId,
     roleSlug: role?.slug,
     permissions: role?.permissions || [],
-    storeIds: (user.stores || []).map((store) => store._id || store),
+    storeIds: assignedStores.map((store) => store._id || store),
     isSuperAdmin: role?.slug === ROLE_SLUGS.SUPER_ADMIN,
   };
 

@@ -1,13 +1,21 @@
 const { DATE_RANGES, GROUP_BY } = require('../constants/enums');
 
+function parseLocalDate(date) {
+  if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    const [year, month, day] = date.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+  return new Date(date);
+}
+
 function startOfDay(date) {
-  const value = new Date(date);
+  const value = parseLocalDate(date);
   value.setHours(0, 0, 0, 0);
   return value;
 }
 
 function endOfDay(date) {
-  const value = new Date(date);
+  const value = parseLocalDate(date);
   value.setHours(23, 59, 59, 999);
   return value;
 }

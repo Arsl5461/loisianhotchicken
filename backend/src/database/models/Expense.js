@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { EXPENSE_CATEGORIES, PAYMENT_METHODS } = require('../../constants/enums');
 
 const expenseSchema = new mongoose.Schema(
   {
@@ -13,14 +12,14 @@ const expenseSchema = new mongoose.Schema(
     description: { type: String, trim: true, default: '' },
     category: {
       type: String,
-      enum: Object.values(EXPENSE_CATEGORIES),
       required: true,
+      trim: true,
     },
     amount: { type: Number, required: true, min: 0.01 },
     paymentMethod: {
       type: String,
-      enum: Object.values(PAYMENT_METHODS),
-      default: PAYMENT_METHODS.CASH,
+      required: true,
+      trim: true,
     },
     expenseDate: { type: Date, required: true, default: Date.now },
     receiptUrl: { type: String, default: '' },

@@ -1,5 +1,4 @@
 const { z } = require('zod');
-const { PAYMENT_METHODS } = require('../../constants/enums');
 
 const productLine = z.object({
   productId: z.string().optional(),
@@ -13,7 +12,7 @@ const createSaleSchema = z.object({
   orderReference: z.string().optional(),
   customerName: z.string().optional(),
   products: z.array(productLine).min(1),
-  paymentMethod: z.enum(Object.values(PAYMENT_METHODS)),
+  paymentMethod: z.string().min(1),
   saleDate: z.string().optional(),
 });
 

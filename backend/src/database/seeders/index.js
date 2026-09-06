@@ -13,6 +13,8 @@ const {
   Product,
   Sale,
   Expense,
+  ExpenseCategory,
+  PaymentMethod,
   Order,
 } = require('../models');
 
@@ -74,6 +76,8 @@ async function seed() {
     Product.deleteMany({}),
     Sale.deleteMany({}),
     Expense.deleteMany({}),
+    ExpenseCategory.deleteMany({}),
+    PaymentMethod.deleteMany({}),
     Order.deleteMany({}),
   ]);
 
