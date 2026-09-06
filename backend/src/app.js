@@ -36,8 +36,23 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(helmet());
 const allowedOrigins = [...new Set([env.clientUrl, env.appUrl].filter(Boolean))];
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        'upgrade-insecure-requests': null,
+        'script-src': ["'self'"],
+        'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
+        'img-src': ["'self'", 'data:', 'blob:', 'https:'],
+        'connect-src': ["'self'", ...allowedOrigins],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(
   cors({
     origin(origin, callback) {

@@ -5,19 +5,20 @@ const app = require('./app');
 
 async function start() {
   await connectDatabase();
-  const server = app.listen(env.port, () => {
-    logger.info(`${env.appName} listening on port ${env.port}`);
+  const server = app.listen(env.port, '0.0.0.0', () => {
+    logger.info(`${env.appName} listening on http://0.0.0.0:${env.port}`);
   });
 
-  const shutdown = async () => {
+  const shutdown = (signal) => {
+    logger.info(`Received ${signal}, shutting down`);
     server.close(() => {
       logger.info('HTTP server closed');
       process.exit(0);
     });
   };
 
-  process.on('SIGINT', shutdown);
-  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
 }
 
 start().catch((error) => {

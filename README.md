@@ -46,3 +46,19 @@ npm run start
 ```
 
 The built app is then available at `http://localhost:5000`. API routes stay under `/api/v1`.
+
+On a server, do **not** run `npm run dev` under PM2. That uses `node --watch` and restarts the process with SIGINT in a loop, so the browser never gets a stable site.
+
+```bash
+cd frontend
+# Leave VITE_BACKEND_URL empty when the API serves the UI (same origin).
+# Or set it to the public API origin, e.g. https://your-domain.com
+npm run build
+
+cd ../backend
+pm2 delete app
+pm2 start ecosystem.config.cjs
+pm2 save
+```
+
+Confirm logs show `listening on http://0.0.0.0:5000` and that `/health` stays up. Then open `http://YOUR_SERVER_IP:5000`.
