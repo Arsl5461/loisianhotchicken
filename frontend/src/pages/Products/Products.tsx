@@ -8,6 +8,7 @@ import { SearchInput } from '../../components/common/SearchInput';
 import { useBulkDeleteProductsMutation, useCreateProductMutation, useGetProductsQuery } from '../../api/usersApi';
 import { useListParams } from '../../hooks/useListParams';
 import { formatCurrencyExact } from '../../utils/cn';
+import { clearZeroOnFocus, parseNumericInput, type NumericField } from '../../utils/numberInput';
 import { DeleteAction, TableActions } from '../../components/common/TableActions';
 import { ListingToolbar } from '../../components/common/ListingToolbar';
 import { ConfirmDialog } from '../../components/common/ConfirmDialog';
@@ -16,16 +17,12 @@ import { BusyOverlay, InlineSpinner, LoadingSpinner } from '../../components/com
 import { useRowSelection } from '../../hooks/useRowSelection';
 import type { ExportColumn } from '../../utils/export';
 
-const emptyForm: { name: string; category: string; price: number | ''; costPrice: number | '' } = {
+const emptyForm: { name: string; category: string; price: NumericField; costPrice: NumericField } = {
   name: '',
   category: 'CHICKEN',
   price: 0,
   costPrice: 0,
 };
-
-function clearZeroOnFocus(value: number | '') {
-  return value === 0 || value === '' ? '' : value;
-}
 
 export default function Products() {
   const { page, setPage, limit, setLimit, search, setSearch, query } = useListParams();
@@ -158,9 +155,7 @@ export default function Products() {
                 step="0.01"
                 value={form.price}
                 onFocus={() => setForm((current) => ({ ...current, price: clearZeroOnFocus(current.price) }))}
-                onChange={(event) =>
-                  setForm({ ...form, price: event.target.value === '' ? '' : Number(event.target.value) })
-                }
+                onChange={(event) => setForm({ ...form, price: parseNumericInput(event.target.value) })}
                 required
               />
             </label>
@@ -173,9 +168,7 @@ export default function Products() {
                 step="0.01"
                 value={form.costPrice}
                 onFocus={() => setForm((current) => ({ ...current, costPrice: clearZeroOnFocus(current.costPrice) }))}
-                onChange={(event) =>
-                  setForm({ ...form, costPrice: event.target.value === '' ? '' : Number(event.target.value) })
-                }
+                onChange={(event) => setForm({ ...form, costPrice: parseNumericInput(event.target.value) })}
               />
             </label>
           </div>

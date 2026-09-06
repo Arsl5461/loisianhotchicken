@@ -11,6 +11,7 @@ import { useGetPaymentMethodsQuery } from '../../api/paymentMethodsApi';
 import { useStoreContext } from '../../hooks/usePermissions';
 import { useListParams } from '../../hooks/useListParams';
 import { formatCurrencyExact, formatDate } from '../../utils/cn';
+import { clearZeroOnFocus, parseNumericInput, type NumericField } from '../../utils/numberInput';
 import { Pagination } from '../../components/common/Pagination';
 import { DeleteAction, TableActions } from '../../components/common/TableActions';
 import { ListingToolbar } from '../../components/common/ListingToolbar';
@@ -38,7 +39,13 @@ export default function Sales() {
   const paymentMethods = methodsQuery.data?.data || [];
   const [createSale, { isLoading: creating }] = useCreateSaleMutation();
   const [bulkDeleteSales, { isLoading: deleting }] = useBulkDeleteSalesMutation();
-  const [form, setForm] = useState({ storeId: '', productId: '', quantity: 1, paymentMethod: '', customerName: 'Walk-in Guest' });
+  const [form, setForm] = useState<{
+    storeId: string;
+    productId: string;
+    quantity: NumericField;
+    paymentMethod: string;
+    customerName: string;
+  }>({ storeId: '', productId: '', quantity: 0, paymentMethod: '', customerName: 'Walk-in Guest' });
 
   return (
     <div>
@@ -125,7 +132,16 @@ export default function Sales() {
                 <option key={product._id} value={product._id}>{product.name}</option>
               ))}
             </select>
-            <input className="soft-input" type="number" min={1} value={form.quantity} onChange={(e) => setForm({ ...form, quantity: Number(e.target.value) })} />
+            <input
+              className="soft-input"
+              type="number"
+              min={1}
+              placeholder="Quantity"
+              value={form.quantity}
+              onFocus={() => setForm((current) => ({ ...current, quantity: clearZeroOnFocus(current.quantity) }))}
+              onChange={(e) => setForm({ ...form, quantity: parseNumericInput(e.target.value) })}
+              required
+            />
             <select className="soft-input" value={form.paymentMethod} onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })} required>
               <option value="">Select payment method</option>
               {paymentMethods.map((method: any) => (

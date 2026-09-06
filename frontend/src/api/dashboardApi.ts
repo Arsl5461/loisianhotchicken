@@ -18,8 +18,12 @@ export const dashboardApi = api.injectEndpoints({
       query: (params) => ({ url: '/reports/store-comparison', params: params || {} }),
       providesTags: ['Report'],
     }),
-    getTenderTypes: builder.query<ApiSuccess<unknown>, { month?: string; storeId?: string } | void>({
+    getTenderTypes: builder.query<ApiSuccess<unknown>, { month?: string; storeId?: string; startDate?: string; endDate?: string } | void>({
       query: (params) => ({ url: '/reports/tender-types', params: params || {} }),
+      providesTags: ['Report'],
+    }),
+    getIncomeExpenseStatement: builder.query<ApiSuccess<unknown>, { storeId?: string; startDate?: string; endDate?: string; month?: string } | void>({
+      query: (params) => ({ url: '/reports/income-expense-statement', params: params || {} }),
       providesTags: ['Report'],
     }),
   }),
@@ -30,4 +34,5 @@ export const {
   useGetProfitLossQuery,
   useGetStoreComparisonQuery,
   useGetTenderTypesQuery,
+  useGetIncomeExpenseStatementQuery,
 } = dashboardApi;

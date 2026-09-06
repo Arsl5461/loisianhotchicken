@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Calendar, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { PageHeader } from '../../components/common/PageHeader';
 import { SearchInput } from '../../components/common/SearchInput';
@@ -18,13 +18,21 @@ import { useGetPaymentMethodsQuery } from '../../api/paymentMethodsApi';
 import { useStoreContext } from '../../hooks/usePermissions';
 import { useListParams } from '../../hooks/useListParams';
 import { formatCurrencyExact, formatDate } from '../../utils/cn';
+import { clearZeroOnFocus, parseNumericInput, type NumericField } from '../../utils/numberInput';
 import { Pagination } from '../../components/common/Pagination';
 import { DeleteAction, TableActions } from '../../components/common/TableActions';
 import { ListingToolbar } from '../../components/common/ListingToolbar';
 import { useRowSelection } from '../../hooks/useRowSelection';
 import type { ExportColumn } from '../../utils/export';
 
-const emptyForm = { storeId: '', title: '', category: '', amount: 0, paymentMethod: '' };
+const emptyForm: {
+  storeId: string;
+  title: string;
+  category: string;
+  amount: NumericField;
+  paymentMethod: string;
+  expenseDate: string;
+} = { storeId: '', title: '', category: '', amount: 0, paymentMethod: '', expenseDate: '' };
 
 export default function Expenses() {
   const [open, setOpen] = useState(false);
@@ -181,12 +189,24 @@ export default function Expenses() {
           {!paymentMethods.length ? (
             <p className="text-xs text-slate-500">Add methods from Payment Method first.</p>
           ) : null}
+          <label className="soft-input flex items-center gap-2">
+            <Calendar className="h-4 w-4 shrink-0 text-brand-red" />
+            <span className="sr-only">Expense date</span>
+            <input
+              className="w-full bg-transparent outline-none"
+              type="date"
+              value={form.expenseDate}
+              onChange={(e) => setForm({ ...form, expenseDate: e.target.value })}
+              required
+            />
+          </label>
           <input
             className="soft-input"
             type="number"
             placeholder="Amount"
             value={form.amount}
-            onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })}
+            onFocus={() => setForm((current) => ({ ...current, amount: clearZeroOnFocus(current.amount) }))}
+            onChange={(e) => setForm({ ...form, amount: parseNumericInput(e.target.value) })}
             required
           />
           <div className="flex justify-end gap-2">
