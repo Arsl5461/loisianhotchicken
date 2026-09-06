@@ -45,7 +45,7 @@ export default function StoreForm({ mode }: { mode: 'create' | 'edit' }) {
   }, [data, form]);
 
   return (
-    <div className="max-w-3xl">
+    <div className="w-full">
       <BusyOverlay show={createState.isLoading || updateState.isLoading} label="Saving store..." />
       <PageHeader title={mode === 'create' ? 'Add New Store' : 'Edit Store'} subtitle="Store codes must stay unique across the organization." />
       <form

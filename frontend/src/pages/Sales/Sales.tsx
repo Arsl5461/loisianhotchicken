@@ -7,6 +7,7 @@ import { ConfirmDialog } from '../../components/common/ConfirmDialog';
 import { BusyOverlay, InlineSpinner, LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { useBulkDeleteSalesMutation, useCreateSaleMutation, useGetSalesQuery } from '../../api/salesApi';
 import { useGetProductsQuery } from '../../api/usersApi';
+import { useGetPaymentMethodsQuery } from '../../api/paymentMethodsApi';
 import { useStoreContext } from '../../hooks/usePermissions';
 import { useListParams } from '../../hooks/useListParams';
 import { formatCurrencyExact, formatDate } from '../../utils/cn';
@@ -33,14 +34,16 @@ export default function Sales() {
     { header: 'Date', value: (row) => formatDate(row.saleDate) },
   ];
   const products = useGetProductsQuery({ limit: 50 });
+  const methodsQuery = useGetPaymentMethodsQuery({ limit: 100, status: 'ACTIVE', sortBy: 'name', sortOrder: 'asc' });
+  const paymentMethods = methodsQuery.data?.data || [];
   const [createSale, { isLoading: creating }] = useCreateSaleMutation();
   const [bulkDeleteSales, { isLoading: deleting }] = useBulkDeleteSalesMutation();
-  const [form, setForm] = useState({ storeId: '', productId: '', quantity: 1, paymentMethod: 'CARD', customerName: 'Walk-in Guest' });
+  const [form, setForm] = useState({ storeId: '', productId: '', quantity: 1, paymentMethod: '', customerName: 'Walk-in Guest' });
 
   return (
     <div>
       <PageHeader
-        title="Sales"
+        title="Sales Income"
         subtitle="Record and review store-level sales."
         actions={
           <button className="btn-primary" type="button" onClick={() => setOpen(true)}>
@@ -52,7 +55,7 @@ export default function Sales() {
         <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <SearchInput value={search} onChange={setSearch} placeholder="Search customer or reference" />
           <ListingToolbar
-            title="Sales"
+            title="Sales Income"
             fileName="lhc-sales"
             columns={exportColumns}
             rows={exportRows}
@@ -123,9 +126,15 @@ export default function Sales() {
               ))}
             </select>
             <input className="soft-input" type="number" min={1} value={form.quantity} onChange={(e) => setForm({ ...form, quantity: Number(e.target.value) })} />
-            <select className="soft-input" value={form.paymentMethod} onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })}>
-              {['CASH', 'CARD', 'ONLINE', 'OTHER'].map((method) => <option key={method}>{method}</option>)}
+            <select className="soft-input" value={form.paymentMethod} onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })} required>
+              <option value="">Select payment method</option>
+              {paymentMethods.map((method: any) => (
+                <option key={method._id} value={method.name}>{method.name}</option>
+              ))}
             </select>
+            {!paymentMethods.length ? (
+              <p className="text-xs text-slate-500">Add methods from Payment Method first.</p>
+            ) : null}
             <div className="flex justify-end gap-2">
               <button className="btn-secondary" type="button" onClick={() => setOpen(false)}>Cancel</button>
               <button className="btn-primary" type="submit" disabled={creating}>

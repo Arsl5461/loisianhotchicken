@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ChevronDown, Store } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setSelectedStore } from '../../features/auth/storeContextSlice';
@@ -6,7 +7,16 @@ import { useStoreContext } from '../../hooks/usePermissions';
 
 export function StoreSelector() {
   const dispatch = useDispatch();
-  const { selectedStoreId, stores } = useStoreContext();
+  const { selectedStoreId, stores, storesLoaded } = useStoreContext();
+
+  useEffect(() => {
+    if (!storesLoaded || !selectedStoreId) return;
+    const stillExists = stores.some((store) => store._id === selectedStoreId);
+    if (!stillExists) {
+      dispatch(setSelectedStore(null));
+      dispatch(api.util.invalidateTags(['Dashboard', 'Sale', 'Expense', 'Report', 'Order']));
+    }
+  }, [dispatch, selectedStoreId, stores, storesLoaded]);
 
   return (
     <label className="relative flex min-w-[240px] items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5">

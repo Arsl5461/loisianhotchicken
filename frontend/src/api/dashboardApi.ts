@@ -3,7 +3,10 @@ import type { ApiSuccess, DashboardOverview } from '../types';
 
 export const dashboardApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getOverview: builder.query<ApiSuccess<DashboardOverview>, { range?: string; storeId?: string; groupBy?: string }>({
+    getOverview: builder.query<
+      ApiSuccess<DashboardOverview>,
+      { range?: string; storeId?: string; groupBy?: string; startDate?: string; endDate?: string }
+    >({
       query: (params) => ({ url: '/dashboard/overview', params }),
       providesTags: ['Dashboard'],
     }),
@@ -15,7 +18,16 @@ export const dashboardApi = api.injectEndpoints({
       query: (params) => ({ url: '/reports/store-comparison', params: params || {} }),
       providesTags: ['Report'],
     }),
+    getTenderTypes: builder.query<ApiSuccess<unknown>, { month?: string; storeId?: string } | void>({
+      query: (params) => ({ url: '/reports/tender-types', params: params || {} }),
+      providesTags: ['Report'],
+    }),
   }),
 });
 
-export const { useGetOverviewQuery, useGetProfitLossQuery, useGetStoreComparisonQuery } = dashboardApi;
+export const {
+  useGetOverviewQuery,
+  useGetProfitLossQuery,
+  useGetStoreComparisonQuery,
+  useGetTenderTypesQuery,
+} = dashboardApi;

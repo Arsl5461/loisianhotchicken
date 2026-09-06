@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useGetOverviewQuery } from '../../api/dashboardApi';
 import { PageHeader } from '../../components/common/PageHeader';
+import { DateRangePicker } from '../../components/common/DateRangePicker';
 import { ErrorState, SkeletonGrid } from '../../components/common/LoadingSpinner';
 import { DashboardStats } from '../../components/dashboard/DashboardStats';
 import { RevenueExpenseChart } from '../../components/dashboard/RevenueExpenseChart';
@@ -18,15 +19,33 @@ const RANGES = [
   { id: 'ytd', label: 'This year', groupBy: 'month' },
 ];
 
+function customGroupBy(startDate?: string, endDate?: string) {
+  if (!startDate || !endDate) return 'day';
+  const days = Math.round((new Date(`${endDate}T00:00:00`).getTime() - new Date(`${startDate}T00:00:00`).getTime()) / 86400000);
+  if (days > 180) return 'month';
+  if (days > 45) return 'week';
+  return 'day';
+}
+
 export default function Dashboard() {
   const [range, setRange] = useState('30d');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const { selectedStoreId } = useStoreContext();
-  const selectedRange = RANGES.find((item) => item.id === range) || RANGES[1];
-  const { data, isLoading, isError } = useGetOverviewQuery({
-    range,
-    groupBy: selectedRange.groupBy,
-    storeId: selectedStoreId || undefined,
-  });
+  const isCustom = range === 'custom' && Boolean(startDate && endDate);
+  const selectedRange = RANGES.find((item) => item.id === range);
+  const groupBy = isCustom ? customGroupBy(startDate, endDate) : selectedRange?.groupBy || 'day';
+  const query = useMemo(
+    () => ({
+      range: isCustom ? 'custom' : range === 'custom' ? '30d' : range,
+      groupBy,
+      storeId: selectedStoreId || undefined,
+      startDate: isCustom ? startDate : undefined,
+      endDate: isCustom ? endDate : undefined,
+    }),
+    [endDate, groupBy, isCustom, range, selectedStoreId, startDate]
+  );
+  const { data, isLoading, isError } = useGetOverviewQuery(query);
   const overview = data?.data;
 
   return (
@@ -35,19 +54,34 @@ export default function Dashboard() {
         title="Dashboard"
         subtitle="Live multi-store performance for Louisiana Hot Chicken."
         actions={
-          <div className="flex flex-wrap gap-2">
-            {RANGES.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setRange(item.id)}
-                className={`rounded-xl px-3 py-2 text-sm font-medium ${
-                  range === item.id ? 'bg-brand-red text-white' : 'bg-white text-slate-600 shadow-sm'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+          <div className="flex flex-col items-stretch gap-2 sm:items-end">
+            <div className="flex flex-wrap gap-2">
+              {RANGES.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => {
+                    setRange(item.id);
+                    setStartDate('');
+                    setEndDate('');
+                  }}
+                  className={`rounded-xl px-3 py-2 text-sm font-medium ${
+                    range === item.id ? 'bg-brand-red text-white' : 'bg-white text-slate-600 shadow-sm'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <DateRangePicker
+              startDate={startDate}
+              endDate={endDate}
+              onChange={(next) => {
+                setStartDate(next.startDate || '');
+                setEndDate(next.endDate || '');
+                if (next.startDate && next.endDate) setRange('custom');
+              }}
+            />
           </div>
         }
       />
@@ -60,7 +94,7 @@ export default function Dashboard() {
           <DashboardStats summary={overview.summary} />
           <div className="grid gap-5 xl:grid-cols-3">
             <div className="xl:col-span-2">
-              <RevenueExpenseChart data={overview.revenueVsExpense} groupBy={overview.range?.groupBy || selectedRange.groupBy} />
+              <RevenueExpenseChart data={overview.revenueVsExpense} groupBy={overview.range?.groupBy || groupBy} />
             </div>
             <ExpenseBreakdownChart data={overview.expenseBreakdown} />
           </div>

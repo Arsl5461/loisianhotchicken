@@ -17,12 +17,15 @@ const EditStore = lazy(() => import('../pages/Stores/EditStore'));
 const StoreDetails = lazy(() => import('../pages/Stores/StoreDetails'));
 const Sales = lazy(() => import('../pages/Sales/Sales'));
 const Expenses = lazy(() => import('../pages/Expenses/Expenses'));
+const ExpenseCategories = lazy(() => import('../pages/Expenses/ExpenseCategories'));
+const PaymentMethods = lazy(() => import('../pages/Settings/PaymentMethods'));
 const ProfitLoss = lazy(() => import('../pages/ProfitLoss/ProfitLoss'));
 const Products = lazy(() => import('../pages/Products/Products'));
 const Orders = lazy(() => import('../pages/Orders/Orders'));
 const Users = lazy(() => import('../pages/Users/Users'));
 const Roles = lazy(() => import('../pages/Roles/Roles'));
 const Reports = lazy(() => import('../pages/Reports/Reports'));
+const TenderTypes = lazy(() => import('../pages/Reports/TenderTypes'));
 const Settings = lazy(() => import('../pages/Settings/Settings'));
 
 export function AppRoutes() {
@@ -53,12 +56,15 @@ export function AppRoutes() {
             <Route path="/stores/:id/edit" element={<EditStore />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/expenses" element={<Expenses />} />
+            <Route path="/expense-categories" element={<ExpenseCategories />} />
+            <Route path="/payment-methods" element={<PaymentMethods />} />
             <Route path="/profit-loss" element={<ProfitLoss />} />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/tender-types" element={<TenderTypes />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
         </Route>
