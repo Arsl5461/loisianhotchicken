@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, Eye } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 const iconButton =
@@ -18,6 +18,20 @@ export function EditAction({ to, onClick, label = 'Edit' }: { to?: string; onCli
   return (
     <button type="button" className={className} onClick={onClick} title={label} aria-label={label}>
       <Pencil className="h-4 w-4" />
+    </button>
+  );
+}
+
+export function ViewAction({ onClick, label = 'View' }: { onClick: () => void; label?: string }) {
+  return (
+    <button
+      type="button"
+      className={cn(iconButton, 'text-sky-700 hover:border-sky-200 hover:bg-sky-50')}
+      onClick={onClick}
+      title={label}
+      aria-label={label}
+    >
+      <Eye className="h-4 w-4" />
     </button>
   );
 }

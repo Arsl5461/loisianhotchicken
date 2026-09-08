@@ -7,7 +7,7 @@ export const expensesApi = api.injectEndpoints({
       providesTags: ['Expense'],
     }),
     createExpense: builder.mutation({
-      query: (data: Record<string, unknown>) => ({ url: '/expenses', method: 'POST', data }),
+      query: (data: FormData | Record<string, unknown>) => ({ url: '/expenses', method: 'POST', data }),
       invalidatesTags: ['Expense', 'Dashboard', 'Report'],
     }),
     updateExpense: builder.mutation({

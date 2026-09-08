@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Plus } from 'lucide-react';
+import { Calendar, Plus, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { PageHeader } from '../../components/common/PageHeader';
 import { SearchInput } from '../../components/common/SearchInput';
@@ -20,7 +20,7 @@ import { useListParams } from '../../hooks/useListParams';
 import { formatCurrencyExact, formatDate } from '../../utils/cn';
 import { clearZeroOnFocus, parseNumericInput, type NumericField } from '../../utils/numberInput';
 import { Pagination } from '../../components/common/Pagination';
-import { DeleteAction, TableActions } from '../../components/common/TableActions';
+import { DeleteAction, TableActions, ViewAction } from '../../components/common/TableActions';
 import { ListingToolbar } from '../../components/common/ListingToolbar';
 import { useRowSelection } from '../../hooks/useRowSelection';
 import type { ExportColumn } from '../../utils/export';
@@ -34,9 +34,25 @@ const emptyForm: {
   expenseDate: string;
 } = { storeId: '', title: '', category: '', amount: 0, paymentMethod: '', expenseDate: '' };
 
+function RequiredLabel({ children }: { children: string }) {
+  return (
+    <span className="mb-1.5 block text-sm font-medium text-slate-700">
+      {children} <span className="text-brand-red">*</span>
+    </span>
+  );
+}
+
+function receiptPath(url?: string) {
+  if (!url) return '';
+  const index = url.indexOf('/uploads/');
+  return index >= 0 ? url.slice(index) : url;
+}
+
 export default function Expenses() {
   const [open, setOpen] = useState(false);
   const [deleteIds, setDeleteIds] = useState<string[]>([]);
+  const [receipt, setReceipt] = useState<File | null>(null);
+  const [viewReceipt, setViewReceipt] = useState<{ title: string; url: string } | null>(null);
   const { selectedStoreId } = useStoreContext();
   const { page, setPage, limit, setLimit, search, setSearch, query } = useListParams(20, [selectedStoreId]);
   const { data, isLoading } = useGetExpensesQuery({ ...query, storeId: selectedStoreId || undefined });
@@ -55,6 +71,7 @@ export default function Expenses() {
     { header: 'Category', value: (row) => row.category },
     { header: 'Amount', value: (row) => row.amount },
     { header: 'Date', value: (row) => formatDate(row.expenseDate) },
+    { header: 'Receipt', value: (row) => (row.receiptUrl ? 'Yes' : 'No') },
   ];
   const [createExpense] = useCreateExpenseMutation();
   const [bulkDeleteExpenses] = useBulkDeleteExpensesMutation();
@@ -101,10 +118,32 @@ export default function Expenses() {
                 { key: 'amount', header: 'Amount', render: (row: any) => formatCurrencyExact(row.amount) },
                 { key: 'date', header: 'Date', render: (row: any) => formatDate(row.expenseDate) },
                 {
+                  key: 'receipt',
+                  header: 'Receipt',
+                  render: (row: any) =>
+                    row.receiptUrl ? (
+                      <button
+                        type="button"
+                        className="text-sm font-semibold text-sky-600 hover:text-sky-700"
+                        onClick={() => setViewReceipt({ title: row.title, url: receiptPath(row.receiptUrl) })}
+                      >
+                        View
+                      </button>
+                    ) : (
+                      <span className="text-slate-400">—</span>
+                    ),
+                },
+                {
                   key: 'actions',
                   header: 'Actions',
                   render: (row: any) => (
                     <TableActions>
+                      {row.receiptUrl ? (
+                        <ViewAction
+                          label="View receipt"
+                          onClick={() => setViewReceipt({ title: row.title, url: receiptPath(row.receiptUrl) })}
+                        />
+                      ) : null}
                       <DeleteAction onClick={() => setDeleteIds([row._id])} />
                     </TableActions>
                   ),
@@ -122,95 +161,136 @@ export default function Expenses() {
         onClose={() => {
           setOpen(false);
           setForm(emptyForm);
+          setReceipt(null);
         }}
       >
         <form
           className="space-y-3"
           onSubmit={async (event) => {
             event.preventDefault();
+            const storeId = form.storeId || selectedStoreId || stores[0]?._id;
+            if (!storeId || !form.title || !form.category || !form.paymentMethod || !form.expenseDate || !form.amount) {
+              toast.error('Please fill in all required fields');
+              return;
+            }
             try {
-              await createExpense({
-                ...form,
-                storeId: form.storeId || selectedStoreId || stores[0]?._id,
-                amount: Number(form.amount),
-              }).unwrap();
+              const payload = new FormData();
+              payload.append('storeId', String(storeId));
+              payload.append('title', form.title);
+              payload.append('category', form.category);
+              payload.append('paymentMethod', form.paymentMethod);
+              payload.append('expenseDate', form.expenseDate);
+              payload.append('amount', String(form.amount));
+              if (receipt) payload.append('receipt', receipt);
+              await createExpense(payload).unwrap();
               toast.success('Expense recorded');
               setOpen(false);
               setForm(emptyForm);
+              setReceipt(null);
             } catch (error: any) {
               toast.error(error?.data?.message || 'Unable to save expense');
             }
           }}
         >
-          <select className="soft-input" value={form.storeId} onChange={(e) => setForm({ ...form, storeId: e.target.value })}>
-            <option value="">Select store</option>
-            {stores.map((store: any) => (
-              <option key={store._id} value={store._id}>
-                {store.name}
-              </option>
-            ))}
-          </select>
-          <input
-            className="soft-input"
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            required
-          />
-          <select
-            className="soft-input"
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-            required
-          >
-            <option value="">Select category</option>
-            {categories.map((item: any) => (
-              <option key={item._id} value={item.name}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-          {!categories.length ? (
-            <p className="text-xs text-slate-500">Add categories from Expense Categories first.</p>
-          ) : null}
-          <select
-            className="soft-input"
-            value={form.paymentMethod}
-            onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })}
-            required
-          >
-            <option value="">Select payment method</option>
-            {paymentMethods.map((item: any) => (
-              <option key={item._id} value={item.name}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-          {!paymentMethods.length ? (
-            <p className="text-xs text-slate-500">Add methods from Payment Method first.</p>
-          ) : null}
-          <label className="soft-input flex items-center gap-2">
-            <Calendar className="h-4 w-4 shrink-0 text-brand-red" />
-            <span className="sr-only">Expense date</span>
+          <label className="block">
+            <RequiredLabel>Store</RequiredLabel>
+            <select className="soft-input" value={form.storeId} onChange={(e) => setForm({ ...form, storeId: e.target.value })} required>
+              <option value="">Select store</option>
+              {stores.map((store: any) => (
+                <option key={store._id} value={store._id}>
+                  {store.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <RequiredLabel>Title</RequiredLabel>
             <input
-              className="w-full bg-transparent outline-none"
-              type="date"
-              value={form.expenseDate}
-              onChange={(e) => setForm({ ...form, expenseDate: e.target.value })}
+              className="soft-input"
+              placeholder="Title"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
               required
             />
           </label>
-          <input
-            className="soft-input"
-            type="number"
-            placeholder="Amount"
-            value={form.amount}
-            onFocus={() => setForm((current) => ({ ...current, amount: clearZeroOnFocus(current.amount) }))}
-            onChange={(e) => setForm({ ...form, amount: parseNumericInput(e.target.value) })}
-            required
-          />
+          <label className="block">
+            <RequiredLabel>Category</RequiredLabel>
+            <select
+              className="soft-input"
+              value={form.category}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+              required
+            >
+              <option value="">Select category</option>
+              {categories.map((item: any) => (
+                <option key={item._id} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          {!categories.length ? (
+            <p className="text-xs text-slate-500">Add categories from Expense Categories first.</p>
+          ) : null}
+          <label className="block">
+            <RequiredLabel>Payment method</RequiredLabel>
+            <select
+              className="soft-input"
+              value={form.paymentMethod}
+              onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })}
+              required
+            >
+              <option value="">Select payment method</option>
+              {paymentMethods.map((item: any) => (
+                <option key={item._id} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          {!paymentMethods.length ? (
+            <p className="text-xs text-slate-500">Add methods from Payment Method first.</p>
+          ) : null}
+          <label className="block">
+            <RequiredLabel>Date</RequiredLabel>
+            <span className="soft-input flex items-center gap-2">
+              <Calendar className="h-4 w-4 shrink-0 text-brand-red" />
+              <input
+                className="w-full bg-transparent outline-none"
+                type="date"
+                value={form.expenseDate}
+                onChange={(e) => setForm({ ...form, expenseDate: e.target.value })}
+                required
+              />
+            </span>
+          </label>
+          <label className="block">
+            <RequiredLabel>Amount</RequiredLabel>
+            <input
+              className="soft-input"
+              type="number"
+              placeholder="Amount"
+              value={form.amount}
+              onFocus={() => setForm((current) => ({ ...current, amount: clearZeroOnFocus(current.amount) }))}
+              onChange={(e) => setForm({ ...form, amount: parseNumericInput(e.target.value) })}
+              required
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1.5 block text-sm font-medium text-slate-700">Receipt</span>
+            <span className="soft-input flex cursor-pointer items-center gap-2">
+              <Upload className="h-4 w-4 shrink-0 text-brand-red" />
+              <input
+                className="w-full bg-transparent text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1 file:text-sm file:font-medium"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,application/pdf"
+                onChange={(event) => setReceipt(event.target.files?.[0] || null)}
+              />
+            </span>
+            <p className="mt-1 text-xs text-slate-500">Optional. JPG, PNG, WEBP, or PDF up to 5 MB.</p>
+          </label>
           <div className="flex justify-end gap-2">
-            <button className="btn-secondary" type="button" onClick={() => setOpen(false)}>
+            <button className="btn-secondary" type="button" onClick={() => { setOpen(false); setForm(emptyForm); setReceipt(null); }}>
               Cancel
             </button>
             <button className="btn-primary" type="submit" disabled={!categories.length || !paymentMethods.length}>
@@ -218,6 +298,25 @@ export default function Expenses() {
             </button>
           </div>
         </form>
+      </Modal>
+      <Modal
+        open={Boolean(viewReceipt)}
+        title={viewReceipt ? `Receipt · ${viewReceipt.title}` : 'Receipt'}
+        onClose={() => setViewReceipt(null)}
+        wide
+      >
+        {viewReceipt ? (
+          <div className="space-y-3">
+            {viewReceipt.url.toLowerCase().includes('.pdf') ? (
+              <iframe title="Expense receipt" className="h-[70vh] w-full rounded-xl border border-slate-200" src={viewReceipt.url} />
+            ) : (
+              <img src={viewReceipt.url} alt="Expense receipt" className="max-h-[70vh] w-full rounded-xl object-contain bg-slate-50" />
+            )}
+            <a className="text-sm font-semibold text-sky-600 hover:text-sky-700" href={viewReceipt.url} target="_blank" rel="noreferrer">
+              Open in new tab
+            </a>
+          </div>
+        ) : null}
       </Modal>
       <ConfirmDialog
         open={deleteIds.length > 0}
