@@ -1,8 +1,10 @@
 const path = require('path');
+const fs = require('fs');
 const multer = require('multer');
 const { ValidationError } = require('./AppError');
 
 const uploadDir = path.resolve(process.cwd(), 'uploads', 'receipts');
+fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadDir),
@@ -24,9 +26,9 @@ const uploadReceipt = multer({
   },
 }).single('receipt');
 
-function publicFileUrl(req, filename) {
+function publicFileUrl(_req, filename) {
   if (!filename) return '';
-  return `${req.protocol}://${req.get('host')}/uploads/receipts/${filename}`;
+  return `/uploads/receipts/${filename}`;
 }
 
 module.exports = {
