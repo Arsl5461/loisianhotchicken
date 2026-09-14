@@ -36,6 +36,13 @@ Default Super Admin:
 API: `http://localhost:5000/api/v1`  
 App (dev): `http://localhost:5173`
 
+Mobile (Flutter iOS/Android): see `mobile/README.md`.
+
+```bash
+cd mobile
+flutter run --dart-define=API_BASE_URL=http://127.0.0.1:5050/api/v1
+```
+
 ## Serve the frontend from the API
 
 ```bash
