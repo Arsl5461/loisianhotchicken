@@ -7,15 +7,24 @@ const productLine = z.object({
   price: z.number().nonnegative(),
 });
 
-const createSaleSchema = z.object({
+const saleFields = z.object({
   storeId: z.string().min(1),
   orderReference: z.string().optional(),
   customerName: z.string().optional(),
-  products: z.array(productLine).min(1),
+  products: z.array(productLine).optional(),
+  totalAmount: z.coerce.number().positive().optional(),
   paymentMethod: z.string().min(1),
   saleDate: z.string().optional(),
 });
 
-const updateSaleSchema = createSaleSchema.partial();
+const createSaleSchema = saleFields.refine(
+  (value) => (value.products && value.products.length > 0) || Boolean(value.totalAmount),
+  {
+    message: 'Sale amount is required',
+    path: ['totalAmount'],
+  }
+);
+
+const updateSaleSchema = saleFields.partial();
 
 module.exports = { createSaleSchema, updateSaleSchema };

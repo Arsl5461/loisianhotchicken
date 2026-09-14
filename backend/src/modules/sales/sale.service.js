@@ -2,14 +2,27 @@ const saleRepository = require('./sale.repository');
 const paymentMethodService = require('../paymentMethods/paymentMethod.service');
 const { NotFoundError, ValidationError } = require('../../utils/AppError');
 
-function computeLines(products = []) {
-  if (!products.length) throw new ValidationError('At least one product is required');
-  const lines = products.map((item) => ({
-    ...item,
-    total: Number((item.quantity * item.price).toFixed(2)),
-  }));
-  const totalAmount = Number(lines.reduce((sum, item) => sum + item.total, 0).toFixed(2));
-  return { lines, totalAmount };
+function computeLines(products = [], totalAmount) {
+  if (products.length) {
+    const lines = products.map((item) => ({
+      ...item,
+      total: Number((item.quantity * item.price).toFixed(2)),
+    }));
+    return {
+      lines,
+      totalAmount: Number(lines.reduce((sum, item) => sum + item.total, 0).toFixed(2)),
+    };
+  }
+
+  const amount = Number(totalAmount);
+  if (!amount || amount <= 0) {
+    throw new ValidationError('Sale amount is required');
+  }
+
+  return {
+    lines: [{ name: 'Sale', quantity: 1, price: amount, total: amount }],
+    totalAmount: Number(amount.toFixed(2)),
+  };
 }
 
 async function listSales(auth, query) {
@@ -23,7 +36,7 @@ async function getSale(auth, id) {
 }
 
 async function createSale(auth, payload) {
-  const { lines, totalAmount } = computeLines(payload.products);
+  const { lines, totalAmount } = computeLines(payload.products, payload.totalAmount);
   const paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
   return saleRepository.create({
     ...payload,
@@ -40,7 +53,7 @@ async function updateSale(auth, id, payload) {
   await getSale(auth, id);
   const update = { ...payload };
   if (payload.products) {
-    const computed = computeLines(payload.products);
+    const computed = computeLines(payload.products, payload.totalAmount);
     update.products = computed.lines;
     update.totalAmount = computed.totalAmount;
   }

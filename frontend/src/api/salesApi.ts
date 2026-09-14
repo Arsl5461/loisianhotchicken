@@ -1,7 +1,7 @@
 import { api } from './axios';
 import type { ApiSuccess } from '../types';
 
-const resourceApi = (name: string, tag: 'Sale' | 'Expense' | 'Product' | 'Order' | 'User') => ({
+const resourceApi = (name: string, tag: 'Sale' | 'Expense' | 'User') => ({
   list: (builder: any) =>
     builder.query({
       query: (params: Record<string, unknown>) => ({ url: `/${name}`, params }),

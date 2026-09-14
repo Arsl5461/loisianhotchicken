@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import logo from '../assets/logos/louisiana-hot-chicken.jpg';
+import { Pulse } from '../components/common/LoadingSpinner';
 
 export function AuthLayout() {
   return (
@@ -17,11 +19,24 @@ export function AuthLayout() {
           <div className="mb-8 flex items-center gap-3 lg:hidden">
             <img src={logo} alt="Louisiana Hot Chicken" className="h-12 w-12 rounded-2xl object-cover" />
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-red">Louisiana</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-red">Louisiana's</p>
               <p className="font-semibold">Hot Chicken Admin</p>
             </div>
           </div>
-          <Outlet />
+          <Suspense
+            fallback={
+              <div className="card space-y-4 p-7">
+                <Pulse className="h-3 w-24" />
+                <Pulse className="h-7 w-48" />
+                <Pulse className="h-4 w-full" />
+                <Pulse className="h-11 w-full rounded-xl" />
+                <Pulse className="h-11 w-full rounded-xl" />
+                <Pulse className="h-11 w-full rounded-xl" />
+              </div>
+            }
+          >
+            <Outlet />
+          </Suspense>
         </div>
       </div>
     </div>

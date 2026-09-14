@@ -1,15 +1,17 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { ProtectedRoute } from './ProtectedRoute';
-import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import { PermissionRoute, SuperAdminRoute } from './PermissionRoute';
 import { useMeQuery } from '../api/authApi';
 import { setCredentials, setInitialized } from '../features/auth/authSlice';
+import { endSession } from '../features/auth/session';
 import type { RootState } from '../app/store';
+import { PERMISSIONS } from '../constants/permissions';
 
-const Login = lazy(() => import('../pages/Auth/Login'));
+import Login from '../pages/Auth/Login';
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const StoresList = lazy(() => import('../pages/Stores/StoresList'));
 const AddStore = lazy(() => import('../pages/Stores/AddStore'));
@@ -20,8 +22,6 @@ const Expenses = lazy(() => import('../pages/Expenses/Expenses'));
 const ExpenseCategories = lazy(() => import('../pages/Expenses/ExpenseCategories'));
 const PaymentMethods = lazy(() => import('../pages/Settings/PaymentMethods'));
 const ProfitLoss = lazy(() => import('../pages/ProfitLoss/ProfitLoss'));
-const Products = lazy(() => import('../pages/Products/Products'));
-const Orders = lazy(() => import('../pages/Orders/Orders'));
 const Users = lazy(() => import('../pages/Users/Users'));
 const Roles = lazy(() => import('../pages/Roles/Roles'));
 const Reports = lazy(() => import('../pages/Reports/Reports'));
@@ -31,19 +31,23 @@ const Settings = lazy(() => import('../pages/Settings/Settings'));
 export function AppRoutes() {
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.auth.accessToken);
-  const { data, isError } = useMeQuery(undefined, { skip: !token });
+  const { data, isError } = useMeQuery(token || '', {
+    skip: !token,
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
     if (data?.data && token) {
       dispatch(setCredentials({ user: data.data, accessToken: token }));
-    } else if (isError || !token) {
+    } else if (isError) {
+      endSession(dispatch);
+    } else if (!token) {
       dispatch(setInitialized());
     }
   }, [data, token, isError, dispatch]);
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <Routes>
+    <Routes>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
         </Route>
@@ -51,18 +55,22 @@ export function AppRoutes() {
           <Route element={<AdminLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/stores" element={<StoresList />} />
-            <Route path="/stores/new" element={<AddStore />} />
+            <Route element={<PermissionRoute permission={PERMISSIONS.STORES_CREATE} />}>
+              <Route path="/stores/new" element={<AddStore />} />
+            </Route>
             <Route path="/stores/:id" element={<StoreDetails />} />
-            <Route path="/stores/:id/edit" element={<EditStore />} />
+            <Route element={<PermissionRoute permission={PERMISSIONS.STORES_UPDATE} />}>
+              <Route path="/stores/:id/edit" element={<EditStore />} />
+            </Route>
             <Route path="/sales" element={<Sales />} />
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/expense-categories" element={<ExpenseCategories />} />
             <Route path="/payment-methods" element={<PaymentMethods />} />
             <Route path="/profit-loss" element={<ProfitLoss />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/roles" element={<Roles />} />
+            <Route element={<SuperAdminRoute />}>
+              <Route path="/users" element={<Users />} />
+              <Route path="/roles" element={<Roles />} />
+            </Route>
             <Route path="/reports" element={<Reports />} />
             <Route path="/tender-types" element={<TenderTypes />} />
             <Route path="/settings" element={<Settings />} />
@@ -70,6 +78,5 @@ export function AppRoutes() {
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </Suspense>
   );
 }

@@ -7,8 +7,6 @@ import {
   Tags,
   CreditCard,
   Banknote,
-  UtensilsCrossed,
-  ShoppingBag,
   PieChart,
   BarChart3,
   Users,
@@ -21,6 +19,7 @@ import logo from '../../assets/logos/louisiana-hot-chicken.jpg';
 import { cn } from '../../utils/cn';
 import { usePermissions } from '../../hooks/usePermissions';
 import { PERMISSIONS } from '../../constants/permissions';
+import { SidebarNavSkeleton } from '../common/LoadingSpinner';
 
 const NAV = [
   {
@@ -35,8 +34,6 @@ const NAV = [
       { to: '/expenses', label: 'Expenses', icon: Wallet, permission: PERMISSIONS.EXPENSES_READ },
       { to: '/expense-categories', label: 'Expense Category', icon: Tags, permission: PERMISSIONS.EXPENSES_READ },
       { to: '/payment-methods', label: 'Payment Method', icon: CreditCard, permission: PERMISSIONS.EXPENSES_READ },
-      { to: '/products', label: 'Products', icon: UtensilsCrossed, permission: PERMISSIONS.PRODUCTS_READ },
-      { to: '/orders', label: 'Orders', icon: ShoppingBag, permission: PERMISSIONS.ORDERS_READ },
     ],
   },
   {
@@ -69,7 +66,7 @@ export function Sidebar({
   onToggle: () => void;
   mobile?: boolean;
 }) {
-  const { can } = usePermissions();
+  const { can, isSuperAdmin, user } = usePermissions();
 
   return (
     <div
@@ -89,44 +86,49 @@ export function Sidebar({
         <img src={logo} alt="Louisiana Hot Chicken" className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/10" />
         {!collapsed ? (
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-yellow">Louisiana</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-yellow">Louisiana's</p>
             <p className="text-sm font-bold">Hot Chicken</p>
           </div>
         ) : null}
       </div>
 
       <nav className="sidebar-scroll flex-1 space-y-5 overflow-y-auto px-3 pb-4">
-        {NAV.map((group) => {
-          const items = group.items.filter((item) => can(item.permission));
-          if (!items.length) return null;
-          return (
-            <div key={group.label}>
-              {!collapsed ? (
-                <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/35">
-                  {group.label}
-                </p>
-              ) : null}
-              <div className="space-y-1">
-                {items.map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    end={item.to === '/'}
-                    className={({ isActive }) =>
-                      cn(
-                        'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/70 transition hover:bg-white/5 hover:text-white',
-                        isActive && 'bg-brand-red text-white shadow-lg shadow-black/20'
-                      )
-                    }
-                  >
-                    <item.icon className="h-4 w-4 shrink-0" />
-                    {!collapsed ? <span>{item.label}</span> : null}
-                  </NavLink>
-                ))}
+        {!user ? (
+          <SidebarNavSkeleton collapsed={collapsed} />
+        ) : (
+          NAV.map((group) => {
+            if (group.label === 'Administration' && !isSuperAdmin) return null;
+            const items = group.items.filter((item) => can(item.permission));
+            if (!items.length) return null;
+            return (
+              <div key={group.label}>
+                {!collapsed ? (
+                  <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/35">
+                    {group.label}
+                  </p>
+                ) : null}
+                <div className="space-y-1">
+                  {items.map((item) => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      end={item.to === '/'}
+                      className={({ isActive }) =>
+                        cn(
+                          'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/70 transition hover:bg-white/5 hover:text-white',
+                          isActive && 'bg-brand-red text-white shadow-lg shadow-black/20'
+                        )
+                      }
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      {!collapsed ? <span>{item.label}</span> : null}
+                    </NavLink>
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </nav>
     </aside>
 

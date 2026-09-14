@@ -9,7 +9,7 @@ export const authApi = api.injectEndpoints({
     logout: builder.mutation<ApiSuccess<Record<string, never>>, void>({
       query: () => ({ url: '/auth/logout', method: 'POST' }),
     }),
-    me: builder.query<ApiSuccess<AuthUser>, void>({
+    me: builder.query<ApiSuccess<AuthUser>, string>({
       query: () => ({ url: '/auth/me' }),
       providesTags: ['Auth'],
     }),

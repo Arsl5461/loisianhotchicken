@@ -16,6 +16,14 @@ const checkPermission = (permission) => (req, res, next) => {
   return next();
 };
 
+const requireSuperAdmin = (req, res, next) => {
+  if (!req.auth?.isSuperAdmin) {
+    return next(new ForbiddenError('Only the super admin can access this resource'));
+  }
+  return next();
+};
+
 module.exports = {
   checkPermission,
+  requireSuperAdmin,
 };

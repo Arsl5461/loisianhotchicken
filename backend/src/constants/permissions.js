@@ -100,26 +100,6 @@ const PERMISSION_GROUPS = Object.freeze([
     ],
   },
   {
-    key: 'products',
-    label: 'Products',
-    permissions: [
-      PERMISSIONS.PRODUCTS_CREATE,
-      PERMISSIONS.PRODUCTS_READ,
-      PERMISSIONS.PRODUCTS_UPDATE,
-      PERMISSIONS.PRODUCTS_DELETE,
-    ],
-  },
-  {
-    key: 'orders',
-    label: 'Orders',
-    permissions: [
-      PERMISSIONS.ORDERS_CREATE,
-      PERMISSIONS.ORDERS_READ,
-      PERMISSIONS.ORDERS_UPDATE,
-      PERMISSIONS.ORDERS_DELETE,
-    ],
-  },
-  {
     key: 'reports',
     label: 'Reports',
     permissions: [PERMISSIONS.REPORTS_READ, PERMISSIONS.REPORTS_EXPORT],

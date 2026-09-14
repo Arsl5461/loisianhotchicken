@@ -24,8 +24,6 @@ const saleRoutes = require('./modules/sales/sale.routes');
 const expenseRoutes = require('./modules/expenses/expense.routes');
 const expenseCategoryRoutes = require('./modules/expenseCategories/expenseCategory.routes');
 const paymentMethodRoutes = require('./modules/paymentMethods/paymentMethod.routes');
-const productRoutes = require('./modules/products/product.routes');
-const orderRoutes = require('./modules/orders/order.routes');
 const dashboardRoutes = require('./modules/dashboard/dashboard.routes');
 const reportRoutes = require('./modules/reports/reports.routes');
 
@@ -94,8 +92,6 @@ app.use('/api/v1/sales', saleRoutes);
 app.use('/api/v1/expense-categories', expenseCategoryRoutes);
 app.use('/api/v1/payment-methods', paymentMethodRoutes);
 app.use('/api/v1/expenses', expenseRoutes);
-app.use('/api/v1/products', productRoutes);
-app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/reports', reportRoutes);
 

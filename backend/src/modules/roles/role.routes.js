@@ -1,13 +1,13 @@
 const express = require('express');
 const controller = require('./role.controller');
 const { authenticateUser } = require('../../middleware/auth.middleware');
-const { checkPermission } = require('../../middleware/permission.middleware');
+const { checkPermission, requireSuperAdmin } = require('../../middleware/permission.middleware');
 const { validate } = require('../../middleware/validation.middleware');
 const { upsertRoleSchema, updateRoleSchema } = require('./role.validation');
 const { PERMISSIONS } = require('../../constants/permissions');
 
 const router = express.Router();
-router.use(authenticateUser);
+router.use(authenticateUser, requireSuperAdmin);
 
 router.get('/', checkPermission(PERMISSIONS.ROLES_READ), controller.list);
 router.post('/', checkPermission(PERMISSIONS.ROLES_CREATE), validate(upsertRoleSchema), controller.create);

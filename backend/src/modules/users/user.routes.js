@@ -1,14 +1,14 @@
 const express = require('express');
 const controller = require('./user.controller');
 const { authenticateUser } = require('../../middleware/auth.middleware');
-const { checkPermission } = require('../../middleware/permission.middleware');
+const { checkPermission, requireSuperAdmin } = require('../../middleware/permission.middleware');
 const { validate } = require('../../middleware/validation.middleware');
 const { createUserSchema, updateUserSchema, resetPasswordSchema } = require('./user.validation');
 const { PERMISSIONS } = require('../../constants/permissions');
 const { bulkDeleteSchema } = require('../../utils/bulk');
 
 const router = express.Router();
-router.use(authenticateUser);
+router.use(authenticateUser, requireSuperAdmin);
 
 router.get('/', checkPermission(PERMISSIONS.USERS_READ), controller.list);
 router.post('/', checkPermission(PERMISSIONS.USERS_CREATE), validate(createUserSchema), controller.create);

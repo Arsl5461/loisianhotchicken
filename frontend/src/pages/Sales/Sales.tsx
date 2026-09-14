@@ -6,7 +6,6 @@ import { DataTable } from '../../components/common/DataTable';
 import { ConfirmDialog } from '../../components/common/ConfirmDialog';
 import { BusyOverlay, InlineSpinner, LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { useBulkDeleteSalesMutation, useCreateSaleMutation, useGetSalesQuery } from '../../api/salesApi';
-import { useGetProductsQuery } from '../../api/usersApi';
 import { useGetPaymentMethodsQuery } from '../../api/paymentMethodsApi';
 import { useStoreContext } from '../../hooks/usePermissions';
 import { useListParams } from '../../hooks/useListParams';
@@ -34,18 +33,16 @@ export default function Sales() {
     { header: 'Payment', value: (row) => row.paymentMethod },
     { header: 'Date', value: (row) => formatDate(row.saleDate) },
   ];
-  const products = useGetProductsQuery({ limit: 50 });
   const methodsQuery = useGetPaymentMethodsQuery({ limit: 100, status: 'ACTIVE', sortBy: 'name', sortOrder: 'asc' });
   const paymentMethods = methodsQuery.data?.data || [];
   const [createSale, { isLoading: creating }] = useCreateSaleMutation();
   const [bulkDeleteSales, { isLoading: deleting }] = useBulkDeleteSalesMutation();
   const [form, setForm] = useState<{
     storeId: string;
-    productId: string;
-    quantity: NumericField;
+    amount: NumericField;
     paymentMethod: string;
     customerName: string;
-  }>({ storeId: '', productId: '', quantity: 0, paymentMethod: '', customerName: 'Walk-in Guest' });
+  }>({ storeId: '', amount: '', paymentMethod: '', customerName: 'Walk-in Guest' });
 
   return (
     <div>
@@ -107,39 +104,42 @@ export default function Sales() {
             className="card w-full max-w-lg space-y-3 p-6"
             onSubmit={async (event) => {
               event.preventDefault();
-              const product = (products.data?.data || []).find((item: any) => item._id === form.productId);
-              if (!product) return;
-              await createSale({
-                storeId: form.storeId || selectedStoreId || stores[0]?._id,
-                customerName: form.customerName,
-                paymentMethod: form.paymentMethod,
-                products: [{ productId: product._id, name: product.name, quantity: Number(form.quantity), price: product.price }],
-              }).unwrap();
-              toast.success('Sale recorded');
-              setOpen(false);
+              const storeId = form.storeId || selectedStoreId || stores[0]?._id;
+              if (!storeId || !form.paymentMethod || !form.amount) {
+                toast.error('Please fill in store, amount, and payment method');
+                return;
+              }
+              try {
+                await createSale({
+                  storeId,
+                  customerName: form.customerName,
+                  paymentMethod: form.paymentMethod,
+                  totalAmount: Number(form.amount),
+                }).unwrap();
+                toast.success('Sale recorded');
+                setOpen(false);
+                setForm({ storeId: '', amount: '', paymentMethod: '', customerName: 'Walk-in Guest' });
+              } catch (error: any) {
+                toast.error(error?.data?.message || 'Unable to save sale');
+              }
             }}
           >
             <h3 className="text-lg font-semibold">New sale</h3>
-            <select className="soft-input" value={form.storeId} onChange={(e) => setForm({ ...form, storeId: e.target.value })}>
+            <select className="soft-input" value={form.storeId} onChange={(e) => setForm({ ...form, storeId: e.target.value })} required>
               <option value="">Select store</option>
               {stores.map((store) => (
                 <option key={store._id} value={store._id}>{store.name}</option>
               ))}
             </select>
-            <select className="soft-input" value={form.productId} onChange={(e) => setForm({ ...form, productId: e.target.value })}>
-              <option value="">Select product</option>
-              {(products.data?.data || []).map((product: any) => (
-                <option key={product._id} value={product._id}>{product.name}</option>
-              ))}
-            </select>
             <input
               className="soft-input"
               type="number"
-              min={1}
-              placeholder="Quantity"
-              value={form.quantity}
-              onFocus={() => setForm((current) => ({ ...current, quantity: clearZeroOnFocus(current.quantity) }))}
-              onChange={(e) => setForm({ ...form, quantity: parseNumericInput(e.target.value) })}
+              min={0.01}
+              step="0.01"
+              placeholder="Sale amount"
+              value={form.amount}
+              onFocus={() => setForm((current) => ({ ...current, amount: clearZeroOnFocus(current.amount) }))}
+              onChange={(e) => setForm({ ...form, amount: parseNumericInput(e.target.value) })}
               required
             />
             <select className="soft-input" value={form.paymentMethod} onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })} required>

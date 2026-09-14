@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLoginMutation } from '../../api/authApi';
-import { setCredentials } from '../../features/auth/authSlice';
+import { startSession } from '../../features/auth/session';
 
 const schema = z.object({
   email: z.string().email(),
@@ -24,6 +24,10 @@ export default function Login() {
     defaultValues: { email: '', password: '' },
   });
 
+  useEffect(() => {
+    void import('../Dashboard/Dashboard');
+  }, []);
+
   return (
     <div className="card p-7">
       <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-red">Welcome back</p>
@@ -35,7 +39,7 @@ export default function Login() {
         onSubmit={form.handleSubmit(async (values) => {
           try {
             const result = await login(values).unwrap();
-            dispatch(setCredentials(result.data));
+            startSession(dispatch, result.data.user, result.data.accessToken);
             toast.success('Signed in successfully');
             navigate('/');
           } catch (error: any) {

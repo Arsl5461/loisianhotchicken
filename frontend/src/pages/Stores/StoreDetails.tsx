@@ -6,11 +6,15 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { DashboardStats } from '../../components/dashboard/DashboardStats';
 import { RevenueExpenseChart } from '../../components/dashboard/RevenueExpenseChart';
 import { formatDate } from '../../utils/cn';
+import { usePermissions } from '../../hooks/usePermissions';
+import { PERMISSIONS } from '../../constants/permissions';
 
 export default function StoreDetails() {
   const { id = '' } = useParams();
+  const { can, isSuperAdmin } = usePermissions();
   const { data, isLoading } = useGetStoreQuery(id);
-  const users = useGetStoreUsersQuery(id);
+  const canReadUsers = isSuperAdmin || can(PERMISSIONS.USERS_READ);
+  const users = useGetStoreUsersQuery(id, { skip: !canReadUsers });
   const overview = useGetOverviewQuery({ range: '30d', storeId: id });
   const store = data?.data;
 
@@ -23,9 +27,11 @@ export default function StoreDetails() {
         title={store.name}
         subtitle={`${store.storeCode} · ${store.city || ''} ${store.state || ''}`}
         actions={
-          <Link to={`/stores/${store._id}/edit`} className="btn-primary">
-            Edit Store
-          </Link>
+          can(PERMISSIONS.STORES_UPDATE) ? (
+            <Link to={`/stores/${store._id}/edit`} className="btn-primary">
+              Edit Store
+            </Link>
+          ) : null
         }
       />
       <div className="mb-5 flex flex-wrap gap-2 text-sm">
@@ -39,17 +45,19 @@ export default function StoreDetails() {
           <RevenueExpenseChart data={overview.data.data.revenueVsExpense} />
         </div>
       ) : null}
-      <div className="card mt-5 p-5">
-        <h3 className="mb-3 text-lg font-semibold">Assigned users</h3>
-        <div className="space-y-2">
-          {(users.data?.data || []).map((user: any) => (
-            <div key={user._id} className="flex justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm">
-              <span>{user.name}</span>
-              <span className="text-slate-500">{user.roleId?.name}</span>
-            </div>
-          ))}
+      {canReadUsers ? (
+        <div className="card mt-5 p-5">
+          <h3 className="mb-3 text-lg font-semibold">Assigned users</h3>
+          <div className="space-y-2">
+            {(users.data?.data || []).map((user: any) => (
+              <div key={user._id} className="flex justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm">
+                <span>{user.name}</span>
+                <span className="text-slate-500">{user.roleId?.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }

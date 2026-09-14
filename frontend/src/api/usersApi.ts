@@ -42,54 +42,6 @@ export const usersApi = api.injectEndpoints({
       query: () => ({ url: '/permissions' }),
       providesTags: ['Role'],
     }),
-    getProducts: builder.query({
-      query: (params: Record<string, unknown>) => ({ url: '/products', params }),
-      providesTags: ['Product'],
-    }),
-    createProduct: builder.mutation({
-      query: (data: Record<string, unknown>) => ({ url: '/products', method: 'POST', data }),
-      invalidatesTags: ['Product'],
-    }),
-    updateProduct: builder.mutation({
-      query: ({ id, data }: { id: string; data: Record<string, unknown> }) => ({
-        url: `/products/${id}`,
-        method: 'PATCH',
-        data,
-      }),
-      invalidatesTags: ['Product'],
-    }),
-    deleteProduct: builder.mutation({
-      query: (id: string) => ({ url: `/products/${id}`, method: 'DELETE' }),
-      invalidatesTags: ['Product'],
-    }),
-    bulkDeleteProducts: builder.mutation({
-      query: (ids: string[]) => ({ url: '/products/bulk-delete', method: 'POST', data: { ids } }),
-      invalidatesTags: ['Product'],
-    }),
-    getOrders: builder.query({
-      query: (params: Record<string, unknown>) => ({ url: '/orders', params }),
-      providesTags: ['Order'],
-    }),
-    createOrder: builder.mutation({
-      query: (data: Record<string, unknown>) => ({ url: '/orders', method: 'POST', data }),
-      invalidatesTags: ['Order', 'Dashboard'],
-    }),
-    updateOrder: builder.mutation({
-      query: ({ id, data }: { id: string; data: Record<string, unknown> }) => ({
-        url: `/orders/${id}`,
-        method: 'PATCH',
-        data,
-      }),
-      invalidatesTags: ['Order', 'Dashboard'],
-    }),
-    deleteOrder: builder.mutation({
-      query: (id: string) => ({ url: `/orders/${id}`, method: 'DELETE' }),
-      invalidatesTags: ['Order', 'Dashboard'],
-    }),
-    bulkDeleteOrders: builder.mutation({
-      query: (ids: string[]) => ({ url: '/orders/bulk-delete', method: 'POST', data: { ids } }),
-      invalidatesTags: ['Order', 'Dashboard'],
-    }),
     getOrganization: builder.query({
       query: () => ({ url: '/organizations/current' }),
       providesTags: ['Settings'],
@@ -110,16 +62,6 @@ export const {
   useGetRolesQuery,
   useUpdateRoleMutation,
   useGetPermissionsQuery,
-  useGetProductsQuery,
-  useCreateProductMutation,
-  useUpdateProductMutation,
-  useDeleteProductMutation,
-  useBulkDeleteProductsMutation,
-  useGetOrdersQuery,
-  useCreateOrderMutation,
-  useUpdateOrderMutation,
-  useDeleteOrderMutation,
-  useBulkDeleteOrdersMutation,
   useGetOrganizationQuery,
   useUpdateOrganizationMutation,
 } = usersApi;

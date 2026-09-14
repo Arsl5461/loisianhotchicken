@@ -2,6 +2,7 @@ import axios from 'axios';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { logout } from '../features/auth/authSlice';
+import { setSelectedStore } from '../features/auth/storeContextSlice';
 
 function resolveApiUrl() {
   const backendUrl = String(import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
@@ -88,7 +89,12 @@ const axiosBaseQuery =
     } catch (error) {
       const err = error as { response?: { status: number; data: { message?: string; user?: unknown; accessToken?: string } } };
       if (err.response?.status === 401) {
-        api.dispatch(logout());
+        const token = (api.getState() as { auth?: { accessToken?: string | null } }).auth?.accessToken;
+        if (token) {
+          api.dispatch(logout());
+          api.dispatch(setSelectedStore(null));
+          api.dispatch(api.util.resetApiState());
+        }
       }
       return {
         error: {
@@ -110,8 +116,6 @@ export const api = createApi({
     'Expense',
     'ExpenseCategory',
     'PaymentMethod',
-    'Product',
-    'Order',
     'User',
     'Role',
     'Report',

@@ -21,7 +21,7 @@ import type { ExportColumn } from '../../utils/export';
 export default function StoresList() {
   const { page, setPage, limit, setLimit, search, setSearch, query } = useListParams();
   const [deleteIds, setDeleteIds] = useState<string[]>([]);
-  const { can } = usePermissions();
+  const { can, isSuperAdmin } = usePermissions();
   const { data, isLoading, isError } = useGetStoresQuery(query);
   const overview = useGetOverviewQuery({ range: '30d' });
   const [bulkDeleteStores, { isLoading: deleting }] = useBulkDeleteStoresMutation();
@@ -52,7 +52,11 @@ export default function StoresList() {
     <div>
       <PageHeader
         title="Stores"
-        subtitle="Manage all Louisiana Hot Chicken branches from one place."
+        subtitle={
+          isSuperAdmin
+            ? 'Manage all Louisiana Hot Chicken branches from one place.'
+            : 'Only the stores assigned to your account are shown here.'
+        }
         actions={
           can(PERMISSIONS.STORES_CREATE) ? (
             <Link to="/stores/new" className="btn-primary">

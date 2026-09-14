@@ -6,6 +6,7 @@ import { PageHeader } from '../../components/common/PageHeader';
 import { BusyOverlay, InlineSpinner } from '../../components/common/LoadingSpinner';
 import { useCreateStoreMutation, useGetStoreQuery, useUpdateStoreMutation } from '../../api/storesApi';
 import { useGetUsersQuery } from '../../api/usersApi';
+import { usePermissions } from '../../hooks/usePermissions';
 
 type StoreFormValues = {
   name: string;
@@ -40,7 +41,11 @@ export default function StoreForm({ mode }: { mode: 'create' | 'edit' }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data } = useGetStoreQuery(id || '', { skip: mode === 'create' || !id });
-  const usersQuery = useGetUsersQuery({ limit: 100, sortBy: 'name', sortOrder: 'asc', status: 'ACTIVE' });
+  const { isSuperAdmin } = usePermissions();
+  const usersQuery = useGetUsersQuery(
+    { limit: 100, sortBy: 'name', sortOrder: 'asc', status: 'ACTIVE' },
+    { skip: !isSuperAdmin }
+  );
   const [createStore, createState] = useCreateStoreMutation();
   const [updateStore, updateState] = useUpdateStoreMutation();
   const users = usersQuery.data?.data || [];
