@@ -37,7 +37,7 @@ export default function Settings() {
 
   return (
     <div className="max-w-5xl">
-      <PageHeader title="Settings" subtitle="Update the organization profile used across the admin platform." />
+      <PageHeader title="Settings" subtitle="Update the organization profile used across the platform." />
 
       {isLoading ? (
         <LoadingSpinner />

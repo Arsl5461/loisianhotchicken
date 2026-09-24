@@ -31,7 +31,7 @@ export default function Login() {
   return (
     <div className="card p-7">
       <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-red">Welcome back</p>
-      <h2 className="mt-2 text-2xl font-bold">Sign in to Admin</h2>
+      <h2 className="mt-2 text-2xl font-bold">Sign in</h2>
       <p className="mt-1 text-sm text-slate-500">Use your organization credentials to manage stores, sales, and P&L.</p>
       <form
         className="mt-6 space-y-4"

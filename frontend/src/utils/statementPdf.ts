@@ -289,7 +289,7 @@ export function exportIncomeExpenseStatementPdf(statement: IncomeExpenseStatemen
           <h2>Detailed Expense Schedule</h2>
           <p class="lede">All ${statement.expenseCount} expenses, grouped by category. Percentages are calculated against total sales of ${escapeXml(money(statement.totalSales))}.</p>
           ${schedule || '<p class="note">No expenses recorded for this period.</p>'}
-          <p class="note">Management note: This statement is prepared from figures in the Louisiana Hot Chicken admin platform. It is an internal operating statement and may require accountant adjustments.</p>
+          <p class="note">Management note: This statement is prepared from figures in the Louisiana Hot Chicken platform. It is an internal operating statement and may require accountant adjustments.</p>
         </section>
         <script>window.onload = function () { window.print(); }<\/script>
       </body>
