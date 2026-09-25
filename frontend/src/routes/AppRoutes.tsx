@@ -12,6 +12,7 @@ import type { RootState } from '../app/store';
 import { PERMISSIONS } from '../constants/permissions';
 
 import Login from '../pages/Auth/Login';
+import ForgotPassword from '../pages/Auth/ForgotPassword';
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const StoresList = lazy(() => import('../pages/Stores/StoresList'));
 const AddStore = lazy(() => import('../pages/Stores/AddStore'));
@@ -19,6 +20,7 @@ const EditStore = lazy(() => import('../pages/Stores/EditStore'));
 const StoreDetails = lazy(() => import('../pages/Stores/StoreDetails'));
 const Sales = lazy(() => import('../pages/Sales/Sales'));
 const Expenses = lazy(() => import('../pages/Expenses/Expenses'));
+const MoneyBorrowed = lazy(() => import('../pages/Borrowings/MoneyBorrowed'));
 const ExpenseCategories = lazy(() => import('../pages/Expenses/ExpenseCategories'));
 const PaymentMethods = lazy(() => import('../pages/Settings/PaymentMethods'));
 const ProfitLoss = lazy(() => import('../pages/ProfitLoss/ProfitLoss'));
@@ -50,6 +52,7 @@ export function AppRoutes() {
     <Routes>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route element={<AdminLayout />}>
@@ -64,6 +67,7 @@ export function AppRoutes() {
             </Route>
             <Route path="/sales" element={<Sales />} />
             <Route path="/expenses" element={<Expenses />} />
+            <Route path="/money-borrowed" element={<MoneyBorrowed />} />
             <Route path="/expense-categories" element={<ExpenseCategories />} />
             <Route path="/payment-methods" element={<PaymentMethods />} />
             <Route path="/profit-loss" element={<ProfitLoss />} />

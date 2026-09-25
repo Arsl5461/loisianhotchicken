@@ -35,6 +35,15 @@ export const authApi = api.injectEndpoints({
     >({
       query: (body) => ({ url: '/auth/resend-otp', method: 'POST', data: body }),
     }),
+    forgotPassword: builder.mutation<ApiSuccess<Record<string, never>>, { email: string }>({
+      query: (body) => ({ url: '/auth/forgot-password', method: 'POST', data: body }),
+    }),
+    resetPassword: builder.mutation<
+      ApiSuccess<Record<string, never>>,
+      { email: string; code: string; newPassword: string }
+    >({
+      query: (body) => ({ url: '/auth/reset-password', method: 'POST', data: body }),
+    }),
     changePassword: builder.mutation<
       ApiSuccess<Record<string, never>>,
       { currentPassword: string; newPassword: string }
@@ -55,6 +64,8 @@ export const {
   useLoginMutation,
   useVerifyLoginOtpMutation,
   useResendLoginOtpMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
   useChangePasswordMutation,
   useLogoutMutation,
   useMeQuery,

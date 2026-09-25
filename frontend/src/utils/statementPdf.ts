@@ -38,6 +38,18 @@ export type IncomeExpenseStatement = {
   revenueSources: Array<{ name: string; amount: number; percentOfSales: number; count: number }>;
   expenseCategories: StatementCategory[];
   expenseMethods: Array<{ name: string; amount: number; percentOfExpenses: number; count: number }>;
+  amountOwed?: number;
+  borrowedThisPeriod?: number;
+  isFinal?: boolean;
+  openBorrowings?: Array<{
+    id: string;
+    lender: string;
+    storeName: string;
+    amount: number;
+    amountPaid: number;
+    amountOwed: number;
+    borrowedDate: string;
+  }>;
 };
 
 function escapeXml(value: string | number) {
@@ -205,10 +217,14 @@ export function exportIncomeExpenseStatementPdf(statement: IncomeExpenseStatemen
           <header class="header">
             <p class="brand">LOUISIANA'S HOT CHICKEN</p>
             <p class="title">Income &amp; Expense Statement | ${escapeXml(period)}</p>
-            <p class="badge">MANAGEMENT FINANCIAL STATEMENT</p>
+            <p class="badge">${statement.isFinal === false ? 'OPEN — MONEY STILL OWED' : 'FINAL MANAGEMENT FINANCIAL STATEMENT'}</p>
           </header>
           <h2>Executive Financial Summary</h2>
-          <p class="lede">${escapeXml(storeLabel)} · Prepared from recorded sales and expenses in this period.</p>
+          <p class="lede">${escapeXml(storeLabel)} · ${
+            statement.isFinal === false
+              ? `Summary stays open until borrowed money is paid off. Still owed: ${money(statement.amountOwed || 0)}.`
+              : 'Prepared from recorded sales and expenses in this period.'
+          }</p>
           <div class="kpis">
             <div class="kpi"><span>TOTAL SALES</span><strong>${escapeXml(money(statement.totalSales))}</strong></div>
             <div class="kpi"><span>TOTAL EXPENSES</span><strong>${escapeXml(money(statement.totalExpenses))}</strong></div>
@@ -242,7 +258,32 @@ export function exportIncomeExpenseStatementPdf(statement: IncomeExpenseStatemen
             <span>Less: Total Expenses (${escapeXml(money(statement.totalExpenses))})</span>
             <span>Estimated Operating Profit ${escapeXml(money(statement.operatingProfit))}</span>
           </div>
-          <p class="note">Statement basis: Sales are shown as gross receipts by payment method. Expense categories and payment methods come from recorded expenses. Prime cost is food cost plus payroll when those categories exist. This is an internal operating statement and may require accountant adjustments for sales tax, accrual timing, depreciation, owner draws, refunds, chargebacks, or outstanding deposits.</p>
+          ${
+            statement.isFinal === false
+              ? `
+          <h2>Money still owed</h2>
+          <p class="lede">This summary is not final until these borrowed amounts are paid off.</p>
+          <table>
+            <thead><tr><th>Borrowed from</th><th>Store</th><th class="num">Borrowed</th><th class="num">Paid</th><th class="num">Still owed</th></tr></thead>
+            <tbody>${tableRows(
+              [
+                ...(statement.openBorrowings || []).map((row) => [
+                  row.lender,
+                  row.storeName || storeLabel,
+                  money(row.amount),
+                  money(row.amountPaid),
+                  money(row.amountOwed),
+                ]),
+                ['TOTAL STILL OWED', '', '', '', money(statement.amountOwed || 0)],
+              ],
+              { total: true }
+            )}</tbody>
+          </table>`
+              : ''
+          }
+          <p class="note">Statement basis: Sales are shown as gross receipts by payment method. Expense categories and payment methods come from recorded expenses. Prime cost is food cost plus payroll when those categories exist. This is an internal operating statement and may require accountant adjustments for sales tax, accrual timing, depreciation, owner draws, refunds, chargebacks, or outstanding deposits.${
+            statement.isFinal === false ? ' Outstanding borrowed money keeps this summary open until it is paid off.' : ''
+          }</p>
         </section>
 
         <section class="page">

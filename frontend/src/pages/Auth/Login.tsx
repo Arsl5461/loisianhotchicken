@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
@@ -191,6 +191,11 @@ export default function Login() {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
+          </div>
+          <div className="flex justify-end">
+            <Link className="text-sm font-medium text-brand-red hover:underline" to="/forgot-password">
+              Forgot password?
+            </Link>
           </div>
           <button className="btn-primary w-full" disabled={isLoading} type="submit">
             {isLoading ? 'Signing in...' : 'Continue'}

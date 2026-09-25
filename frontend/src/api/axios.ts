@@ -48,7 +48,9 @@ axiosClient.interceptors.response.use(
     const skipRefresh =
       original.url?.includes('/auth/login') ||
       original.url?.includes('/auth/verify-otp') ||
-      original.url?.includes('/auth/resend-otp');
+      original.url?.includes('/auth/resend-otp') ||
+      original.url?.includes('/auth/forgot-password') ||
+      original.url?.includes('/auth/reset-password');
     if (error.response?.status === 401 && !original._retry && !skipRefresh) {
       original._retry = true;
       try {
@@ -118,6 +120,7 @@ export const api = createApi({
     'Store',
     'Sale',
     'Expense',
+    'Borrowing',
     'ExpenseCategory',
     'PaymentMethod',
     'User',
