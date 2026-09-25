@@ -26,6 +26,7 @@ const expenseCategoryRoutes = require('./modules/expenseCategories/expenseCatego
 const paymentMethodRoutes = require('./modules/paymentMethods/paymentMethod.routes');
 const dashboardRoutes = require('./modules/dashboard/dashboard.routes');
 const reportRoutes = require('./modules/reports/reports.routes');
+const borrowingRoutes = require('./modules/borrowings/borrowing.routes');
 
 const app = express();
 
@@ -92,6 +93,7 @@ app.use('/api/v1/sales', saleRoutes);
 app.use('/api/v1/expense-categories', expenseCategoryRoutes);
 app.use('/api/v1/payment-methods', paymentMethodRoutes);
 app.use('/api/v1/expenses', expenseRoutes);
+app.use('/api/v1/borrowings', borrowingRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/reports', reportRoutes);
 

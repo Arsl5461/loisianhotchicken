@@ -21,9 +21,21 @@ const changePasswordSchema = z.object({
   newPassword: z.string().min(8, 'New password must be at least 8 characters'),
 });
 
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+const resetPasswordSchema = z.object({
+  email: z.string().email(),
+  code: z.string().regex(/^\d{6}$/, 'Enter the 6-digit code'),
+  newPassword: z.string().min(8, 'New password must be at least 8 characters'),
+});
+
 module.exports = {
   loginSchema,
   verifyLoginOtpSchema,
   resendLoginOtpSchema,
   changePasswordSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 };

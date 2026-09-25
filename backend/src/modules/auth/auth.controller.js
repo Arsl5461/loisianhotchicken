@@ -47,6 +47,22 @@ const resendLoginOtp = asyncHandler(async (req, res) => {
   });
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  await authService.forgotPassword(req.body);
+  return ApiResponse.success(res, {
+    message: authService.FORGOT_PASSWORD_MESSAGE,
+    data: {},
+  });
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  await authService.resetPassword(req.body);
+  return ApiResponse.success(res, {
+    message: 'Password reset successfully. You can sign in with your new password.',
+    data: {},
+  });
+});
+
 const changePassword = asyncHandler(async (req, res) => {
   await authService.changePassword(req.user, req.body);
   return ApiResponse.success(res, {
@@ -78,6 +94,8 @@ module.exports = {
   login,
   verifyLoginOtp,
   resendLoginOtp,
+  forgotPassword,
+  resetPassword,
   changePassword,
   refresh,
   logout,

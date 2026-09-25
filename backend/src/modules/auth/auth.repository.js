@@ -21,6 +21,25 @@ async function findByEmailForOtp(email) {
     .populate(storePopulate);
 }
 
+async function findByEmailForReset(email) {
+  return User.findOne({ email: email.toLowerCase() }).select(
+    '+password +passwordResetTokenHash +passwordResetExpires'
+  );
+}
+
+async function savePasswordReset(userId, { hash, expires }) {
+  return User.findByIdAndUpdate(userId, {
+    passwordResetTokenHash: hash,
+    passwordResetExpires: expires,
+  });
+}
+
+async function clearPasswordReset(userId) {
+  return User.findByIdAndUpdate(userId, {
+    $unset: { passwordResetTokenHash: 1, passwordResetExpires: 1 },
+  });
+}
+
 async function findByIdWithPassword(id) {
   return User.findById(id).select('+password');
 }
@@ -67,6 +86,9 @@ module.exports = {
   saveRefreshToken,
   clearRefreshToken,
   compareRefreshHash,
+  findByEmailForReset,
+  savePasswordReset,
+  clearPasswordReset,
   saveLoginOtp,
   clearLoginOtp,
 };

@@ -8,6 +8,7 @@ const ExpenseCategory = require('./ExpenseCategory');
 const PaymentMethod = require('./PaymentMethod');
 const Product = require('./Product');
 const Order = require('./Order');
+const Borrowing = require('./Borrowing');
 
 module.exports = {
   Organization,
@@ -20,4 +21,5 @@ module.exports = {
   PaymentMethod,
   Product,
   Order,
+  Borrowing,
 };

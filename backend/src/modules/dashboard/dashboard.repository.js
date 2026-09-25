@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Sale, Expense, Order, Store, PaymentMethod } = require('../../database/models');
+const { Sale, Expense, Order, Store, PaymentMethod, Borrowing } = require('../../database/models');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
 const { dateTruncUnit } = require('../../utils/dateHelper');
 
@@ -420,12 +420,47 @@ async function aggregateIncomeExpenseStatement(auth, { storeId, start, end }) {
   );
   const primeCost = money(foodCost + payroll);
 
+  const borrowingScope = {
+    organizationId: toObjectId(auth.organizationId),
+    ...scopedStoreFilter(auth, storeId),
+  };
+  const [openBorrowings, periodBorrowings] = await Promise.all([
+    Borrowing.find({
+      ...borrowingScope,
+      status: 'OPEN',
+      amountOwed: { $gt: 0 },
+      borrowedDate: { $lte: end },
+    })
+      .populate('storeId', 'name storeCode')
+      .sort({ borrowedDate: 1 })
+      .lean(),
+    Borrowing.find({
+      ...borrowingScope,
+      borrowedDate: { $gte: start, $lte: end },
+    }).lean(),
+  ]);
+
+  const amountOwed = money(openBorrowings.reduce((sum, row) => sum + (row.amountOwed || 0), 0));
+  const borrowedThisPeriod = money(periodBorrowings.reduce((sum, row) => sum + (row.amount || 0), 0));
+
   return {
     totalSales,
     totalExpenses,
     operatingProfit,
     profitMargin,
     expenseCount: expenses.length,
+    amountOwed,
+    borrowedThisPeriod,
+    isFinal: amountOwed < 0.01,
+    openBorrowings: openBorrowings.map((row) => ({
+      id: String(row._id),
+      lender: row.lender,
+      storeName: row.storeId?.name || '',
+      amount: money(row.amount),
+      amountPaid: money(row.amountPaid),
+      amountOwed: money(row.amountOwed),
+      borrowedDate: row.borrowedDate,
+    })),
     ratios: {
       foodCost: percent(foodCost, totalSales),
       payroll: percent(payroll, totalSales),

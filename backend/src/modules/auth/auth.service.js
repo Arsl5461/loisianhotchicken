@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const authRepository = require('./auth.repository');
 const { UnauthorizedError, ForbiddenError, ValidationError } = require('../../utils/AppError');
 const { ROLE_SLUGS } = require('../../constants/roles');
-const { sendLoginCodeEmail } = require('../../utils/mailer');
+const { sendLoginCodeEmail, sendPasswordResetEmail } = require('../../utils/mailer');
 const {
   signAccessToken,
   signRefreshToken,
@@ -130,6 +130,61 @@ async function resendLoginOtp({ email, challengeId }) {
   return issueLoginOtp(user);
 }
 
+const FORGOT_PASSWORD_MESSAGE = 'If that email is on file, a 6-digit reset code was sent.';
+
+async function forgotPassword({ email }) {
+  const user = await authRepository.findByEmailForReset(email);
+  if (!user || !user.isActive) {
+    return { sent: true };
+  }
+
+  const code = String(crypto.randomInt(100000, 1000000));
+  await authRepository.savePasswordReset(user._id, {
+    hash: hashResetToken(code),
+    expires: new Date(Date.now() + OTP_TTL_MS),
+  });
+  await sendPasswordResetEmail({
+    to: user.email,
+    name: user.name,
+    code,
+  });
+
+  return { sent: true };
+}
+
+async function resetPassword({ email, code, newPassword }) {
+  const user = await authRepository.findByEmailForReset(email);
+  if (!user || !user.isActive) {
+    throw new UnauthorizedError('Invalid or expired reset code');
+  }
+
+  if (!user.passwordResetExpires || user.passwordResetExpires.getTime() < Date.now()) {
+    await authRepository.clearPasswordReset(user._id);
+    throw new UnauthorizedError('Reset code has expired');
+  }
+
+  if (
+    !user.passwordResetTokenHash ||
+    !hashesEqual(user.passwordResetTokenHash, hashResetToken(String(code).trim()))
+  ) {
+    throw new UnauthorizedError('Invalid or expired reset code');
+  }
+
+  if (await user.comparePassword(newPassword)) {
+    throw new ValidationError('New password must be different from the current password');
+  }
+
+  user.password = newPassword;
+  user.passwordResetTokenHash = undefined;
+  user.passwordResetExpires = undefined;
+  user.refreshTokenHash = undefined;
+  await user.save();
+  await authRepository.clearRefreshToken(user._id);
+  await authRepository.clearPasswordReset(user._id);
+
+  return { reset: true };
+}
+
 async function changePassword(actor, { currentPassword, newPassword }) {
   if (!actor?.isSuperAdmin && actor?.roleId?.slug !== ROLE_SLUGS.SUPER_ADMIN) {
     throw new ForbiddenError('Only the super admin can change this password');
@@ -193,6 +248,9 @@ module.exports = {
   login,
   verifyLoginOtp,
   resendLoginOtp,
+  forgotPassword,
+  resetPassword,
+  FORGOT_PASSWORD_MESSAGE,
   changePassword,
   refresh,
   logout,
