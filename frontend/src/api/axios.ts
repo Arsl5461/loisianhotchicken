@@ -45,7 +45,11 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const original = error.config;
-    if (error.response?.status === 401 && !original._retry && !original.url?.includes('/auth/login')) {
+    const skipRefresh =
+      original.url?.includes('/auth/login') ||
+      original.url?.includes('/auth/verify-otp') ||
+      original.url?.includes('/auth/resend-otp');
+    if (error.response?.status === 401 && !original._retry && !skipRefresh) {
       original._retry = true;
       try {
         refreshPromise = refreshPromise || refreshAccessToken();

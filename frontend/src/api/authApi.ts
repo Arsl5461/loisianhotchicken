@@ -1,10 +1,45 @@
 import { api } from './axios';
 import type { ApiSuccess, AuthUser } from '../types';
 
+export type LoginSession = {
+  user: AuthUser;
+  accessToken: string;
+};
+
+export type LoginOtpChallenge = {
+  requiresOtp: true;
+  challengeId: string;
+  email: string;
+};
+
+export type LoginResult = LoginSession | LoginOtpChallenge;
+
+export function isLoginOtpChallenge(data: LoginResult): data is LoginOtpChallenge {
+  return 'requiresOtp' in data && data.requiresOtp === true;
+}
+
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<ApiSuccess<{ user: AuthUser; accessToken: string }>, { email: string; password: string }>({
+    login: builder.mutation<ApiSuccess<LoginResult>, { email: string; password: string }>({
       query: (body) => ({ url: '/auth/login', method: 'POST', data: body }),
+    }),
+    verifyLoginOtp: builder.mutation<
+      ApiSuccess<LoginSession>,
+      { email: string; challengeId: string; code: string }
+    >({
+      query: (body) => ({ url: '/auth/verify-otp', method: 'POST', data: body }),
+    }),
+    resendLoginOtp: builder.mutation<
+      ApiSuccess<LoginOtpChallenge>,
+      { email: string; challengeId: string }
+    >({
+      query: (body) => ({ url: '/auth/resend-otp', method: 'POST', data: body }),
+    }),
+    changePassword: builder.mutation<
+      ApiSuccess<Record<string, never>>,
+      { currentPassword: string; newPassword: string }
+    >({
+      query: (body) => ({ url: '/auth/change-password', method: 'PATCH', data: body }),
     }),
     logout: builder.mutation<ApiSuccess<Record<string, never>>, void>({
       query: () => ({ url: '/auth/logout', method: 'POST' }),
@@ -16,4 +51,11 @@ export const authApi = api.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useMeQuery } = authApi;
+export const {
+  useLoginMutation,
+  useVerifyLoginOtpMutation,
+  useResendLoginOtpMutation,
+  useChangePasswordMutation,
+  useLogoutMutation,
+  useMeQuery,
+} = authApi;

@@ -1,13 +1,67 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Building2, Mail, MapPin, Phone, ShieldCheck } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm, type UseFormRegisterReturn } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Building2, Eye, EyeOff, Mail, MapPin, Phone, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { PageHeader } from '../../components/common/PageHeader';
 import { BusyOverlay, InlineSpinner, LoadingSpinner } from '../../components/common/LoadingSpinner';
+import { useChangePasswordMutation } from '../../api/authApi';
 import { useGetOrganizationQuery, useUpdateOrganizationMutation } from '../../api/usersApi';
 import { usePermissions } from '../../hooks/usePermissions';
 import { PERMISSIONS } from '../../constants/permissions';
 import logo from '../../assets/logos/louisiana-hot-chicken.jpg';
+
+const passwordSchema = z
+  .object({
+    currentPassword: z.string().min(6, 'Enter your current password'),
+    newPassword: z.string().min(8, 'New password must be at least 8 characters'),
+    confirmPassword: z.string().min(8, 'Confirm your new password'),
+  })
+  .refine((values) => values.newPassword === values.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords do not match',
+  });
+
+function PasswordField({
+  label,
+  autoComplete,
+  className,
+  error,
+  registration,
+}: {
+  label: string;
+  autoComplete: string;
+  className?: string;
+  error?: string;
+  registration: UseFormRegisterReturn;
+}) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <label className={`text-sm font-medium text-slate-700 ${className || ''}`}>
+      {label}
+      <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 focus-within:border-brand-red/40 focus-within:ring-4 focus-within:ring-brand-red/10">
+        <input
+          className="w-full bg-transparent text-sm text-slate-800 outline-none"
+          type={visible ? 'text' : 'password'}
+          autoComplete={autoComplete}
+          {...registration}
+        />
+        <button
+          type="button"
+          className="shrink-0 text-slate-400 transition hover:text-ink-900"
+          onClick={() => setVisible((value) => !value)}
+          aria-label={visible ? 'Hide password' : 'Show password'}
+          title={visible ? 'Hide password' : 'Show password'}
+        >
+          {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+      </div>
+      {error ? <p className="mt-1 text-xs text-brand-red">{error}</p> : null}
+    </label>
+  );
+}
 
 const FIELDS = [
   { name: 'name' as const, label: 'Organization name', placeholder: 'Louisiana Hot Chicken', icon: Building2 },
@@ -17,11 +71,16 @@ const FIELDS = [
 ];
 
 export default function Settings() {
-  const { can } = usePermissions();
+  const { can, isSuperAdmin } = usePermissions();
   const canEdit = can(PERMISSIONS.SETTINGS_UPDATE);
   const { data, isLoading } = useGetOrganizationQuery();
   const [updateOrganization, { isLoading: saving }] = useUpdateOrganizationMutation();
+  const [changePassword, { isLoading: changingPassword }] = useChangePasswordMutation();
   const form = useForm({ defaultValues: { name: '', email: '', phone: '', address: '' } });
+  const passwordForm = useForm<z.infer<typeof passwordSchema>>({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
+  });
   const organization = data?.data;
 
   useEffect(() => {
@@ -142,7 +201,66 @@ export default function Settings() {
           </div>
         </form>
       )}
-      <BusyOverlay show={saving} label="Saving settings..." />
+      {isSuperAdmin ? (
+        <form
+          className="mt-5"
+          onSubmit={passwordForm.handleSubmit(async (values) => {
+            try {
+              await changePassword({
+                currentPassword: values.currentPassword,
+                newPassword: values.newPassword,
+              }).unwrap();
+              passwordForm.reset();
+              toast.success('Password updated');
+            } catch (error: any) {
+              toast.error(error?.data?.message || 'Unable to update password');
+            }
+          })}
+        >
+          <div className="card p-6">
+            <div className="mb-5">
+              <h2 className="text-base font-semibold text-ink-900">Change password</h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Update the Super Admin password. The next sign-in will still require a 6-digit email code.
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <PasswordField
+                label="Current password"
+                autoComplete="current-password"
+                className="md:col-span-2"
+                registration={passwordForm.register('currentPassword')}
+                error={passwordForm.formState.errors.currentPassword?.message}
+              />
+              <PasswordField
+                label="New password"
+                autoComplete="new-password"
+                registration={passwordForm.register('newPassword')}
+                error={passwordForm.formState.errors.newPassword?.message}
+              />
+              <PasswordField
+                label="Confirm new password"
+                autoComplete="new-password"
+                registration={passwordForm.register('confirmPassword')}
+                error={passwordForm.formState.errors.confirmPassword?.message}
+              />
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button className="btn-primary" type="submit" disabled={changingPassword}>
+                {changingPassword ? (
+                  <>
+                    <InlineSpinner className="border-white/30 border-t-white" />
+                    Updating...
+                  </>
+                ) : (
+                  'Update password'
+                )}
+              </button>
+            </div>
+          </div>
+        </form>
+      ) : null}
+      <BusyOverlay show={saving || changingPassword} label={changingPassword ? 'Updating password...' : 'Saving settings...'} />
     </div>
   );
 }

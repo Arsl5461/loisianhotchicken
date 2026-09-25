@@ -1,6 +1,7 @@
 import { Menu } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { StoreSelector } from './StoreSelector';
 import type { RootState } from '../../app/store';
 import { useLogoutMutation } from '../../api/authApi';
@@ -71,6 +72,15 @@ export function Navbar({ onMenu }: { onMenu: () => void }) {
                     <p className="text-xs font-medium text-brand-red">{user.role?.name}</p>
                     <p className="mt-0.5 truncate text-xs text-slate-500">{user.email}</p>
                   </div>
+                  {user.isSuperAdmin ? (
+                    <Link
+                      to="/settings"
+                      className="mt-1 block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-slate-50"
+                      onClick={() => setOpen(false)}
+                    >
+                      Change password
+                    </Link>
+                  ) : null}
                   <button
                     type="button"
                     className="mt-1 w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-slate-50"
