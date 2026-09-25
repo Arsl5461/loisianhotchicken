@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema(
     refreshTokenHash: { type: String, select: false },
     passwordResetTokenHash: { type: String, select: false },
     passwordResetExpires: { type: Date, select: false },
+    loginOtpHash: { type: String, select: false },
+    loginOtpExpires: { type: Date, select: false },
+    loginOtpChallenge: { type: String, select: false },
   },
   { timestamps: true }
 );
@@ -42,6 +45,9 @@ userSchema.methods.toSafeObject = function toSafeObject() {
   delete user.refreshTokenHash;
   delete user.passwordResetTokenHash;
   delete user.passwordResetExpires;
+  delete user.loginOtpHash;
+  delete user.loginOtpExpires;
+  delete user.loginOtpChallenge;
   return user;
 };
 

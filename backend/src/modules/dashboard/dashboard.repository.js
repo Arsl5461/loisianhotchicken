@@ -296,6 +296,21 @@ function money(value) {
   return Number((value || 0).toFixed(2));
 }
 
+function expensePaymentLines(expense) {
+  if (Array.isArray(expense.payments) && expense.payments.length) {
+    return expense.payments.map((line) => ({
+      method: line.method || 'Unspecified',
+      amount: Number(line.amount) || 0,
+    }));
+  }
+  return [
+    {
+      method: expense.paymentMethod || 'Unspecified',
+      amount: Number(expense.amount) || 0,
+    },
+  ];
+}
+
 function percent(part, whole) {
   return whole ? Number(((part / whole) * 100).toFixed(2)) : 0;
 }
@@ -343,24 +358,29 @@ async function aggregateIncomeExpenseStatement(auth, { storeId, start, end }) {
 
   expenses.forEach((expense) => {
     const category = expense.category || 'Uncategorized';
-    const method = expense.paymentMethod || 'Unspecified';
+    const payments = expensePaymentLines(expense);
+    const methodLabel = payments
+      .map((line) => (payments.length > 1 ? `${line.method} ${money(line.amount)}` : line.method))
+      .join(' + ');
     const currentCategory = categoryMap.get(category) || { name: category, amount: 0, count: 0, items: [] };
     currentCategory.amount += expense.amount;
     currentCategory.count += 1;
     currentCategory.items.push({
       date: expense.expenseDate,
       payee: expense.title,
-      paymentMethod: method,
+      paymentMethod: methodLabel,
       description: expense.description || '',
       amount: money(expense.amount),
       percentOfSales: percent(expense.amount, totalSales),
     });
     categoryMap.set(category, currentCategory);
 
-    const currentMethod = methodMap.get(method) || { name: method, amount: 0, count: 0 };
-    currentMethod.amount += expense.amount;
-    currentMethod.count += 1;
-    methodMap.set(method, currentMethod);
+    payments.forEach((line) => {
+      const currentMethod = methodMap.get(line.method) || { name: line.method, amount: 0, count: 0 };
+      currentMethod.amount += line.amount;
+      currentMethod.count += 1;
+      methodMap.set(line.method, currentMethod);
+    });
   });
 
   const expenseCategories = Array.from(categoryMap.values())

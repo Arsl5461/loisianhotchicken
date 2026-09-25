@@ -15,6 +15,11 @@ async function retargetUsage(organizationId, fromNames, toName) {
   await Promise.all([
     Sale.updateMany(filter, { $set: { paymentMethod: toName } }),
     Expense.updateMany(filter, { $set: { paymentMethod: toName } }),
+    Expense.updateMany(
+      { organizationId, 'payments.method': { $in: fromNames } },
+      { $set: { 'payments.$[line].method': toName } },
+      { arrayFilters: [{ 'line.method': { $in: fromNames } }] }
+    ),
     Order.updateMany(filter, { $set: { paymentMethod: toName } }),
   ]);
 }

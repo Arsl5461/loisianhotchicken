@@ -29,7 +29,7 @@ const env = Object.freeze({
   },
   superAdmin: {
     name: process.env.SUPER_ADMIN_NAME || 'Platform Super Admin',
-    email: process.env.SUPER_ADMIN_EMAIL || 'admin@louisianahotchicken.com',
+    email: process.env.SUPER_ADMIN_EMAIL || 'Louisianashotchicken@gmail.com',
     password: process.env.SUPER_ADMIN_PASSWORD || 'ChangeMeNow!123',
   },
   uploadDriver: process.env.UPLOAD_DRIVER || 'local',
@@ -42,6 +42,13 @@ const env = Object.freeze({
   rateLimit: {
     windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
     max: Number(process.env.RATE_LIMIT_MAX) || 2000,
+  },
+  smtp: {
+    host: process.env.SMTP_HOST || '',
+    port: Number(process.env.SMTP_PORT) || 587,
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
+    from: process.env.SMTP_FROM || "Louisiana's Hot Chicken <noreply@lhc-holdings.com>",
   },
 });
 

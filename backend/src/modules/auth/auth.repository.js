@@ -14,6 +14,31 @@ async function findByEmail(email) {
     .populate(storePopulate);
 }
 
+async function findByEmailForOtp(email) {
+  return User.findOne({ email: email.toLowerCase() })
+    .select('+loginOtpHash +loginOtpExpires +loginOtpChallenge')
+    .populate('roleId')
+    .populate(storePopulate);
+}
+
+async function findByIdWithPassword(id) {
+  return User.findById(id).select('+password');
+}
+
+async function saveLoginOtp(userId, { hash, expires, challengeId }) {
+  return User.findByIdAndUpdate(userId, {
+    loginOtpHash: hash,
+    loginOtpExpires: expires,
+    loginOtpChallenge: challengeId,
+  });
+}
+
+async function clearLoginOtp(userId) {
+  return User.findByIdAndUpdate(userId, {
+    $unset: { loginOtpHash: 1, loginOtpExpires: 1, loginOtpChallenge: 1 },
+  });
+}
+
 async function findByIdForAuth(id) {
   return User.findById(id)
     .select('+refreshTokenHash')
@@ -36,8 +61,12 @@ async function compareRefreshHash(token, hash) {
 
 module.exports = {
   findByEmail,
+  findByEmailForOtp,
+  findByIdWithPassword,
   findByIdForAuth,
   saveRefreshToken,
   clearRefreshToken,
   compareRefreshHash,
+  saveLoginOtp,
+  clearLoginOtp,
 };
