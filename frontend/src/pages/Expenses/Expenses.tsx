@@ -12,15 +12,17 @@ import {
   useCreateExpenseMutation,
   useGetExpenseCategoriesQuery,
   useGetExpensesQuery,
+  useUpdateExpenseMutation,
 } from '../../api/expensesApi';
 import { useGetStoresQuery } from '../../api/storesApi';
 import { useGetPaymentMethodsQuery } from '../../api/paymentMethodsApi';
 import { useStoreContext } from '../../hooks/usePermissions';
 import { useListParams } from '../../hooks/useListParams';
+import { toDateInputValue } from '../../constants/timezone';
 import { formatCurrencyExact, formatDate } from '../../utils/cn';
 import { clearZeroOnFocus, parseNumericInput, type NumericField } from '../../utils/numberInput';
 import { Pagination } from '../../components/common/Pagination';
-import { DeleteAction, TableActions, ViewAction } from '../../components/common/TableActions';
+import { DeleteAction, EditAction, TableActions, ViewAction } from '../../components/common/TableActions';
 import { ListingToolbar } from '../../components/common/ListingToolbar';
 import { useRowSelection } from '../../hooks/useRowSelection';
 import type { ExportColumn } from '../../utils/export';
@@ -70,8 +72,34 @@ function receiptPath(url?: string) {
   return index >= 0 ? url.slice(index) : url;
 }
 
+function resetForm() {
+  return { ...emptyForm, payments: [emptyPayment()] };
+}
+
+function formFromExpense(row: any) {
+  const payments =
+    row.payments?.length
+      ? row.payments.map((line: { method?: string; amount?: number }) => ({
+          method: line.method || '',
+          amount: Number(line.amount) || 0,
+        }))
+      : row.paymentMethod
+        ? [{ method: row.paymentMethod, amount: Number(row.amount) || 0 }]
+        : [emptyPayment()];
+
+  return {
+    storeId: row.storeId?._id || row.storeId || '',
+    title: row.title || '',
+    category: row.category || '',
+    expenseDate: toDateInputValue(row.expenseDate),
+    payments,
+  };
+}
+
 export default function Expenses() {
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [existingReceipt, setExistingReceipt] = useState('');
   const [deleteIds, setDeleteIds] = useState<string[]>([]);
   const [receipt, setReceipt] = useState<File | null>(null);
   const [viewReceipt, setViewReceipt] = useState<{ title: string; url: string } | null>(null);
@@ -97,8 +125,33 @@ export default function Expenses() {
     { header: 'Receipt', value: (row) => (row.receiptUrl ? 'Yes' : 'No') },
   ];
   const [createExpense] = useCreateExpenseMutation();
+  const [updateExpense] = useUpdateExpenseMutation();
   const [bulkDeleteExpenses] = useBulkDeleteExpensesMutation();
   const [form, setForm] = useState(emptyForm);
+
+  const closeForm = () => {
+    setOpen(false);
+    setEditingId(null);
+    setExistingReceipt('');
+    setForm(resetForm());
+    setReceipt(null);
+  };
+
+  const openCreate = () => {
+    setEditingId(null);
+    setExistingReceipt('');
+    setForm(resetForm());
+    setReceipt(null);
+    setOpen(true);
+  };
+
+  const openEdit = (row: any) => {
+    setEditingId(row._id);
+    setExistingReceipt(row.receiptUrl || '');
+    setForm(formFromExpense(row));
+    setReceipt(null);
+    setOpen(true);
+  };
 
   return (
     <div>
@@ -106,7 +159,7 @@ export default function Expenses() {
         title="Expenses"
         subtitle="Track operating costs by store, category, and date range."
         actions={
-          <button className="btn-primary" type="button" onClick={() => setOpen(true)}>
+          <button className="btn-primary" type="button" onClick={openCreate}>
             <Plus className="h-4 w-4" />
             Add Expense
           </button>
@@ -168,6 +221,7 @@ export default function Expenses() {
                   header: 'Actions',
                   render: (row: any) => (
                     <TableActions>
+                      <EditAction onClick={() => openEdit(row)} />
                       {row.receiptUrl ? (
                         <ViewAction
                           label="View receipt"
@@ -186,13 +240,9 @@ export default function Expenses() {
       </div>
       <Modal
         open={open}
-        title="New expense"
+        title={editingId ? 'Edit expense' : 'New expense'}
         description="Choose a category, then split the cost across one or more payment methods."
-        onClose={() => {
-          setOpen(false);
-          setForm({ ...emptyForm, payments: [emptyPayment()] });
-          setReceipt(null);
-        }}
+        onClose={closeForm}
       >
         <form
           className="space-y-3"
@@ -224,11 +274,14 @@ export default function Expenses() {
               payload.append('amount', String(total));
               payload.append('payments', JSON.stringify(payments));
               if (receipt) payload.append('receipt', receipt);
-              await createExpense(payload).unwrap();
-              toast.success('Expense recorded');
-              setOpen(false);
-              setForm({ ...emptyForm, payments: [emptyPayment()] });
-              setReceipt(null);
+              if (editingId) {
+                await updateExpense({ id: editingId, data: payload }).unwrap();
+                toast.success('Expense updated');
+              } else {
+                await createExpense(payload).unwrap();
+                toast.success('Expense recorded');
+              }
+              closeForm();
             } catch (error: any) {
               toast.error(error?.data?.message || 'Unable to save expense');
             }
@@ -395,14 +448,18 @@ export default function Expenses() {
                 onChange={(event) => setReceipt(event.target.files?.[0] || null)}
               />
             </span>
-            <p className="mt-1 text-xs text-slate-500">Optional. JPG, PNG, WEBP, or PDF up to 5 MB.</p>
+            <p className="mt-1 text-xs text-slate-500">
+              {existingReceipt && !receipt
+                ? 'A receipt is already attached. Upload a new file only if you want to replace it.'
+                : 'Optional. JPG, PNG, WEBP, or PDF up to 5 MB.'}
+            </p>
           </label>
           <div className="flex justify-end gap-2">
-            <button className="btn-secondary" type="button" onClick={() => { setOpen(false); setForm({ ...emptyForm, payments: [emptyPayment()] }); setReceipt(null); }}>
+            <button className="btn-secondary" type="button" onClick={closeForm}>
               Cancel
             </button>
             <button className="btn-primary" type="submit" disabled={!categories.length || !paymentMethods.length}>
-              Save
+              {editingId ? 'Update' : 'Save'}
             </button>
           </div>
         </form>

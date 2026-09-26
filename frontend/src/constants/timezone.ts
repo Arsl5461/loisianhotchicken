@@ -24,3 +24,17 @@ export function todayInAppTimezone() {
 export function currentMonthInAppTimezone() {
   return todayInAppTimezone().slice(0, 7);
 }
+
+export function toDateInputValue(value?: string | Date) {
+  if (!value) return '';
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+    return value.slice(0, 10);
+  }
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: APP_TIMEZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date(value));
+  return `${readPart(parts, 'year')}-${readPart(parts, 'month')}-${readPart(parts, 'day')}`;
+}
