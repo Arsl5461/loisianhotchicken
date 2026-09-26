@@ -16,6 +16,7 @@ import {
 import { useGetStoresQuery } from '../../api/storesApi';
 import { usePermissions, useStoreContext } from '../../hooks/usePermissions';
 import { useListParams } from '../../hooks/useListParams';
+import { todayInAppTimezone } from '../../constants/timezone';
 import { formatCurrencyExact, formatDate } from '../../utils/cn';
 import { clearZeroOnFocus, parseNumericInput, type NumericField } from '../../utils/numberInput';
 import { Pagination } from '../../components/common/Pagination';
@@ -26,8 +27,7 @@ import { PERMISSIONS } from '../../constants/permissions';
 import type { ExportColumn } from '../../utils/export';
 
 function today() {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  return todayInAppTimezone();
 }
 
 const emptyForm = {

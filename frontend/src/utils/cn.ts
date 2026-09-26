@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { APP_DATE_FORMAT } from '../constants/timezone';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -26,9 +27,5 @@ export function formatNumber(value = 0) {
 
 export function formatDate(value?: string | Date) {
   if (!value) return '—';
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(new Date(value));
+  return new Intl.DateTimeFormat('en-US', APP_DATE_FORMAT).format(new Date(value));
 }

@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import { APP_TIMEZONE } from '../constants/timezone';
 import { formatCurrencyExact } from './cn';
 
 export type StatementCategory = {
@@ -71,14 +72,24 @@ function pct(value: number) {
 function statementDate(value?: string | Date) {
   if (!value) return '—';
   const date = new Date(value);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${month}/${day}/${date.getFullYear()}`;
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: APP_TIMEZONE,
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+  }).formatToParts(date);
+  const read = (type: string) => parts.find((part) => part.type === type)?.value || '';
+  return `${read('month')}/${read('day')}/${read('year')}`;
 }
 
 function longDate(value?: string | Date) {
   if (!value) return '';
-  return new Date(value).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return new Date(value).toLocaleDateString('en-US', {
+    timeZone: APP_TIMEZONE,
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
 function tableRows(rows: Array<Array<string | number>>, options?: { total?: boolean }) {

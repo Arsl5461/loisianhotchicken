@@ -25,9 +25,15 @@ function monthBounds(month: string) {
 }
 
 function periodLabel(startDate: string, endDate: string) {
-  const start = new Date(`${startDate}T00:00:00`);
-  const end = new Date(`${endDate}T00:00:00`);
-  return `${start.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+  const label = (value: string) => {
+    const [year, month, day] = value.split('-').map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
+  return `${label(startDate)} - ${label(endDate)}`;
 }
 
 export default function Reports() {
