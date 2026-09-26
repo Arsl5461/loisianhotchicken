@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Sale, Expense, Order, Store, PaymentMethod, Borrowing } = require('../../database/models');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
-const { dateTruncUnit } = require('../../utils/dateHelper');
+const { APP_TIMEZONE, dateTruncUnit } = require('../../utils/dateHelper');
 
 function toObjectId(id) {
   return new mongoose.Types.ObjectId(id);
@@ -30,6 +30,7 @@ function periodGroup(dateField, groupBy) {
     $dateTrunc: {
       date: `$${dateField}`,
       unit: dateTruncUnit(groupBy),
+      timezone: APP_TIMEZONE,
     },
   };
 }

@@ -1,6 +1,7 @@
 const storeRepository = require('./store.repository');
 const { ConflictError, NotFoundError, ForbiddenError } = require('../../utils/AppError');
 const dashboardService = require('../dashboard/dashboard.service');
+const { startOfDay } = require('../../utils/dateHelper');
 
 async function listStores(auth, query) {
   const [{ items, total }, counts] = await Promise.all([
@@ -28,7 +29,7 @@ async function createStore(auth, payload) {
     storeCode: payload.storeCode.toUpperCase(),
     organizationId: auth.organizationId,
     createdBy: auth.userId,
-    openingDate: payload.openingDate ? new Date(payload.openingDate) : undefined,
+    openingDate: payload.openingDate ? startOfDay(payload.openingDate) : undefined,
   });
 }
 
@@ -41,7 +42,7 @@ async function updateStore(auth, id, payload) {
     }
     payload.storeCode = payload.storeCode.toUpperCase();
   }
-  if (payload.openingDate) payload.openingDate = new Date(payload.openingDate);
+  if (payload.openingDate) payload.openingDate = startOfDay(payload.openingDate);
   return storeRepository.updateById(id, auth.organizationId, payload);
 }
 

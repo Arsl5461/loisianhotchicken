@@ -16,6 +16,8 @@ const env = Object.freeze({
   appName: process.env.APP_NAME || 'Louisiana Hot Chicken Admin API',
   appUrl: process.env.APP_URL || 'http://localhost:5000',
   clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  appTimezone: process.env.APP_TIMEZONE || 'America/Chicago',
+  legacyDateTimezone: process.env.LEGACY_DATE_TIMEZONE || '',
   mongoUri: process.env.MONGO_URI,
   jwt: {
     accessSecret: process.env.JWT_ACCESS_SECRET,

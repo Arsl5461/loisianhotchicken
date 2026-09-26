@@ -1,6 +1,7 @@
 const { Expense } = require('../../database/models');
 const { escapeRegex } = require('../../utils/pagination');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
+const { startOfDay, endOfDay } = require('../../utils/dateHelper');
 
 function buildFilter(auth, query) {
   const filter = {
@@ -18,8 +19,8 @@ function buildFilter(auth, query) {
   }
   if (query.startDate || query.endDate) {
     filter.expenseDate = {};
-    if (query.startDate) filter.expenseDate.$gte = new Date(query.startDate);
-    if (query.endDate) filter.expenseDate.$lte = new Date(query.endDate);
+    if (query.startDate) filter.expenseDate.$gte = startOfDay(query.startDate);
+    if (query.endDate) filter.expenseDate.$lte = endOfDay(query.endDate);
   }
   if (query.search) {
     filter.$or = [

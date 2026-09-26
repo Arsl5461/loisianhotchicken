@@ -1,6 +1,7 @@
 const { Borrowing } = require('../../database/models');
 const { escapeRegex } = require('../../utils/pagination');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
+const { startOfDay, endOfDay } = require('../../utils/dateHelper');
 
 const populate = [
   { path: 'storeId', select: 'name storeCode' },
@@ -15,8 +16,8 @@ function buildFilter(auth, query) {
   if (query.status) filter.status = query.status;
   if (query.startDate || query.endDate) {
     filter.borrowedDate = {};
-    if (query.startDate) filter.borrowedDate.$gte = new Date(query.startDate);
-    if (query.endDate) filter.borrowedDate.$lte = new Date(query.endDate);
+    if (query.startDate) filter.borrowedDate.$gte = startOfDay(query.startDate);
+    if (query.endDate) filter.borrowedDate.$lte = endOfDay(query.endDate);
   }
   if (query.search) {
     filter.$or = [
