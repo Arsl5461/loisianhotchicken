@@ -21,6 +21,7 @@ const saleSchema = new mongoose.Schema(
     storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
     orderReference: { type: String, trim: true },
     customerName: { type: String, trim: true, default: 'Walk-in Guest' },
+    category: { type: String, trim: true, default: '' },
     products: { type: [saleProductSchema], default: [] },
     totalAmount: { type: Number, required: true, min: 0 },
     paymentMethod: {
@@ -36,6 +37,7 @@ const saleSchema = new mongoose.Schema(
 
 saleSchema.index({ organizationId: 1, storeId: 1, saleDate: -1 });
 saleSchema.index({ organizationId: 1, saleDate: -1 });
+saleSchema.index({ organizationId: 1, category: 1, saleDate: -1 });
 saleSchema.index({ storeId: 1, paymentMethod: 1, saleDate: -1 });
 
 module.exports = mongoose.model('Sale', saleSchema);

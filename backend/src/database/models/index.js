@@ -5,6 +5,7 @@ const User = require('./User');
 const Sale = require('./Sale');
 const Expense = require('./Expense');
 const ExpenseCategory = require('./ExpenseCategory');
+const SaleCategory = require('./SaleCategory');
 const PaymentMethod = require('./PaymentMethod');
 const Product = require('./Product');
 const Order = require('./Order');
@@ -18,6 +19,7 @@ module.exports = {
   Sale,
   Expense,
   ExpenseCategory,
+  SaleCategory,
   PaymentMethod,
   Product,
   Order,

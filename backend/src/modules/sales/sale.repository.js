@@ -10,6 +10,7 @@ function buildFilter(auth, query) {
   };
 
   if (query.paymentMethod) filter.paymentMethod = query.paymentMethod;
+  if (query.category) filter.category = query.category;
   if (query.startDate || query.endDate) {
     filter.saleDate = {};
     if (query.startDate) filter.saleDate.$gte = startOfDay(query.startDate);
@@ -19,6 +20,7 @@ function buildFilter(auth, query) {
     filter.$or = [
       { customerName: { $regex: escapeRegex(query.search), $options: 'i' } },
       { orderReference: { $regex: escapeRegex(query.search), $options: 'i' } },
+      { category: { $regex: escapeRegex(query.search), $options: 'i' } },
     ];
   }
   return filter;

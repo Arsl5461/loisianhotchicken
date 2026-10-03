@@ -1,5 +1,6 @@
 const saleRepository = require('./sale.repository');
 const paymentMethodService = require('../paymentMethods/paymentMethod.service');
+const saleCategoryService = require('../saleCategories/saleCategory.service');
 const { NotFoundError, ValidationError } = require('../../utils/AppError');
 const { startOfDay } = require('../../utils/dateHelper');
 
@@ -39,8 +40,10 @@ async function getSale(auth, id) {
 async function createSale(auth, payload) {
   const { lines, totalAmount } = computeLines(payload.products, payload.totalAmount);
   const paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
+  const category = await saleCategoryService.assertActiveCategory(auth, payload.category);
   return saleRepository.create({
     ...payload,
+    category,
     paymentMethod,
     products: lines,
     totalAmount,
@@ -60,6 +63,9 @@ async function updateSale(auth, id, payload) {
   }
   if (payload.paymentMethod) {
     update.paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
+  }
+  if (payload.category) {
+    update.category = await saleCategoryService.assertActiveCategory(auth, payload.category);
   }
   if (payload.saleDate) update.saleDate = startOfDay(payload.saleDate);
   return saleRepository.updateById(id, auth.organizationId, update);
