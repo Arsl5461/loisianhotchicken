@@ -19,6 +19,7 @@ const AddStore = lazy(() => import('../pages/Stores/AddStore'));
 const EditStore = lazy(() => import('../pages/Stores/EditStore'));
 const StoreDetails = lazy(() => import('../pages/Stores/StoreDetails'));
 const Sales = lazy(() => import('../pages/Sales/Sales'));
+const SaleCategories = lazy(() => import('../pages/Sales/SaleCategories'));
 const Expenses = lazy(() => import('../pages/Expenses/Expenses'));
 const MoneyBorrowed = lazy(() => import('../pages/Borrowings/MoneyBorrowed'));
 const ExpenseCategories = lazy(() => import('../pages/Expenses/ExpenseCategories'));
@@ -66,6 +67,7 @@ export function AppRoutes() {
               <Route path="/stores/:id/edit" element={<EditStore />} />
             </Route>
             <Route path="/sales" element={<Sales />} />
+            <Route path="/sale-categories" element={<SaleCategories />} />
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/money-borrowed" element={<MoneyBorrowed />} />
             <Route path="/expense-categories" element={<ExpenseCategories />} />

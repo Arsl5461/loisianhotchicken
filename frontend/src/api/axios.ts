@@ -119,6 +119,7 @@ export const api = createApi({
     'Dashboard',
     'Store',
     'Sale',
+    'SaleCategory',
     'Expense',
     'Borrowing',
     'ExpenseCategory',

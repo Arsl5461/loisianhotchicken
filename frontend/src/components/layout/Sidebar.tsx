@@ -31,6 +31,7 @@ const NAV = [
     items: [
       { to: '/stores', label: 'Stores', icon: Store, permission: PERMISSIONS.STORES_READ },
       { to: '/sales', label: 'Sales Income', icon: Receipt, permission: PERMISSIONS.SALES_READ },
+      { to: '/sale-categories', label: 'Sale Category', icon: Tags, permission: PERMISSIONS.SALES_READ },
       { to: '/expenses', label: 'Expenses', icon: Wallet, permission: PERMISSIONS.EXPENSES_READ },
       { to: '/money-borrowed', label: 'Money borrowed', icon: Banknote, permission: PERMISSIONS.EXPENSES_READ },
       { to: '/expense-categories', label: 'Expense Category', icon: Tags, permission: PERMISSIONS.EXPENSES_READ },
