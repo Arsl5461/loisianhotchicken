@@ -14,17 +14,22 @@ const storage = multer.diskStorage({
   },
 });
 
-const uploadReceipt = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
-    if (!allowed.includes(file.mimetype)) {
-      return cb(new ValidationError('Receipt must be an image or PDF'));
-    }
-    return cb(null, true);
-  },
-}).single('receipt');
+function fileUpload(fieldName, label) {
+  return multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (_req, file, cb) => {
+      const allowed = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+      if (!allowed.includes(file.mimetype)) {
+        return cb(new ValidationError(`${label} must be an image or PDF`));
+      }
+      return cb(null, true);
+    },
+  }).single(fieldName);
+}
+
+const uploadReceipt = fileUpload('receipt', 'Receipt');
+const uploadAttachment = fileUpload('attachment', 'Attachment');
 
 function publicFileUrl(_req, filename) {
   if (!filename) return '';
@@ -33,5 +38,6 @@ function publicFileUrl(_req, filename) {
 
 module.exports = {
   uploadReceipt,
+  uploadAttachment,
   publicFileUrl,
 };
