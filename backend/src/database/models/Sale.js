@@ -30,6 +30,7 @@ const saleSchema = new mongoose.Schema(
       trim: true,
     },
     saleDate: { type: Date, required: true, default: Date.now },
+    attachmentUrl: { type: String, default: '' },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
