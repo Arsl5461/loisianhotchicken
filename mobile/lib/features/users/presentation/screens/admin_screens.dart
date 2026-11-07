@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/constants/app_config.dart';
+import '../../../../core/errors/failures.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/display.dart';
 import '../../../../core/widgets/admin_widgets.dart';
 import '../../../../core/widgets/brand_logo.dart';
+import '../../../auth/presentation/providers/auth_notifier.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../stores/presentation/providers/store_context_provider.dart';
 import '../../data/admin_directory_repository.dart';
 import '../providers/admin_directory_providers.dart';
@@ -244,8 +250,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _email = TextEditingController();
   final _phone = TextEditingController();
   final _address = TextEditingController();
+  final _currentPassword = TextEditingController();
+  final _newPassword = TextEditingController();
+  final _confirmPassword = TextEditingController();
   bool _hydrated = false;
   bool _saving = false;
+  bool _changingPassword = false;
 
   @override
   void dispose() {
@@ -253,12 +263,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _email.dispose();
     _phone.dispose();
     _address.dispose();
+    _currentPassword.dispose();
+    _newPassword.dispose();
+    _confirmPassword.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final async = ref.watch(organizationProvider);
+    final isSuperAdmin = ref.watch(currentUserProvider)?.isSuperAdmin == true;
     return AdminScaffold(
       title: 'Settings',
       body: async.when(
@@ -322,6 +336,64 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   }
                 },
               ),
+              const SizedBox(height: 16),
+              OutlinedButton.icon(
+                onPressed: () => context.push('/privacy-policy'),
+                icon: const Icon(Icons.privacy_tip_outlined),
+                label: const Text('Privacy Policy'),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                AppConfig.privacyPolicyUrl,
+                style: const TextStyle(color: AppColors.muted, fontSize: 12),
+              ),
+              if (isSuperAdmin) ...[
+                const SizedBox(height: 28),
+                const Text('Change password', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 8),
+                const Text(
+                  'Update your sign-in password. New password must be at least 8 characters.',
+                  style: TextStyle(color: AppColors.muted, height: 1.35),
+                ),
+                const SizedBox(height: 16),
+                AdminTextField(label: 'Current password', controller: _currentPassword, obscureText: true),
+                const SizedBox(height: 16),
+                AdminTextField(label: 'New password', controller: _newPassword, obscureText: true),
+                const SizedBox(height: 16),
+                AdminTextField(label: 'Confirm new password', controller: _confirmPassword, obscureText: true),
+                const SizedBox(height: 24),
+                AdminButton(
+                  label: 'Update password',
+                  loading: _changingPassword,
+                  onPressed: () async {
+                    if (_newPassword.text.length < 8) {
+                      showAdminSnackBar(context, 'New password must be at least 8 characters', isError: true);
+                      return;
+                    }
+                    if (_newPassword.text != _confirmPassword.text) {
+                      showAdminSnackBar(context, 'Passwords do not match', isError: true);
+                      return;
+                    }
+                    setState(() => _changingPassword = true);
+                    try {
+                      await ref.read(changePasswordUseCaseProvider)(
+                        currentPassword: _currentPassword.text,
+                        newPassword: _newPassword.text,
+                      );
+                      _currentPassword.clear();
+                      _newPassword.clear();
+                      _confirmPassword.clear();
+                      if (context.mounted) showAdminSnackBar(context, 'Password updated');
+                    } on Failure catch (error) {
+                      if (context.mounted) showAdminSnackBar(context, error.message, isError: true);
+                    } catch (error) {
+                      if (context.mounted) showAdminSnackBar(context, error.toString(), isError: true);
+                    } finally {
+                      if (mounted) setState(() => _changingPassword = false);
+                    }
+                  },
+                ),
+              ],
             ],
           );
         },

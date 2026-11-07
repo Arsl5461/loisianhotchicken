@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/constants/timezone.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../stores/presentation/providers/store_selection_provider.dart';
 import '../../data/reports_repository.dart';
@@ -22,13 +23,12 @@ class ReportPeriod {
 }
 
 ReportPeriod currentMonthPeriod() {
-  final now = DateTime.now();
+  final now = AppTimezone.now();
   final start = DateTime(now.year, now.month, 1);
   final end = DateTime(now.year, now.month + 1, 0);
-  String pad(int value) => value.toString().padLeft(2, '0');
   return ReportPeriod(
-    startDate: '${start.year}-${pad(start.month)}-${pad(start.day)}',
-    endDate: '${end.year}-${pad(end.month)}-${pad(end.day)}',
+    startDate: AppTimezone.toYmd(start),
+    endDate: AppTimezone.toYmd(end),
   );
 }
 
@@ -44,10 +44,7 @@ final reportsStatementProvider = FutureProvider.autoDispose<IncomeExpenseStateme
       );
 });
 
-final tenderMonthProvider = StateProvider<String>((ref) {
-  final now = DateTime.now();
-  return '${now.year}-${now.month.toString().padLeft(2, '0')}';
-});
+final tenderMonthProvider = StateProvider<String>((ref) => AppTimezone.currentMonth());
 
 final tenderReportProvider = FutureProvider.autoDispose<TenderReport>((ref) {
   final month = ref.watch(tenderMonthProvider);

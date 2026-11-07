@@ -6,7 +6,10 @@ import '../core/theme/app_colors.dart';
 import '../core/widgets/brand_logo.dart';
 import '../features/auth/presentation/providers/auth_notifier.dart';
 import '../features/auth/presentation/providers/auth_state.dart';
+import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
+import '../features/auth/presentation/screens/privacy_policy_screen.dart';
+import '../features/borrowings/presentation/screens/borrowings_screen.dart';
 import '../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../features/dashboard/presentation/screens/more_screen.dart';
 import '../features/dashboard/presentation/widgets/admin_shell.dart';
@@ -33,15 +36,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       final auth = ref.read(authNotifierProvider);
       final location = state.matchedLocation;
       final loggingIn = location == '/login';
+      final forgot = location == '/forgot-password';
+      final privacy = location == '/privacy-policy';
       final splashing = location == '/splash';
 
       if (auth.status == AuthStatus.unknown) {
         return splashing ? null : '/splash';
       }
       if (auth.status == AuthStatus.unauthenticated) {
-        return loggingIn ? null : '/login';
+        if (loggingIn || forgot || privacy) return null;
+        return '/login';
       }
-      if (loggingIn || splashing) return '/dashboard';
+      if (loggingIn || forgot || splashing) return '/dashboard';
 
       final user = auth.user;
       if ((location.startsWith('/users') || location.startsWith('/roles')) && user?.isSuperAdmin != true) {
@@ -52,6 +58,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/splash', builder: (context, state) => const _SplashScreen()),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+      GoRoute(path: '/forgot-password', builder: (context, state) => const ForgotPasswordScreen()),
+      GoRoute(path: '/privacy-policy', builder: (context, state) => const PrivacyPolicyScreen()),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) => AdminShell(navigationShell: navigationShell),
         branches: [
@@ -63,6 +71,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/sales/new', builder: (context, state) => const CreateSaleScreen()),
       GoRoute(path: '/expenses/new', builder: (context, state) => const CreateExpenseScreen()),
+      GoRoute(path: '/money-borrowed', builder: (context, state) => const BorrowingsScreen()),
       GoRoute(path: '/stores', builder: (context, state) => const StoresScreen()),
       GoRoute(path: '/stores/new', builder: (context, state) => const StoreFormScreen()),
       GoRoute(
@@ -73,6 +82,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/stores/:id/edit',
         builder: (context, state) => StoreFormScreen(storeId: state.pathParameters['id']),
       ),
+      GoRoute(path: '/sale-categories', builder: (context, state) => const SaleCategoriesScreen()),
       GoRoute(path: '/expense-categories', builder: (context, state) => const ExpenseCategoriesScreen()),
       GoRoute(path: '/payment-methods', builder: (context, state) => const PaymentMethodsScreen()),
       GoRoute(path: '/profit-loss', builder: (context, state) => const ProfitLossScreen()),

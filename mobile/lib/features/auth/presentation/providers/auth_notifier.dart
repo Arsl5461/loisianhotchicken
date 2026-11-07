@@ -17,6 +17,8 @@ class AuthNotifier extends Notifier<AuthState> {
 
   TokenStorage get _tokens => ref.read(tokenStorageProvider);
   LoginUseCase get _login => ref.read(loginUseCaseProvider);
+  VerifyOtpUseCase get _verifyOtp => ref.read(verifyOtpUseCaseProvider);
+  ResendOtpUseCase get _resendOtp => ref.read(resendOtpUseCaseProvider);
   LogoutUseCase get _logout => ref.read(logoutUseCaseProvider);
   GetCurrentUserUseCase get _me => ref.read(getCurrentUserUseCaseProvider);
   RefreshSessionUseCase get _refresh => ref.read(refreshSessionUseCaseProvider);
@@ -53,14 +55,21 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
+  /// Returns true when authenticated. Returns false if OTP is required or login failed.
   Future<bool> login({required String email, required String password}) async {
-    state = state.copyWith(busy: true, clearError: true);
+    state = state.copyWith(busy: true, clearError: true, clearOtp: true);
     try {
-      final session = await _login(email: email, password: password);
-      await _tokens.saveTokens(accessToken: session.accessToken, refreshToken: session.refreshToken);
-      _hydrateStore(session.user);
-      state = AuthState.authenticated(session.user);
-      return true;
+      final result = await _login(email: email, password: password);
+      switch (result) {
+        case LoginSessionResult(:final session):
+          await _tokens.saveTokens(accessToken: session.accessToken, refreshToken: session.refreshToken);
+          _hydrateStore(session.user);
+          state = AuthState.authenticated(session.user);
+          return true;
+        case LoginOtpResult(:final challenge):
+          state = AuthState.unauthenticated(otpChallenge: challenge).copyWith(busy: false);
+          return false;
+      }
     } on Failure catch (error) {
       state = AuthState.unauthenticated(error: error.message).copyWith(busy: false);
       return false;
@@ -68,6 +77,53 @@ class AuthNotifier extends Notifier<AuthState> {
       state = const AuthState.unauthenticated(error: 'Unable to sign in.').copyWith(busy: false);
       return false;
     }
+  }
+
+  Future<bool> verifyOtp({required String code}) async {
+    final challenge = state.otpChallenge;
+    if (challenge == null) {
+      state = const AuthState.unauthenticated(error: 'No verification challenge in progress.');
+      return false;
+    }
+    state = state.copyWith(busy: true, clearError: true);
+    try {
+      final session = await _verifyOtp(
+        email: challenge.email,
+        challengeId: challenge.challengeId,
+        code: code,
+      );
+      await _tokens.saveTokens(accessToken: session.accessToken, refreshToken: session.refreshToken);
+      _hydrateStore(session.user);
+      state = AuthState.authenticated(session.user);
+      return true;
+    } on Failure catch (error) {
+      state = state.copyWith(busy: false, error: error.message);
+      return false;
+    } catch (_) {
+      state = state.copyWith(busy: false, error: 'Invalid or expired code.');
+      return false;
+    }
+  }
+
+  Future<bool> resendOtp() async {
+    final challenge = state.otpChallenge;
+    if (challenge == null) return false;
+    state = state.copyWith(busy: true, clearError: true);
+    try {
+      final next = await _resendOtp(email: challenge.email, challengeId: challenge.challengeId);
+      state = AuthState.unauthenticated(otpChallenge: next).copyWith(busy: false);
+      return true;
+    } on Failure catch (error) {
+      state = state.copyWith(busy: false, error: error.message);
+      return false;
+    } catch (_) {
+      state = state.copyWith(busy: false, error: 'Unable to resend code.');
+      return false;
+    }
+  }
+
+  void clearOtpChallenge() {
+    state = const AuthState.unauthenticated();
   }
 
   Future<void> logout() async {

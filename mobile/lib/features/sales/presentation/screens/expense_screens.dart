@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_config.dart';
 import '../../../../core/constants/permissions.dart';
+import '../../../../core/constants/timezone.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/admin_widgets.dart';
@@ -62,7 +63,8 @@ class ExpensesScreen extends ConsumerWidget {
                       final expense = page.items[index];
                       return AdminListTile(
                         title: expense.title,
-                        subtitle: '${expense.category} · ${expense.storeName}\n${formatDate(expense.expenseDate)}',
+                        subtitle:
+                            '${expense.category} · ${expense.storeName} · ${expense.paymentsLabel}\n${formatDate(expense.expenseDate)}',
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -109,6 +111,12 @@ class ExpensesScreen extends ConsumerWidget {
   }
 }
 
+class _PaymentRow {
+  _PaymentRow({TextEditingController? amount}) : amount = amount ?? TextEditingController();
+  String? method;
+  final TextEditingController amount;
+}
+
 class CreateExpenseScreen extends ConsumerStatefulWidget {
   const CreateExpenseScreen({super.key});
 
@@ -118,18 +126,19 @@ class CreateExpenseScreen extends ConsumerStatefulWidget {
 
 class _CreateExpenseScreenState extends ConsumerState<CreateExpenseScreen> {
   final _title = TextEditingController();
-  final _amount = TextEditingController();
   String? _storeId;
   String? _category;
-  String? _method;
-  DateTime _date = DateTime.now();
+  String _expenseDate = AppTimezone.todayYmd();
   String? _receiptPath;
   bool _saving = false;
+  final List<_PaymentRow> _payments = [_PaymentRow()];
 
   @override
   void dispose() {
     _title.dispose();
-    _amount.dispose();
+    for (final row in _payments) {
+      row.amount.dispose();
+    }
     super.dispose();
   }
 
@@ -143,8 +152,22 @@ class _CreateExpenseScreenState extends ConsumerState<CreateExpenseScreen> {
   Future<void> _save() async {
     final stores = ref.read(storesListProvider).valueOrNull?.items ?? [];
     final storeId = _storeId ?? ref.read(selectedStoreIdProvider) ?? (stores.isNotEmpty ? stores.first.id : null);
-    final amount = double.tryParse(_amount.text);
-    if (storeId == null || _title.text.trim().length < 2 || amount == null || _category == null || _method == null) {
+    final lines = <ExpensePaymentLine>[];
+    for (final row in _payments) {
+      final amount = double.tryParse(row.amount.text);
+      if (row.method == null || amount == null || amount <= 0) {
+        showAdminSnackBar(context, 'Each payment needs a method and amount', isError: true);
+        return;
+      }
+      lines.add(ExpensePaymentLine(method: row.method!, amount: amount));
+    }
+    final methods = lines.map((line) => line.method).toSet();
+    if (methods.length != lines.length) {
+      showAdminSnackBar(context, 'Payment methods must be unique', isError: true);
+      return;
+    }
+    final total = lines.fold<double>(0, (sum, line) => sum + line.amount);
+    if (storeId == null || _title.text.trim().length < 2 || _category == null || lines.isEmpty) {
       showAdminSnackBar(context, 'Please complete the required fields', isError: true);
       return;
     }
@@ -155,10 +178,11 @@ class _CreateExpenseScreenState extends ConsumerState<CreateExpenseScreen> {
               storeId: storeId,
               title: _title.text.trim(),
               category: _category!,
-              amount: amount,
-              paymentMethod: _method!,
-              expenseDate: toIsoDate(_date),
+              amount: total,
+              paymentMethod: lines.first.method,
+              expenseDate: _expenseDate,
               receiptPath: _receiptPath,
+              payments: lines,
             ),
           );
       ref.invalidate(expensesListProvider);
@@ -178,6 +202,7 @@ class _CreateExpenseScreenState extends ConsumerState<CreateExpenseScreen> {
     final stores = ref.watch(storesListProvider).valueOrNull?.items ?? [];
     final categories = ref.watch(expenseCategoriesProvider).valueOrNull?.items ?? [];
     final methods = ref.watch(paymentMethodsProvider).valueOrNull?.items ?? [];
+    final total = _payments.fold<double>(0, (sum, row) => sum + (double.tryParse(row.amount.text) ?? 0));
     return AdminScaffold(
       title: 'Add expense',
       body: ListView(
@@ -199,23 +224,65 @@ class _CreateExpenseScreenState extends ConsumerState<CreateExpenseScreen> {
             decoration: const InputDecoration(labelText: 'Category'),
           ),
           const SizedBox(height: 16),
-          AdminTextField(label: 'Amount', controller: _amount, keyboardType: const TextInputType.numberWithOptions(decimal: true)),
-          const SizedBox(height: 16),
-          DropdownButtonFormField<String>(
-            initialValue: _method,
-            items: methods.map((item) => DropdownMenuItem(value: item.name, child: Text(item.name))).toList(),
-            onChanged: (value) => setState(() => _method = value),
-            decoration: const InputDecoration(labelText: 'Payment method'),
+          const Text('Payments', style: TextStyle(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 8),
+          ...List.generate(_payments.length, (index) {
+            final row = _payments[index];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: DropdownButtonFormField<String>(
+                      initialValue: row.method,
+                      items: methods.map((item) => DropdownMenuItem(value: item.name, child: Text(item.name))).toList(),
+                      onChanged: (value) => setState(() => row.method = value),
+                      decoration: const InputDecoration(labelText: 'Method'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    flex: 2,
+                    child: TextField(
+                      controller: row.amount,
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      decoration: const InputDecoration(labelText: 'Amount'),
+                      onChanged: (_) => setState(() {}),
+                    ),
+                  ),
+                  if (_payments.length > 1)
+                    IconButton(
+                      onPressed: () => setState(() {
+                        _payments.removeAt(index).amount.dispose();
+                      }),
+                      icon: const Icon(Icons.remove_circle_outline, color: AppColors.danger),
+                    ),
+                ],
+              ),
+            );
+          }),
+          TextButton.icon(
+            onPressed: () => setState(() => _payments.add(_PaymentRow())),
+            icon: const Icon(Icons.add),
+            label: const Text('Add payment split'),
           ),
-          const SizedBox(height: 16),
+          Text('Total ${money(total)}', style: const TextStyle(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 8),
           ListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text('Expense date'),
-            subtitle: Text(toIsoDate(_date)),
+            subtitle: Text(_expenseDate),
             trailing: const Icon(Icons.calendar_today_outlined),
             onTap: () async {
-              final next = await showDatePicker(context: context, initialDate: _date, firstDate: DateTime(2020), lastDate: DateTime.now().add(const Duration(days: 1)));
-              if (next != null) setState(() => _date = next);
+              final now = AppTimezone.now();
+              final next = await showDatePicker(
+                context: context,
+                initialDate: DateTime(now.year, now.month, now.day),
+                firstDate: DateTime(2020),
+                lastDate: DateTime.now().add(const Duration(days: 1)),
+              );
+              if (next != null) setState(() => _expenseDate = AppTimezone.toYmd(next));
             },
           ),
           OutlinedButton.icon(

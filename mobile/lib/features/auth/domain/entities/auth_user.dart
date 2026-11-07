@@ -122,3 +122,27 @@ class AuthSession {
   final String accessToken;
   final String refreshToken;
 }
+
+class OtpChallenge {
+  const OtpChallenge({
+    required this.challengeId,
+    required this.email,
+  });
+
+  final String challengeId;
+  final String email;
+}
+
+sealed class LoginResult {
+  const LoginResult();
+}
+
+class LoginSessionResult extends LoginResult {
+  const LoginSessionResult(this.session);
+  final AuthSession session;
+}
+
+class LoginOtpResult extends LoginResult {
+  const LoginOtpResult(this.challenge);
+  final OtpChallenge challenge;
+}
