@@ -17,6 +17,8 @@ class MoreScreen extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     final items = [
       if (can(Permissions.storesRead)) _Item('Stores', 'Locations and store performance', Icons.storefront_outlined, '/stores'),
+      if (can(Permissions.salesRead)) _Item('Sale categories', 'Labels used on sales income', Icons.category_outlined, '/sale-categories'),
+      if (can(Permissions.expensesRead)) _Item('Money borrowed', 'Track loans and repayments', Icons.account_balance_outlined, '/money-borrowed'),
       if (can(Permissions.expensesRead)) _Item('Expense categories', 'Manage expense labels', Icons.sell_outlined, '/expense-categories'),
       if (can(Permissions.expensesRead)) _Item('Payment methods', 'Tenders used on sales and expenses', Icons.credit_card, '/payment-methods'),
       if (can(Permissions.reportsRead)) _Item('Profit & Loss', 'Net profit by period', Icons.pie_chart_outline, '/profit-loss'),

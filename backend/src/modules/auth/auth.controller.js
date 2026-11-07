@@ -10,6 +10,7 @@ function setSessionCookie(res, result, message = 'Logged in successfully') {
     data: {
       user: result.user,
       accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     },
   });
 }
@@ -44,30 +45,6 @@ const resendLoginOtp = asyncHandler(async (req, res) => {
       challengeId: result.challengeId,
       email: result.email,
     },
-  });
-});
-
-const forgotPassword = asyncHandler(async (req, res) => {
-  await authService.forgotPassword(req.body);
-  return ApiResponse.success(res, {
-    message: authService.FORGOT_PASSWORD_MESSAGE,
-    data: {},
-  });
-});
-
-const resetPassword = asyncHandler(async (req, res) => {
-  await authService.resetPassword(req.body);
-  return ApiResponse.success(res, {
-    message: 'Password reset successfully. You can sign in with your new password.',
-    data: {},
-  });
-});
-
-const changePassword = asyncHandler(async (req, res) => {
-  await authService.changePassword(req.user, req.body);
-  return ApiResponse.success(res, {
-    message: 'Password updated successfully',
-    data: {},
   });
 });
 

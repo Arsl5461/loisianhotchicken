@@ -64,6 +64,29 @@ class TenderRow {
   }
 }
 
+class OpenBorrowingSummary {
+  const OpenBorrowingSummary({
+    required this.id,
+    required this.lender,
+    required this.storeName,
+    required this.amountOwed,
+  });
+
+  final String id;
+  final String lender;
+  final String storeName;
+  final double amountOwed;
+
+  factory OpenBorrowingSummary.fromJson(Map<String, dynamic> json) {
+    return OpenBorrowingSummary(
+      id: asId(json['_id'] ?? json['id']),
+      lender: asString(json['lender']),
+      storeName: asString(json['storeName'] ?? json['store']),
+      amountOwed: asDouble(json['amountOwed']),
+    );
+  }
+}
+
 class IncomeExpenseStatement {
   const IncomeExpenseStatement({
     required this.start,
@@ -74,6 +97,10 @@ class IncomeExpenseStatement {
     required this.profitMargin,
     required this.revenueSources,
     required this.expenseCategories,
+    this.amountOwed = 0,
+    this.borrowedThisPeriod = 0,
+    this.isFinal = true,
+    this.openBorrowings = const [],
   });
 
   final DateTime? start;
@@ -84,6 +111,10 @@ class IncomeExpenseStatement {
   final double profitMargin;
   final List<NamedAmount> revenueSources;
   final List<NamedAmount> expenseCategories;
+  final double amountOwed;
+  final double borrowedThisPeriod;
+  final bool isFinal;
+  final List<OpenBorrowingSummary> openBorrowings;
 
   factory IncomeExpenseStatement.fromJson(Map<String, dynamic> json) {
     return IncomeExpenseStatement(
@@ -95,6 +126,13 @@ class IncomeExpenseStatement {
       profitMargin: asDouble(json['profitMargin']),
       revenueSources: asList(json['revenueSources']).whereType<Map>().map((item) => NamedAmount.fromJson(Map<String, dynamic>.from(item))).toList(),
       expenseCategories: asList(json['expenseCategories']).whereType<Map>().map((item) => NamedAmount.fromJson(Map<String, dynamic>.from(item))).toList(),
+      amountOwed: asDouble(json['amountOwed']),
+      borrowedThisPeriod: asDouble(json['borrowedThisPeriod']),
+      isFinal: asBool(json['isFinal'], fallback: true),
+      openBorrowings: asList(json['openBorrowings'])
+          .whereType<Map>()
+          .map((item) => OpenBorrowingSummary.fromJson(Map<String, dynamic>.from(item)))
+          .toList(),
     );
   }
 }

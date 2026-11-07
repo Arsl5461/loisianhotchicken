@@ -36,6 +36,14 @@ final expenseCategoriesProvider = FutureProvider.autoDispose<PagedResult<NamedRe
   return ref.watch(catalogRepositoryProvider).expenseCategories(limit: 100);
 });
 
+final saleCategoriesProvider = FutureProvider.autoDispose<PagedResult<NamedRecord>>((ref) {
+  return ref.watch(catalogRepositoryProvider).saleCategories(limit: 100, status: 'ACTIVE');
+});
+
+final allSaleCategoriesProvider = FutureProvider.autoDispose<PagedResult<NamedRecord>>((ref) {
+  return ref.watch(catalogRepositoryProvider).saleCategories(limit: 100);
+});
+
 final paymentMethodsProvider = FutureProvider.autoDispose<PagedResult<NamedRecord>>((ref) {
   return ref.watch(catalogRepositoryProvider).paymentMethods(limit: 100, status: 'ACTIVE');
 });

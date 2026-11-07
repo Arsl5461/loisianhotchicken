@@ -45,7 +45,7 @@ class ApiClient {
         onError: (error, handler) async {
           final status = error.response?.statusCode;
           final path = error.requestOptions.path;
-          final isAuthCall = path.contains(ApiPaths.login) || path.contains(ApiPaths.refresh);
+          final isAuthCall = path.contains('/auth/');
           if (status != 401 || isAuthCall || error.requestOptions.extra['retried'] == true) {
             handler.next(error);
             return;

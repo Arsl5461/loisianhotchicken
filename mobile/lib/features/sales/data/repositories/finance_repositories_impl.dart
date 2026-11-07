@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 import '../../../../core/constants/api_paths.dart';
@@ -21,12 +23,20 @@ class SalesRepositoryImpl implements SalesRepository {
 
   @override
   Future<Sale> create(CreateSaleInput input) async {
-    final envelope = await _client.post(ApiPaths.sales, data: {
+    final data = FormData.fromMap({
       'storeId': input.storeId,
       'totalAmount': input.totalAmount,
       'paymentMethod': input.paymentMethod,
-      'customerName': input.customerName,
+      'category': input.category,
+      'saleDate': input.saleDate,
+      if (input.customerName != null) 'customerName': input.customerName,
+      if (input.attachmentPath != null)
+        'attachment': await MultipartFile.fromFile(
+          input.attachmentPath!,
+          filename: input.attachmentPath!.split('/').last,
+        ),
     });
+    final envelope = await _client.post(ApiPaths.sales, data: data);
     return Sale.fromJson(asMap(envelope.data));
   }
 
@@ -49,15 +59,20 @@ class ExpensesRepositoryImpl implements ExpensesRepository {
 
   @override
   Future<Expense> create(CreateExpenseInput input) async {
+    final payments = input.payments.isNotEmpty
+        ? input.payments
+        : [ExpensePaymentLine(method: input.paymentMethod, amount: input.amount)];
+    final total = payments.fold<double>(0, (sum, line) => sum + line.amount);
     final envelope = await _client.post(
       ApiPaths.expenses,
       data: FormData.fromMap({
         'storeId': input.storeId,
         'title': input.title,
         'category': input.category,
-        'amount': input.amount,
-        'paymentMethod': input.paymentMethod,
+        'amount': total,
+        'paymentMethod': payments.first.method,
         'expenseDate': input.expenseDate,
+        'payments': jsonEncode(payments.map((line) => line.toJson()).toList()),
         if (input.description != null) 'description': input.description,
         if (input.receiptPath != null)
           'receipt': await MultipartFile.fromFile(input.receiptPath!, filename: input.receiptPath!.split('/').last),
@@ -100,6 +115,40 @@ class CatalogRepositoryImpl implements CatalogRepository {
 
   @override
   Future<void> deleteCategory(String id) => _client.delete('${ApiPaths.expenseCategories}/$id');
+
+  @override
+  Future<PagedResult<NamedRecord>> saleCategories({int page = 1, int limit = 50, String? search, String? status}) async {
+    final envelope = await _client.get(
+      ApiPaths.saleCategories,
+      query: {
+        'page': page,
+        'limit': limit,
+        'search': search,
+        'status': status,
+        'sortBy': 'name',
+        'sortOrder': 'asc',
+      },
+    );
+    return parsePaged(envelope.data, envelope.meta, NamedRecord.fromJson);
+  }
+
+  @override
+  Future<NamedRecord> createSaleCategory(String name, {bool isActive = true}) async {
+    final envelope = await _client.post(ApiPaths.saleCategories, data: {'name': name, 'isActive': isActive});
+    return NamedRecord.fromJson(asMap(envelope.data));
+  }
+
+  @override
+  Future<NamedRecord> updateSaleCategory(String id, {String? name, bool? isActive}) async {
+    final envelope = await _client.patch('${ApiPaths.saleCategories}/$id', data: {
+      if (name != null) 'name': name,
+      if (isActive != null) 'isActive': isActive,
+    });
+    return NamedRecord.fromJson(asMap(envelope.data));
+  }
+
+  @override
+  Future<void> deleteSaleCategory(String id) => _client.delete('${ApiPaths.saleCategories}/$id');
 
   @override
   Future<PagedResult<NamedRecord>> paymentMethods({int page = 1, int limit = 50, String? search, String? status}) async {

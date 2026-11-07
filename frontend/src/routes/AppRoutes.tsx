@@ -13,6 +13,7 @@ import { PERMISSIONS } from '../constants/permissions';
 
 import Login from '../pages/Auth/Login';
 import ForgotPassword from '../pages/Auth/ForgotPassword';
+import PrivacyPolicy from '../pages/Legal/PrivacyPolicy';
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const StoresList = lazy(() => import('../pages/Stores/StoresList'));
 const AddStore = lazy(() => import('../pages/Stores/AddStore'));
@@ -51,6 +52,7 @@ export function AppRoutes() {
 
   return (
     <Routes>
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -38,6 +38,11 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 });
 
 final loginUseCaseProvider = Provider((ref) => LoginUseCase(ref.watch(authRepositoryProvider)));
+final verifyOtpUseCaseProvider = Provider((ref) => VerifyOtpUseCase(ref.watch(authRepositoryProvider)));
+final resendOtpUseCaseProvider = Provider((ref) => ResendOtpUseCase(ref.watch(authRepositoryProvider)));
+final forgotPasswordUseCaseProvider = Provider((ref) => ForgotPasswordUseCase(ref.watch(authRepositoryProvider)));
+final resetPasswordUseCaseProvider = Provider((ref) => ResetPasswordUseCase(ref.watch(authRepositoryProvider)));
+final changePasswordUseCaseProvider = Provider((ref) => ChangePasswordUseCase(ref.watch(authRepositoryProvider)));
 final logoutUseCaseProvider = Provider((ref) => LogoutUseCase(ref.watch(authRepositoryProvider)));
 final getCurrentUserUseCaseProvider = Provider((ref) => GetCurrentUserUseCase(ref.watch(authRepositoryProvider)));
 final refreshSessionUseCaseProvider = Provider((ref) => RefreshSessionUseCase(ref.watch(authRepositoryProvider)));

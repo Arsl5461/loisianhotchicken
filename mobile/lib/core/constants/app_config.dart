@@ -6,6 +6,8 @@ class AppConfig {
   const AppConfig._();
 
   static const appName = 'Louisiana Hot Chicken';
+  static const privacyPolicyUrl = 'https://lhc-holdings.com/privacy-policy';
+  static const privacyContactEmail = 'admin@louisianahotchicken.com';
 
   /// Change this to switch APIs.
   /// `ApiEnvironment.live`  → https://lhc-holdings.com/api/v1

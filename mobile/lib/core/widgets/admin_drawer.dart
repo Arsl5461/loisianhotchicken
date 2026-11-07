@@ -42,7 +42,9 @@ const _nav = [
     items: [
       _NavItem(label: 'Stores', route: '/stores', icon: Icons.storefront_outlined, permission: Permissions.storesRead),
       _NavItem(label: 'Sales Income', route: '/sales', icon: Icons.receipt_long_outlined, permission: Permissions.salesRead),
+      _NavItem(label: 'Sale Category', route: '/sale-categories', icon: Icons.category_outlined, permission: Permissions.salesRead),
       _NavItem(label: 'Expenses', route: '/expenses', icon: Icons.account_balance_wallet_outlined, permission: Permissions.expensesRead),
+      _NavItem(label: 'Money borrowed', route: '/money-borrowed', icon: Icons.account_balance_outlined, permission: Permissions.expensesRead),
       _NavItem(label: 'Expense Category', route: '/expense-categories', icon: Icons.sell_outlined, permission: Permissions.expensesRead),
       _NavItem(label: 'Payment Method', route: '/payment-methods', icon: Icons.credit_card_outlined, permission: Permissions.expensesRead),
     ],

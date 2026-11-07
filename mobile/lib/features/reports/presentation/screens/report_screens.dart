@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
@@ -103,6 +104,24 @@ class ReportsScreen extends ConsumerWidget {
         data: (statement) => ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            if (!statement.isFinal)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: AdminCard(
+                  onTap: () => context.push('/money-borrowed'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Summary is open', style: TextStyle(fontWeight: FontWeight.w800, color: Color(0xFF9A3412))),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${money(statement.amountOwed)} is still owed. Tap to manage money borrowed.',
+                        style: const TextStyle(color: Color(0xFF9A3412), height: 1.35),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             AdminCard(
               child: Column(
                 children: [
@@ -110,6 +129,8 @@ class ReportsScreen extends ConsumerWidget {
                   _row('Total expenses', money(statement.totalExpenses)),
                   _row('Operating profit', money(statement.operatingProfit)),
                   _row('Profit margin', percent(statement.profitMargin)),
+                  _row('Money owed', money(statement.amountOwed)),
+                  _row('Borrowed this period', money(statement.borrowedThisPeriod)),
                 ],
               ),
             ),
@@ -133,6 +154,25 @@ class ReportsScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            if (statement.openBorrowings.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              AdminCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Open borrowings', style: TextStyle(fontWeight: FontWeight.w700)),
+                    ...statement.openBorrowings.map(
+                      (item) => ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(item.lender),
+                        subtitle: Text(item.storeName),
+                        trailing: Text(money(item.amountOwed), style: const TextStyle(fontWeight: FontWeight.w700)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
       ),

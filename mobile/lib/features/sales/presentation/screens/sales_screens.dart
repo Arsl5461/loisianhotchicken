@@ -1,8 +1,11 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_config.dart';
 import '../../../../core/constants/permissions.dart';
+import '../../../../core/constants/timezone.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/admin_widgets.dart';
@@ -65,13 +68,32 @@ class SalesScreen extends ConsumerWidget {
                       final sale = page.items[index];
                       return AdminListTile(
                         title: money(sale.totalAmount),
-                        subtitle: '${sale.customerName} · ${sale.storeName} · ${sale.paymentMethod}\n${formatDate(sale.saleDate)}',
-                        trailing: canDelete
-                            ? IconButton(
+                        subtitle:
+                            '${sale.customerName} · ${sale.category.isEmpty ? 'Uncategorized' : sale.category} · ${sale.storeName} · ${sale.paymentMethod}\n${formatDate(sale.saleDate)}',
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (sale.attachmentUrl != null)
+                              IconButton(
+                                icon: const Icon(Icons.attach_file),
+                                onPressed: () => showDialog<void>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Attachment'),
+                                    content: Text(AppConfig.resolveUrl(sale.attachmentUrl)),
+                                    actions: [
+                                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            if (canDelete)
+                              IconButton(
                                 icon: const Icon(Icons.delete_outline, color: AppColors.danger),
                                 onPressed: () => _delete(context, ref, sale),
-                              )
-                            : null,
+                              ),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -109,6 +131,9 @@ class _CreateSaleScreenState extends ConsumerState<CreateSaleScreen> {
   final _customer = TextEditingController(text: 'Walk-in Guest');
   String? _storeId;
   String? _method;
+  String? _category;
+  String _saleDate = AppTimezone.todayYmd();
+  String? _attachmentPath;
   bool _saving = false;
 
   @override
@@ -118,12 +143,22 @@ class _CreateSaleScreenState extends ConsumerState<CreateSaleScreen> {
     super.dispose();
   }
 
+  Future<void> _pickAttachment() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: const ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
+    );
+    if (result?.files.single.path != null) {
+      setState(() => _attachmentPath = result!.files.single.path);
+    }
+  }
+
   Future<void> _save() async {
     final stores = ref.read(storesListProvider).valueOrNull?.items ?? [];
     final storeId = _storeId ?? ref.read(selectedStoreIdProvider) ?? (stores.isNotEmpty ? stores.first.id : null);
     final amount = double.tryParse(_amount.text);
-    if (storeId == null || amount == null || amount <= 0 || _method == null) {
-      showAdminSnackBar(context, 'Fill in store, amount, and payment method', isError: true);
+    if (storeId == null || amount == null || amount <= 0 || _method == null || _category == null) {
+      showAdminSnackBar(context, 'Fill in store, category, amount, and payment method', isError: true);
       return;
     }
     setState(() => _saving = true);
@@ -133,7 +168,10 @@ class _CreateSaleScreenState extends ConsumerState<CreateSaleScreen> {
               storeId: storeId,
               totalAmount: amount,
               paymentMethod: _method!,
+              category: _category!,
+              saleDate: _saleDate,
               customerName: _customer.text.trim(),
+              attachmentPath: _attachmentPath,
             ),
           );
       ref.invalidate(salesListProvider);
@@ -152,6 +190,7 @@ class _CreateSaleScreenState extends ConsumerState<CreateSaleScreen> {
   Widget build(BuildContext context) {
     final stores = ref.watch(storesListProvider).valueOrNull?.items ?? [];
     final methods = ref.watch(paymentMethodsProvider).valueOrNull?.items ?? [];
+    final categories = ref.watch(saleCategoriesProvider).valueOrNull?.items ?? [];
     return AdminScaffold(
       title: 'Add sale',
       body: ListView(
@@ -166,6 +205,13 @@ class _CreateSaleScreenState extends ConsumerState<CreateSaleScreen> {
           const SizedBox(height: 16),
           AdminTextField(label: 'Customer', controller: _customer),
           const SizedBox(height: 16),
+          DropdownButtonFormField<String>(
+            initialValue: _category,
+            items: categories.map((item) => DropdownMenuItem(value: item.name, child: Text(item.name))).toList(),
+            onChanged: (value) => setState(() => _category = value),
+            decoration: const InputDecoration(labelText: 'Sale category'),
+          ),
+          const SizedBox(height: 16),
           AdminTextField(label: 'Amount', controller: _amount, keyboardType: const TextInputType.numberWithOptions(decimal: true)),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
@@ -173,6 +219,28 @@ class _CreateSaleScreenState extends ConsumerState<CreateSaleScreen> {
             items: methods.map((method) => DropdownMenuItem(value: method.name, child: Text(method.name))).toList(),
             onChanged: (value) => setState(() => _method = value),
             decoration: const InputDecoration(labelText: 'Payment method'),
+          ),
+          const SizedBox(height: 8),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Sale date'),
+            subtitle: Text(_saleDate),
+            trailing: const Icon(Icons.calendar_today_outlined),
+            onTap: () async {
+              final now = AppTimezone.now();
+              final next = await showDatePicker(
+                context: context,
+                initialDate: DateTime(now.year, now.month, now.day),
+                firstDate: DateTime(2020),
+                lastDate: DateTime.now().add(const Duration(days: 1)),
+              );
+              if (next != null) setState(() => _saleDate = AppTimezone.toYmd(next));
+            },
+          ),
+          OutlinedButton.icon(
+            onPressed: _pickAttachment,
+            icon: const Icon(Icons.attach_file),
+            label: Text(_attachmentPath == null ? 'Attach file' : 'Attachment selected'),
           ),
           const SizedBox(height: 24),
           AdminButton(label: 'Save sale', loading: _saving, onPressed: _save),

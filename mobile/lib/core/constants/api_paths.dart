@@ -2,6 +2,11 @@ class ApiPaths {
   const ApiPaths._();
 
   static const login = '/auth/login';
+  static const verifyOtp = '/auth/verify-otp';
+  static const resendOtp = '/auth/resend-otp';
+  static const forgotPassword = '/auth/forgot-password';
+  static const resetPassword = '/auth/reset-password';
+  static const changePassword = '/auth/change-password';
   static const logout = '/auth/logout';
   static const me = '/auth/me';
   static const refresh = '/auth/refresh-token';
@@ -14,7 +19,9 @@ class ApiPaths {
 
   static const stores = '/stores';
   static const sales = '/sales';
+  static const saleCategories = '/sale-categories';
   static const expenses = '/expenses';
+  static const borrowings = '/borrowings';
   static const expenseCategories = '/expense-categories';
   static const paymentMethods = '/payment-methods';
   static const users = '/users';

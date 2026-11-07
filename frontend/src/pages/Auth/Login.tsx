@@ -202,6 +202,13 @@ export default function Login() {
           </button>
         </form>
       )}
+      <p className="mt-6 text-center text-xs text-slate-500">
+        By continuing, you agree to our{' '}
+        <Link className="font-semibold text-brand-red hover:underline" to="/privacy-policy">
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </div>
   );
 }
