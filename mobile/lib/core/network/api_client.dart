@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 
 import '../constants/api_paths.dart';
-import '../constants/app_config.dart';
 import '../errors/failures.dart';
 import '../storage/token_storage.dart';
 import '../utils/json.dart';
@@ -15,6 +14,7 @@ class ApiClient {
     required TokenStorage tokenStorage,
     required StoreIdReader storeIdReader,
     required SessionExpiredCallback onSessionExpired,
+    required String baseUrl,
     Dio? dio,
   })  : _tokenStorage = tokenStorage,
         _storeIdReader = storeIdReader,
@@ -22,7 +22,7 @@ class ApiClient {
         _dio = dio ??
             Dio(
               BaseOptions(
-                baseUrl: AppConfig.apiBaseUrl,
+                baseUrl: baseUrl,
                 connectTimeout: const Duration(seconds: 20),
                 receiveTimeout: const Duration(seconds: 20),
                 sendTimeout: const Duration(seconds: 20),

@@ -29,7 +29,7 @@ class DashboardScreen extends ConsumerWidget {
 
     return AdminScaffold(
       title: 'Dashboard',
-      subtitle: 'Hi ${user?.name.split(' ').first ?? 'Admin'}',
+      subtitle: 'Hi ${user?.name.split(' ').first ?? 'there'}',
       actions: [
         const StoreFilterButton(),
         IconButton(

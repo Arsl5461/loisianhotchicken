@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../constants/permissions.dart';
 import '../theme/app_colors.dart';
+import '../utils/display.dart';
 import 'brand_logo.dart';
 import '../../features/auth/presentation/providers/auth_notifier.dart';
 
@@ -55,7 +56,7 @@ const _nav = [
     ],
   ),
   _NavGroup(
-    label: 'Administration',
+    label: 'Team',
     superAdminOnly: true,
     items: [
       _NavItem(label: 'Users', route: '/users', icon: Icons.people_outline, permission: Permissions.usersRead),
@@ -217,13 +218,13 @@ class AdminDrawer extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          user?.name ?? 'Administrator',
+                          user?.name ?? 'User',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13),
                         ),
                         Text(
-                          user?.role.name ?? '',
+                          displayRoleName(user?.role.name),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(color: AppColors.brandYellow, fontSize: 11, fontWeight: FontWeight.w600),
