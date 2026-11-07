@@ -1,5 +1,6 @@
 import { CircleHelp } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { currentMonthInAppTimezone } from '../../constants/timezone';
 import { formatCurrencyExact } from '../../utils/cn';
 
 export type TenderRow = {
@@ -16,8 +17,7 @@ export type TenderReport = {
 };
 
 export function currentMonth() {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  return currentMonthInAppTimezone();
 }
 
 export function monthLabel(value: string) {

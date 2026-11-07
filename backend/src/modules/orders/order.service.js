@@ -1,6 +1,7 @@
 const orderRepository = require('./order.repository');
 const paymentMethodService = require('../paymentMethods/paymentMethod.service');
 const { NotFoundError, ValidationError } = require('../../utils/AppError');
+const { startOfDay } = require('../../utils/dateHelper');
 
 function computeItems(items = []) {
   if (!items.length) throw new ValidationError('At least one item is required');
@@ -35,7 +36,7 @@ async function createOrder(auth, payload) {
     orderNumber,
     organizationId: auth.organizationId,
     createdBy: auth.userId,
-    orderDate: payload.orderDate ? new Date(payload.orderDate) : new Date(),
+    orderDate: payload.orderDate ? startOfDay(payload.orderDate) : startOfDay(new Date()),
   });
 }
 
@@ -50,7 +51,7 @@ async function updateOrder(auth, id, payload) {
   if (payload.paymentMethod) {
     update.paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
   }
-  if (payload.orderDate) update.orderDate = new Date(payload.orderDate);
+  if (payload.orderDate) update.orderDate = startOfDay(payload.orderDate);
   return orderRepository.updateById(id, auth.organizationId, update);
 }
 

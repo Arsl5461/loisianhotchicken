@@ -1,6 +1,8 @@
 const saleRepository = require('./sale.repository');
 const paymentMethodService = require('../paymentMethods/paymentMethod.service');
+const saleCategoryService = require('../saleCategories/saleCategory.service');
 const { NotFoundError, ValidationError } = require('../../utils/AppError');
+const { startOfDay } = require('../../utils/dateHelper');
 
 function computeLines(products = [], totalAmount) {
   if (products.length) {
@@ -35,24 +37,27 @@ async function getSale(auth, id) {
   return sale;
 }
 
-async function createSale(auth, payload) {
+async function createSale(auth, payload, attachmentUrl = '') {
   const { lines, totalAmount } = computeLines(payload.products, payload.totalAmount);
   const paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
+  const category = await saleCategoryService.assertActiveCategory(auth, payload.category);
   return saleRepository.create({
     ...payload,
+    category,
     paymentMethod,
     products: lines,
     totalAmount,
+    attachmentUrl,
     organizationId: auth.organizationId,
     createdBy: auth.userId,
-    saleDate: payload.saleDate ? new Date(payload.saleDate) : new Date(),
+    saleDate: payload.saleDate ? startOfDay(payload.saleDate) : startOfDay(new Date()),
   });
 }
 
-async function updateSale(auth, id, payload) {
+async function updateSale(auth, id, payload, attachmentUrl) {
   await getSale(auth, id);
   const update = { ...payload };
-  if (payload.products) {
+  if (payload.products || payload.totalAmount) {
     const computed = computeLines(payload.products, payload.totalAmount);
     update.products = computed.lines;
     update.totalAmount = computed.totalAmount;
@@ -60,7 +65,11 @@ async function updateSale(auth, id, payload) {
   if (payload.paymentMethod) {
     update.paymentMethod = await paymentMethodService.assertActiveMethod(auth, payload.paymentMethod);
   }
-  if (payload.saleDate) update.saleDate = new Date(payload.saleDate);
+  if (payload.category) {
+    update.category = await saleCategoryService.assertActiveCategory(auth, payload.category);
+  }
+  if (payload.saleDate) update.saleDate = startOfDay(payload.saleDate);
+  if (attachmentUrl) update.attachmentUrl = attachmentUrl;
   return saleRepository.updateById(id, auth.organizationId, update);
 }
 

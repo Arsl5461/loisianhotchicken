@@ -9,7 +9,7 @@ export default function Roles() {
 
   return (
     <div>
-      <PageHeader title="Roles & Permissions" subtitle="Grouped permission matrix. Super Admin remains full-access on the server." />
+      <PageHeader title="Roles & Permissions" subtitle="Grouped permission matrix for each role." />
       <div className="grid gap-4 xl:grid-cols-2">
         {(roles.data?.data || []).map((role: any) => (
           <article key={role._id} className="card p-5">

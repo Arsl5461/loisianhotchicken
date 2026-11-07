@@ -1,6 +1,7 @@
 const { Sale } = require('../../database/models');
 const { escapeRegex } = require('../../utils/pagination');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
+const { startOfDay, endOfDay } = require('../../utils/dateHelper');
 
 function buildFilter(auth, query) {
   const filter = {
@@ -9,15 +10,17 @@ function buildFilter(auth, query) {
   };
 
   if (query.paymentMethod) filter.paymentMethod = query.paymentMethod;
+  if (query.category) filter.category = query.category;
   if (query.startDate || query.endDate) {
     filter.saleDate = {};
-    if (query.startDate) filter.saleDate.$gte = new Date(query.startDate);
-    if (query.endDate) filter.saleDate.$lte = new Date(query.endDate);
+    if (query.startDate) filter.saleDate.$gte = startOfDay(query.startDate);
+    if (query.endDate) filter.saleDate.$lte = endOfDay(query.endDate);
   }
   if (query.search) {
     filter.$or = [
       { customerName: { $regex: escapeRegex(query.search), $options: 'i' } },
       { orderReference: { $regex: escapeRegex(query.search), $options: 'i' } },
+      { category: { $regex: escapeRegex(query.search), $options: 'i' } },
     ];
   }
   return filter;

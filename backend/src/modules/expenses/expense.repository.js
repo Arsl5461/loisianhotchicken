@@ -1,6 +1,7 @@
 const { Expense } = require('../../database/models');
 const { escapeRegex } = require('../../utils/pagination');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
+const { startOfDay, endOfDay } = require('../../utils/dateHelper');
 
 function buildFilter(auth, query) {
   const filter = {
@@ -8,11 +9,18 @@ function buildFilter(auth, query) {
     ...scopedStoreFilter(auth, query.storeId),
   };
   if (query.category) filter.category = query.category;
-  if (query.paymentMethod) filter.paymentMethod = query.paymentMethod;
+  if (query.paymentMethod) {
+    filter.$and = [
+      ...(filter.$and || []),
+      {
+        $or: [{ paymentMethod: query.paymentMethod }, { 'payments.method': query.paymentMethod }],
+      },
+    ];
+  }
   if (query.startDate || query.endDate) {
     filter.expenseDate = {};
-    if (query.startDate) filter.expenseDate.$gte = new Date(query.startDate);
-    if (query.endDate) filter.expenseDate.$lte = new Date(query.endDate);
+    if (query.startDate) filter.expenseDate.$gte = startOfDay(query.startDate);
+    if (query.endDate) filter.expenseDate.$lte = endOfDay(query.endDate);
   }
   if (query.search) {
     filter.$or = [

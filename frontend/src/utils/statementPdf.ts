@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import { APP_TIMEZONE } from '../constants/timezone';
 import { formatCurrencyExact } from './cn';
 
 export type StatementCategory = {
@@ -38,6 +39,18 @@ export type IncomeExpenseStatement = {
   revenueSources: Array<{ name: string; amount: number; percentOfSales: number; count: number }>;
   expenseCategories: StatementCategory[];
   expenseMethods: Array<{ name: string; amount: number; percentOfExpenses: number; count: number }>;
+  amountOwed?: number;
+  borrowedThisPeriod?: number;
+  isFinal?: boolean;
+  openBorrowings?: Array<{
+    id: string;
+    lender: string;
+    storeName: string;
+    amount: number;
+    amountPaid: number;
+    amountOwed: number;
+    borrowedDate: string;
+  }>;
 };
 
 function escapeXml(value: string | number) {
@@ -59,14 +72,24 @@ function pct(value: number) {
 function statementDate(value?: string | Date) {
   if (!value) return '—';
   const date = new Date(value);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${month}/${day}/${date.getFullYear()}`;
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: APP_TIMEZONE,
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+  }).formatToParts(date);
+  const read = (type: string) => parts.find((part) => part.type === type)?.value || '';
+  return `${read('month')}/${read('day')}/${read('year')}`;
 }
 
 function longDate(value?: string | Date) {
   if (!value) return '';
-  return new Date(value).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return new Date(value).toLocaleDateString('en-US', {
+    timeZone: APP_TIMEZONE,
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
 function tableRows(rows: Array<Array<string | number>>, options?: { total?: boolean }) {
@@ -205,10 +228,14 @@ export function exportIncomeExpenseStatementPdf(statement: IncomeExpenseStatemen
           <header class="header">
             <p class="brand">LOUISIANA'S HOT CHICKEN</p>
             <p class="title">Income &amp; Expense Statement | ${escapeXml(period)}</p>
-            <p class="badge">MANAGEMENT FINANCIAL STATEMENT</p>
+            <p class="badge">${statement.isFinal === false ? 'OPEN — MONEY STILL OWED' : 'FINAL MANAGEMENT FINANCIAL STATEMENT'}</p>
           </header>
           <h2>Executive Financial Summary</h2>
-          <p class="lede">${escapeXml(storeLabel)} · Prepared from recorded sales and expenses in this period.</p>
+          <p class="lede">${escapeXml(storeLabel)} · ${
+            statement.isFinal === false
+              ? `Summary stays open until borrowed money is paid off. Still owed: ${money(statement.amountOwed || 0)}.`
+              : 'Prepared from recorded sales and expenses in this period.'
+          }</p>
           <div class="kpis">
             <div class="kpi"><span>TOTAL SALES</span><strong>${escapeXml(money(statement.totalSales))}</strong></div>
             <div class="kpi"><span>TOTAL EXPENSES</span><strong>${escapeXml(money(statement.totalExpenses))}</strong></div>
@@ -242,7 +269,32 @@ export function exportIncomeExpenseStatementPdf(statement: IncomeExpenseStatemen
             <span>Less: Total Expenses (${escapeXml(money(statement.totalExpenses))})</span>
             <span>Estimated Operating Profit ${escapeXml(money(statement.operatingProfit))}</span>
           </div>
-          <p class="note">Statement basis: Sales are shown as gross receipts by payment method. Expense categories and payment methods come from recorded expenses. Prime cost is food cost plus payroll when those categories exist. This is an internal operating statement and may require accountant adjustments for sales tax, accrual timing, depreciation, owner draws, refunds, chargebacks, or outstanding deposits.</p>
+          ${
+            statement.isFinal === false
+              ? `
+          <h2>Money still owed</h2>
+          <p class="lede">This summary is not final until these borrowed amounts are paid off.</p>
+          <table>
+            <thead><tr><th>Borrowed from</th><th>Store</th><th class="num">Borrowed</th><th class="num">Paid</th><th class="num">Still owed</th></tr></thead>
+            <tbody>${tableRows(
+              [
+                ...(statement.openBorrowings || []).map((row) => [
+                  row.lender,
+                  row.storeName || storeLabel,
+                  money(row.amount),
+                  money(row.amountPaid),
+                  money(row.amountOwed),
+                ]),
+                ['TOTAL STILL OWED', '', '', '', money(statement.amountOwed || 0)],
+              ],
+              { total: true }
+            )}</tbody>
+          </table>`
+              : ''
+          }
+          <p class="note">Statement basis: Sales are shown as gross receipts by payment method. Expense categories and payment methods come from recorded expenses. Prime cost is food cost plus payroll when those categories exist. This is an internal operating statement and may require accountant adjustments for sales tax, accrual timing, depreciation, owner draws, refunds, chargebacks, or outstanding deposits.${
+            statement.isFinal === false ? ' Outstanding borrowed money keeps this summary open until it is paid off.' : ''
+          }</p>
         </section>
 
         <section class="page">
@@ -289,7 +341,7 @@ export function exportIncomeExpenseStatementPdf(statement: IncomeExpenseStatemen
           <h2>Detailed Expense Schedule</h2>
           <p class="lede">All ${statement.expenseCount} expenses, grouped by category. Percentages are calculated against total sales of ${escapeXml(money(statement.totalSales))}.</p>
           ${schedule || '<p class="note">No expenses recorded for this period.</p>'}
-          <p class="note">Management note: This statement is prepared from figures in the Louisiana Hot Chicken admin platform. It is an internal operating statement and may require accountant adjustments.</p>
+          <p class="note">Management note: This statement is prepared from figures in the Louisiana Hot Chicken platform. It is an internal operating statement and may require accountant adjustments.</p>
         </section>
         <script>window.onload = function () { window.print(); }<\/script>
       </body>

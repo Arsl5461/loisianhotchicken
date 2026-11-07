@@ -219,14 +219,17 @@ async function seed() {
         orderSeq += 1;
 
         if (dayOffset % 3 === storeIndex) {
+          const expenseAmount = Number(randomBetween(120, 1800).toFixed(2));
+          const expenseMethod = pick(['CASH', 'CARD', 'ONLINE']);
           expenses.push({
             organizationId: organization._id,
             storeId: store._id,
             title: pick(['Chicken supply', 'Hourly payroll', 'Booth rent', 'Utility bill', 'Local ads']),
             description: 'Seeded operating expense',
             category: pick(['INGREDIENTS', 'SALARY', 'RENT', 'ELECTRICITY', 'MARKETING', 'MAINTENANCE']),
-            amount: Number(randomBetween(120, 1800).toFixed(2)),
-            paymentMethod: pick(['CASH', 'CARD', 'ONLINE']),
+            amount: expenseAmount,
+            paymentMethod: expenseMethod,
+            payments: [{ method: expenseMethod, amount: expenseAmount }],
             expenseDate: date,
             createdBy: admin._id,
           });

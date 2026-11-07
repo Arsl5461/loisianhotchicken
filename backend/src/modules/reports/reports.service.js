@@ -1,6 +1,6 @@
 const dashboardService = require('../dashboard/dashboard.service');
 const dashboardRepository = require('../dashboard/dashboard.repository');
-const { resolveDateRange } = require('../../utils/dateHelper');
+const { monthBounds, resolveDateRange } = require('../../utils/dateHelper');
 
 async function profitLoss(auth, query) {
   const overview = await dashboardService.getOverview(auth, query);
@@ -27,15 +27,6 @@ async function storeComparison(auth, query) {
     stores: overview.storePerformance,
     ranking: overview.storePerformance.slice(0, 5),
   };
-}
-
-function monthBounds(month) {
-  const now = new Date();
-  const value = typeof month === 'string' && /^\d{4}-\d{2}$/.test(month) ? month : `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  const [year, monthIndex] = value.split('-').map(Number);
-  const start = new Date(year, monthIndex - 1, 1, 0, 0, 0, 0);
-  const end = new Date(year, monthIndex, 0, 23, 59, 59, 999);
-  return { month: value, start, end };
 }
 
 async function tenderTypes(auth, query) {

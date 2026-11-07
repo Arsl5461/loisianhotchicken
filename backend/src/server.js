@@ -2,7 +2,9 @@ const env = require('./config/environment');
 const logger = require('./config/logger');
 const { connectDatabase } = require('./config/database');
 const { normalizePaymentMethodNames } = require('./database/migrations/normalizePaymentMethods');
+const { backfillExpensePayments } = require('./database/migrations/backfillExpensePayments');
 const { ensureExpenseCategories } = require('./database/migrations/ensureExpenseCategories');
+const { normalizeBusinessDates } = require('./database/migrations/normalizeBusinessDates');
 const { syncSystemRoles } = require('./database/migrations/syncSystemRoles');
 const app = require('./app');
 
@@ -10,6 +12,8 @@ async function start() {
   await connectDatabase();
   await syncSystemRoles();
   await normalizePaymentMethodNames();
+  await backfillExpensePayments();
+  await normalizeBusinessDates();
   await ensureExpenseCategories();
   const server = app.listen(env.port, '0.0.0.0', () => {
     logger.info(`${env.appName} listening on http://0.0.0.0:${env.port}`);

@@ -14,6 +14,50 @@ async function findByEmail(email) {
     .populate(storePopulate);
 }
 
+async function findByEmailForOtp(email) {
+  return User.findOne({ email: email.toLowerCase() })
+    .select('+loginOtpHash +loginOtpExpires +loginOtpChallenge')
+    .populate('roleId')
+    .populate(storePopulate);
+}
+
+async function findByEmailForReset(email) {
+  return User.findOne({ email: email.toLowerCase() }).select(
+    '+password +passwordResetTokenHash +passwordResetExpires'
+  );
+}
+
+async function savePasswordReset(userId, { hash, expires }) {
+  return User.findByIdAndUpdate(userId, {
+    passwordResetTokenHash: hash,
+    passwordResetExpires: expires,
+  });
+}
+
+async function clearPasswordReset(userId) {
+  return User.findByIdAndUpdate(userId, {
+    $unset: { passwordResetTokenHash: 1, passwordResetExpires: 1 },
+  });
+}
+
+async function findByIdWithPassword(id) {
+  return User.findById(id).select('+password');
+}
+
+async function saveLoginOtp(userId, { hash, expires, challengeId }) {
+  return User.findByIdAndUpdate(userId, {
+    loginOtpHash: hash,
+    loginOtpExpires: expires,
+    loginOtpChallenge: challengeId,
+  });
+}
+
+async function clearLoginOtp(userId) {
+  return User.findByIdAndUpdate(userId, {
+    $unset: { loginOtpHash: 1, loginOtpExpires: 1, loginOtpChallenge: 1 },
+  });
+}
+
 async function findByIdForAuth(id) {
   return User.findById(id)
     .select('+refreshTokenHash')
@@ -36,8 +80,15 @@ async function compareRefreshHash(token, hash) {
 
 module.exports = {
   findByEmail,
+  findByEmailForOtp,
+  findByIdWithPassword,
   findByIdForAuth,
   saveRefreshToken,
   clearRefreshToken,
   compareRefreshHash,
+  findByEmailForReset,
+  savePasswordReset,
+  clearPasswordReset,
+  saveLoginOtp,
+  clearLoginOtp,
 };

@@ -20,7 +20,7 @@ export function AuthLayout() {
             <img src={logo} alt="Louisiana Hot Chicken" className="h-12 w-12 rounded-2xl object-cover" />
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-red">Louisiana's</p>
-              <p className="font-semibold">Hot Chicken Admin</p>
+              <p className="font-semibold">Hot Chicken</p>
             </div>
           </div>
           <Suspense

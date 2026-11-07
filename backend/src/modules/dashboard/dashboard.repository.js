@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { Sale, Expense, Order, Store, PaymentMethod } = require('../../database/models');
+const { Sale, Expense, Order, Store, PaymentMethod, Borrowing } = require('../../database/models');
 const { scopedStoreFilter } = require('../../middleware/storeAccess.middleware');
-const { dateTruncUnit } = require('../../utils/dateHelper');
+const { APP_TIMEZONE, dateTruncUnit } = require('../../utils/dateHelper');
 
 function toObjectId(id) {
   return new mongoose.Types.ObjectId(id);
@@ -30,6 +30,7 @@ function periodGroup(dateField, groupBy) {
     $dateTrunc: {
       date: `$${dateField}`,
       unit: dateTruncUnit(groupBy),
+      timezone: APP_TIMEZONE,
     },
   };
 }
@@ -296,6 +297,21 @@ function money(value) {
   return Number((value || 0).toFixed(2));
 }
 
+function expensePaymentLines(expense) {
+  if (Array.isArray(expense.payments) && expense.payments.length) {
+    return expense.payments.map((line) => ({
+      method: line.method || 'Unspecified',
+      amount: Number(line.amount) || 0,
+    }));
+  }
+  return [
+    {
+      method: expense.paymentMethod || 'Unspecified',
+      amount: Number(expense.amount) || 0,
+    },
+  ];
+}
+
 function percent(part, whole) {
   return whole ? Number(((part / whole) * 100).toFixed(2)) : 0;
 }
@@ -343,24 +359,29 @@ async function aggregateIncomeExpenseStatement(auth, { storeId, start, end }) {
 
   expenses.forEach((expense) => {
     const category = expense.category || 'Uncategorized';
-    const method = expense.paymentMethod || 'Unspecified';
+    const payments = expensePaymentLines(expense);
+    const methodLabel = payments
+      .map((line) => (payments.length > 1 ? `${line.method} ${money(line.amount)}` : line.method))
+      .join(' + ');
     const currentCategory = categoryMap.get(category) || { name: category, amount: 0, count: 0, items: [] };
     currentCategory.amount += expense.amount;
     currentCategory.count += 1;
     currentCategory.items.push({
       date: expense.expenseDate,
       payee: expense.title,
-      paymentMethod: method,
+      paymentMethod: methodLabel,
       description: expense.description || '',
       amount: money(expense.amount),
       percentOfSales: percent(expense.amount, totalSales),
     });
     categoryMap.set(category, currentCategory);
 
-    const currentMethod = methodMap.get(method) || { name: method, amount: 0, count: 0 };
-    currentMethod.amount += expense.amount;
-    currentMethod.count += 1;
-    methodMap.set(method, currentMethod);
+    payments.forEach((line) => {
+      const currentMethod = methodMap.get(line.method) || { name: line.method, amount: 0, count: 0 };
+      currentMethod.amount += line.amount;
+      currentMethod.count += 1;
+      methodMap.set(line.method, currentMethod);
+    });
   });
 
   const expenseCategories = Array.from(categoryMap.values())
@@ -400,12 +421,47 @@ async function aggregateIncomeExpenseStatement(auth, { storeId, start, end }) {
   );
   const primeCost = money(foodCost + payroll);
 
+  const borrowingScope = {
+    organizationId: toObjectId(auth.organizationId),
+    ...scopedStoreFilter(auth, storeId),
+  };
+  const [openBorrowings, periodBorrowings] = await Promise.all([
+    Borrowing.find({
+      ...borrowingScope,
+      status: 'OPEN',
+      amountOwed: { $gt: 0 },
+      borrowedDate: { $lte: end },
+    })
+      .populate('storeId', 'name storeCode')
+      .sort({ borrowedDate: 1 })
+      .lean(),
+    Borrowing.find({
+      ...borrowingScope,
+      borrowedDate: { $gte: start, $lte: end },
+    }).lean(),
+  ]);
+
+  const amountOwed = money(openBorrowings.reduce((sum, row) => sum + (row.amountOwed || 0), 0));
+  const borrowedThisPeriod = money(periodBorrowings.reduce((sum, row) => sum + (row.amount || 0), 0));
+
   return {
     totalSales,
     totalExpenses,
     operatingProfit,
     profitMargin,
     expenseCount: expenses.length,
+    amountOwed,
+    borrowedThisPeriod,
+    isFinal: amountOwed < 0.01,
+    openBorrowings: openBorrowings.map((row) => ({
+      id: String(row._id),
+      lender: row.lender,
+      storeName: row.storeId?.name || '',
+      amount: money(row.amount),
+      amountPaid: money(row.amountPaid),
+      amountOwed: money(row.amountOwed),
+      borrowedDate: row.borrowedDate,
+    })),
     ratios: {
       foodCost: percent(foodCost, totalSales),
       payroll: percent(payroll, totalSales),

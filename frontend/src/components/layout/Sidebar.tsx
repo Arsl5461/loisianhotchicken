@@ -31,7 +31,9 @@ const NAV = [
     items: [
       { to: '/stores', label: 'Stores', icon: Store, permission: PERMISSIONS.STORES_READ },
       { to: '/sales', label: 'Sales Income', icon: Receipt, permission: PERMISSIONS.SALES_READ },
+      { to: '/sale-categories', label: 'Sale Category', icon: Tags, permission: PERMISSIONS.SALES_READ },
       { to: '/expenses', label: 'Expenses', icon: Wallet, permission: PERMISSIONS.EXPENSES_READ },
+      { to: '/money-borrowed', label: 'Money borrowed', icon: Banknote, permission: PERMISSIONS.EXPENSES_READ },
       { to: '/expense-categories', label: 'Expense Category', icon: Tags, permission: PERMISSIONS.EXPENSES_READ },
       { to: '/payment-methods', label: 'Payment Method', icon: CreditCard, permission: PERMISSIONS.EXPENSES_READ },
     ],
@@ -45,7 +47,7 @@ const NAV = [
     ],
   },
   {
-    label: 'Administration',
+    label: 'Team',
     items: [
       { to: '/users', label: 'Users', icon: Users, permission: PERMISSIONS.USERS_READ },
       { to: '/roles', label: 'Roles & Permissions', icon: Shield, permission: PERMISSIONS.ROLES_READ },
@@ -97,7 +99,7 @@ export function Sidebar({
           <SidebarNavSkeleton collapsed={collapsed} />
         ) : (
           NAV.map((group) => {
-            if (group.label === 'Administration' && !isSuperAdmin) return null;
+            if (group.label === 'Team' && !isSuperAdmin) return null;
             const items = group.items.filter((item) => can(item.permission));
             if (!items.length) return null;
             return (

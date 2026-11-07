@@ -30,7 +30,7 @@ npm run dev
 
 Default Super Admin:
 
-- Email: `admin@louisianahotchicken.com`
+- Email: `Louisianashotchicken@gmail.com`
 - Password: `ChangeMeNow!123`
 
 API: `http://localhost:5000/api/v1`  

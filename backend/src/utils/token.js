@@ -47,6 +47,23 @@ function refreshCookieOptions() {
   };
 }
 
+function clearRefreshCookieOptions() {
+  return {
+    httpOnly: true,
+    secure: env.cookie.secure,
+    sameSite: env.cookie.sameSite,
+    path: '/api/v1/auth',
+  };
+}
+
+function hashesEqual(left, right) {
+  if (!left || !right) return false;
+  const a = Buffer.from(String(left));
+  const b = Buffer.from(String(right));
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
+
 module.exports = {
   signAccessToken,
   signRefreshToken,
@@ -54,4 +71,6 @@ module.exports = {
   hashToken,
   hashResetToken,
   refreshCookieOptions,
+  clearRefreshCookieOptions,
+  hashesEqual,
 };
