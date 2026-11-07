@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/permissions.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/display.dart';
 import '../../../../core/widgets/admin_widgets.dart';
 import '../../../auth/presentation/providers/auth_notifier.dart';
 
@@ -21,14 +22,14 @@ class MoreScreen extends ConsumerWidget {
       if (can(Permissions.reportsRead)) _Item('Profit & Loss', 'Net profit by period', Icons.pie_chart_outline, '/profit-loss'),
       if (can(Permissions.reportsRead)) _Item('Reports', 'Income and expense statement', Icons.bar_chart_rounded, '/reports'),
       if (can(Permissions.reportsRead)) _Item('Tender types', 'Collections by payment method', Icons.payments_outlined, '/tender-types'),
-      if (user?.canManageUsers == true) _Item('Users', 'Create and assign admin users', Icons.people_outline, '/users'),
+      if (user?.canManageUsers == true) _Item('Users', 'Create and assign users', Icons.people_outline, '/users'),
       if (user?.canManageRoles == true) _Item('Roles & permissions', 'Permission matrix', Icons.shield_outlined, '/roles'),
       if (can(Permissions.settingsRead)) _Item('Settings', 'Organization profile', Icons.settings_outlined, '/settings'),
     ];
 
     return AdminScaffold(
       title: 'More',
-      subtitle: user?.role.name,
+      subtitle: displayRoleName(user?.role.name),
       actions: [
         IconButton(
           onPressed: () => ref.read(authNotifierProvider.notifier).logout(),
@@ -48,7 +49,7 @@ class MoreScreen extends ConsumerWidget {
                   style: const TextStyle(color: AppColors.brandRed, fontWeight: FontWeight.w800),
                 ),
               ),
-              title: Text(user?.name ?? 'Administrator', style: const TextStyle(fontWeight: FontWeight.w700)),
+              title: Text(user?.name ?? 'User', style: const TextStyle(fontWeight: FontWeight.w700)),
               subtitle: Text(user?.email ?? ''),
             ),
           ),

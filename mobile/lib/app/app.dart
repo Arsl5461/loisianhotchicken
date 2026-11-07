@@ -11,7 +11,7 @@ class LhcAdminApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
     return MaterialApp.router(
-      title: 'Louisiana Hot Chicken Admin',
+      title: 'LHC',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
       routerConfig: router,

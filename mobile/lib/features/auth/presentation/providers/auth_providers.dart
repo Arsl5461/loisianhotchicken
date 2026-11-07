@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/constants/app_config.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/storage/session_storage.dart';
 import '../../../../core/storage/token_storage.dart';
@@ -23,6 +24,7 @@ final sessionStorageProvider = Provider<SessionStorage>((ref) {
 final apiClientProvider = Provider<ApiClient>((ref) {
   return ApiClient(
     tokenStorage: ref.watch(tokenStorageProvider),
+    baseUrl: AppConfig.apiBaseUrl,
     storeIdReader: () => ref.read(selectedStoreIdProvider),
     onSessionExpired: () async {
       await ref.read(tokenStorageProvider).clear();

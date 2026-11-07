@@ -66,7 +66,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text('Sign in to Admin', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800)),
+                    const Text('Sign in', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800)),
                     const SizedBox(height: 8),
                     const Text(
                       'Use your organization credentials to manage stores, sales, and P&L.',

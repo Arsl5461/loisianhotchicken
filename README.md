@@ -40,8 +40,10 @@ Mobile (Flutter iOS/Android): see `mobile/README.md`.
 
 ```bash
 cd mobile
-flutter run --dart-define=API_BASE_URL=http://127.0.0.1:5050/api/v1
+flutter run
 ```
+
+Set the mobile API in `mobile/lib/core/constants/app_config.dart` (`ApiEnvironment.live` or `ApiEnvironment.local`).
 
 ## Serve the frontend from the API
 

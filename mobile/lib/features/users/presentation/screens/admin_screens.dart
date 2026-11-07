@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/display.dart';
 import '../../../../core/widgets/admin_widgets.dart';
 import '../../../../core/widgets/brand_logo.dart';
 import '../../../stores/presentation/providers/store_context_provider.dart';
@@ -49,9 +50,10 @@ class UsersScreen extends ConsumerWidget {
                 separatorBuilder: (context, index) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   final user = page.items[index];
+                  final role = displayRoleName(user.roleName);
                   return AdminListTile(
                     title: user.name,
-                    subtitle: '${user.email}\n${user.roleName ?? 'No role'} · ${user.storeNames.join(', ')}',
+                    subtitle: '${user.email}\n${role.isEmpty ? 'No role' : role} · ${user.storeNames.join(', ')}',
                     trailing: IconButton(icon: const Icon(Icons.edit_outlined), onPressed: () => _edit(context, ref, user)),
                   );
                 },
@@ -98,7 +100,7 @@ class UsersScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
                       initialValue: roleId,
-                      items: roles.map((role) => DropdownMenuItem(value: role.id, child: Text(role.name))).toList(),
+                      items: roles.map((role) => DropdownMenuItem(value: role.id, child: Text(displayRoleName(role.name)))).toList(),
                       onChanged: (value) => setState(() => roleId = value),
                       decoration: const InputDecoration(labelText: 'Role'),
                     ),
@@ -183,7 +185,7 @@ class RolesScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(role.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                      Text(displayRoleName(role.name), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
                       if (role.description != null) Text(role.description!, style: const TextStyle(color: AppColors.muted)),
                       const SizedBox(height: 8),
                       ...catalog.map((group) {
