@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Three dots with adjustable spacing -->
+<svg 
+    width="800px" 
+    height="800px" 
+    viewBox="0 0 24 24" 
+    xmlns="http://www.w3.org/2000/svg"
+>
+
+    <!-- LEFT DOT -->
+    <!-- Change cx (X position) to move left/right -->
+    <!-- Smaller value = move LEFT -->
+    <circle cx="3" cy="12" r="2" fill="#000000"/>
+
+    <!-- MIDDLE DOT -->
+    <!-- Usually stays centered -->
+    <circle cx="12" cy="12" r="2" fill="#000000"/>
+
+    <!-- RIGHT DOT -->
+    <!-- Larger value = move RIGHT -->
+    <circle cx="21" cy="12" r="2" fill="#000000"/>
+
+</svg>

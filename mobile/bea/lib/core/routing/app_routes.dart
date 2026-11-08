@@ -1,0 +1,179 @@
+abstract class Routes {
+  static const SPLASH = '/splash';
+  static const HOME = '/home';
+  static const BUMBLE_HOME = '/bumble-home';
+  static const MATCHES = '/matches';
+  static const TRAVEL = '/travel';
+  static const CHOOSE_LOCATION = '/choose-location';
+  static const MESSAGES = '/messages';
+  static const PROFILE = '/profile';
+  static const OPTION_SCREEN = '/option-screen';
+  static const SIGNUP = '/signup';
+  static const LOGIN = '/login';
+  static const PHONE_VERIFICATION = '/phone-verification';
+  static const OTP_VERIFICATION = '/otp-verification/:phoneNumber';
+  static const SIGNIN_OTP = '/signin-otp/:phoneNumber';
+  static const ACCOUNT_SETUP = '/account-setup';
+  static const LOCATION_SETUP = '/location-setup';
+  static const NOTIFICATION_SETUP = '/notification-setup';
+  static const TERMS_AND_GUIDELINES = '/terms-and-guidelines';
+  static const EMAIL = '/email';
+  static const NAME_ASKING = '/name-asking';
+  static const GENDER_SELECTION = '/gender-selection';
+  static const AGE_PICKER = '/age-picker';
+  static const HOMETOWN = '/hometown';
+  static const HEIGHT_PICKER = '/height-picker';
+  static const ADDRESS_PICKER = '/address-picker';
+  static const RELIGIOUS_VIEWS = '/religious-views';
+  static const LANGUAGE_SELECTION = '/language-selection';
+  static const ETHNICITY_SELECTION = '/ethnicity-selection';
+  static const EDUCATION_SELECTION = '/education-selection';
+  static const JOB_SELECTION = '/job-selection';
+  static const SOCIAL_MEDIA = '/social-media';
+  static const LIFESTYLE_HABITS = '/lifestyle-habits';
+  static const POLITICS = '/politics';
+  static const ICEBREAKERS = '/icebreakers';
+  static const PROMPT_SELECTION = '/prompt-selection';
+  static const PROMPT_ANSWER = '/prompt-answer';
+  static const IMAGE_SELECTION = '/image-selection';
+  static const PROFILE_COMPLETE = '/profile-complete';
+  static const SEND_LIKE = '/send-like';
+  static const REPLY_PROMPT = '/reply-prompt';
+  static const CHAT = '/chat';
+  static const HIDDEN_CHATS = '/hidden-chats';
+
+  // Travel Routes
+  static const TRAVEL_PREFERENCES = '/travel-preferences';
+  static const NEW_TRAVEL = '/new-travel';
+  static const LOCATIONS_MODAL = '/locations-modal';
+
+  static const TRAVEL_POST = '/travel-post';
+  static const TRAVEL_POSTS_VIEWER = '/travel-posts-viewer';
+  static const TRAVEL_LOCATION_PICKER = '/travel-location-picker';
+  static const TRAVEL_STORY_PICKER = '/travel-story-picker';
+  static const STORY_PROFILE = '/story-profile';
+  static const CREATE_POST = '/create-post';
+  static const POST_EDITOR = '/post-editor';
+  static const POST_IMAGE_EDITOR = '/post-image-editor';
+
+  // Edit Profile Routes
+  static const EDIT_PROFILE = '/edit-profile';
+  static const EDIT_NAME = '/edit-name';
+  static const SET_LOCATION = '/set-location';
+  static const EDIT_HOMETOWN = '/edit-hometown';
+  static const EDIT_LANGUAGES = '/edit-languages';
+  static const EDIT_ETHNICITY = '/edit-ethnicity';
+  static const EDIT_LOCATION = '/edit-location';
+  static const EDIT_WORK = '/edit-work';
+  static const EDIT_BIRTHDAY = '/edit-birthday';
+  static const EDIT_HEIGHT = '/edit-height';
+  static const EDIT_EDUCATION = '/edit-education';
+  static const EDIT_RELIGION = '/edit-religion';
+  static const EDIT_GENDER = '/edit-gender';
+  static const EDIT_POLITICS = '/edit-politics';
+
+  // Preference Routes
+  static const PREFERENCE_MAIN = '/prefernce-main';
+  static const HEIGHT_PREFERENCE = '/height-preference';
+  static const POLITICS_PREFERENCE = '/politics-preference';
+  static const RELIGIOUS_PREFERENCE = '/religious-preference';
+  static const LANGUAGE_PREFERENCE = '/language-preference';
+  static const ETHNICITY_PREFERENCE = '/ethnicity-preference';
+  static const EDUCATION_PREFERENCE = '/education-preference';
+  static const GENDER_PREFERENCE = '/gender-preference';
+  static const LOCATION_PREFERENCE = '/location-preference';
+
+  // Settings Routes
+  static const NOTIFICATIONS_PAGE = '/NotificationsPage';
+  static const LOGIN_METHODS = '/login-methods';
+  static const NOTIFICATION_IN_APP = '/notificationinapp';
+  static const CONTACT_US = '/contactus';
+  static const INVITE_FRIENDS = '/invite-friends';
+  static const REFERRAL_REWARDS = '/referral-rewards';
+  static const STRICTLY_NECESSARY = '/strictly-necessary';
+  static const ASK_GENERAL_QUESTION = '/ask-general-question';
+  static const CONTACT_AND_FAQ = '/contact-and-faq';
+  static const FAQ = '/faq';
+  static const PRIVACY_SETTINGS = '/privacy-settings';
+  static const PREMIUM_UPGRADE = '/premium-upgrade';
+  static const SECURITY_AND_PRIVACY = '/security-and-privacy';
+  static const BILLING = '/billing';
+  static const SUGGESTIONS = '/suggestions';
+  static const SUPPORT = '/support';
+  // static const NOTIFICATION = '/notification';
+  static const SETTINGS = '/settings';
+  static const TERMS_OF_SERVICE = '/terms-of-service';
+  static const PRIVACY_POLICY_PAGE = '/privacy-policy';
+  static const ADVERTISING_INFO = '/advertising';
+
+  // Bubba part 3 - Account Settings
+  static const BUBBA_MEMBERSHIP = '/bubba/membership';
+  static const BUBBA_CHANGE_PLAN = '/bubba/change-plan';
+  static const BUBBA_PLAN_CONFIRM = '/bubba/plan-confirm';
+  static const BUBBA_CANCEL_SUBSCRIPTION = '/bubba/cancel-subscription';
+  static const BUBBA_PURCHASE_HISTORY = '/bubba/purchase-history';
+  static const BUBBA_ORDER_DETAILS = '/bubba/order-details';
+  static const BUBBA_PAYMENT_METHODS = '/bubba/payment-methods';
+  static const BUBBA_CARD_DETAIL = '/bubba/card-detail';
+  static const BUBBA_ADD_CARD = '/bubba/add-card';
+  static const BUBBA_BILLING_ADDRESS = '/bubba/billing-address';
+  static const BUBBA_INVITATION_LINK = '/bubba/invitation-link';
+  static const BUBBA_INVITE_MODAL = '/bubba/invite-friends';
+  static const BUBBA_PAUSE_ACCOUNT = '/bubba/pause-account';
+  static const BUBBA_PAUSE_CONFIRM = '/bubba/pause-confirm';
+  static const BUBBA_DELETE_ACCOUNT = '/bubba/delete-account';
+  static const BUBBA_DELETE_CONFIRM = '/bubba/delete-confirm';
+  static const BUBBA_LOGGED_OUT_LANDING = '/bubba/landing';
+  static const BUBBA_DELETED_LANDING = '/bubba/landing-deleted';
+  static const BUBBA_PAUSED_LANDING = '/bubba/landing-paused';
+  static const BUBBA_TECHNICAL_ISSUE = '/bubba/technical-issue';
+  static const BUBBA_REPORT_SUBMITTED = '/bubba/report-submitted';
+  static const BUBBA_SAFETY_CENTRE = '/bubba/safety-centre';
+  static const BUBBA_SAFETY_TIPS = '/bubba/safety-tips';
+  static const BUBBA_PROTECT_INFORMATION = '/bubba/protect-information';
+  static const BUBBA_EMERGENCY_RESOURCES = '/bubba/emergency-resources';
+  static const BUBBA_LEGAL = '/bubba/legal';
+  static const BUBBA_COMMUNITY_GUIDELINES = '/bubba/community-guidelines';
+  static const BUBBA_COOKIE_POLICY = '/bubba/cookie-policy';
+  static const BUBBA_LICENSES = '/bubba/licenses';
+  static const BUBBA_FAQ_EXPANDED = '/bubba/faq-expanded';
+  static const BUBBA_CONTACT_SUPPORT = '/bubba/contact-support';
+
+  // Bubba part 4 - Dating Preferences
+  static const BUBBA_PREFS_HUB = '/bubba/preferences';
+  static const BUBBA_PREFS_SUMMARY = '/bubba/preferences/summary';
+  static const BUBBA_PREFS_CHOICE = '/bubba/preferences/choice';
+  static const BUBBA_PREFS_MULTI = '/bubba/preferences/multi';
+  static const BUBBA_PREFS_DISTANCE = '/bubba/preferences/distance';
+  static const BUBBA_PREFS_ADJUST_DISTANCE = '/bubba/preferences/adjust-distance';
+  static const BUBBA_PREFS_AGE_RANGE = '/bubba/preferences/age-range';
+  static const BUBBA_PREFS_AGE_SLIDER = '/bubba/preferences/age-slider';
+  static const BUBBA_PREFS_HEIGHT = '/bubba/preferences/height';
+  static const BUBBA_PREFS_LOOKING_FOR = '/bubba/preferences/looking-for';
+  static const BUBBA_PREFS_DESTINATION_SHEET = '/bubba/preferences/destination-sheet';
+  static const BUBBA_PREFS_CHOOSE_DESTINATION = '/bubba/preferences/choose-destination';
+  static const BUBBA_PREFS_CONFIRM_DESTINATION = '/bubba/preferences/confirm-destination';
+  static const BUBBA_PREFS_CHOOSE_LOCATION = '/bubba/preferences/choose-location';
+  static const BUBBA_PREFS_WELCOME_CITY = '/bubba/preferences/welcome-city';
+
+  // Bubba part 5 - Security and Privacy Settings
+  static const BUBBA_SECURITY_PRIVACY = '/bubba/security-privacy';
+  static const BUBBA_CONNECTED_ACCOUNTS = '/bubba/security/connected-accounts';
+  static const BUBBA_FACE_ID = '/bubba/security/face-id';
+  static const BUBBA_BLOCKED_USERS = '/bubba/security/blocked-users';
+  static const BUBBA_CONFIRM_UNBLOCK = '/bubba/security/confirm-unblock';
+  static const BUBBA_PHONE_NUMBER = '/bubba/security/phone-number';
+  static const BUBBA_CHANGE_PHONE_NUMBER = '/bubba/security/change-phone-number';
+  static const BUBBA_ADD_RECOVERY_EMAIL = '/bubba/security/add-recovery-email';
+  static const BUBBA_RECOVERY_EMAIL = '/bubba/security/recovery-email';
+  static const BUBBA_CHANGE_EMAIL = '/bubba/security/change-email';
+  static const BUBBA_REMOVE_EMAIL = '/bubba/security/remove-email';
+  static const BUBBA_CONNECT_APPLE = '/bubba/security/connect-apple';
+  static const BUBBA_APPLE_ACCOUNT = '/bubba/security/apple-account';
+  static const BUBBA_DISCONNECT_APPLE = '/bubba/security/disconnect-apple';
+  static const BUBBA_PRIVACY_SETTINGS = '/bubba/security/privacy-settings';
+  static const BUBBA_PROFILE_VISIBILITY = '/bubba/security/profile-visibility';
+  static const BUBBA_LAST_ACTIVE_STATUS = '/bubba/security/last-active-status';
+  static const BUBBA_READ_RECEIPTS = '/bubba/security/read-receipts';
+  static const BUBBA_HIDE_FROM_CONTACTS = '/bubba/security/hide-from-contacts';
+}

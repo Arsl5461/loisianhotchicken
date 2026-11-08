@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="110" height="140" viewBox="0 0 55 70" fill="none">
+  <!-- Vertical -->
+  <path d="M27.5 5V65" stroke="#9A9A9A" stroke-width="5" stroke-linecap="round"/>
+  
+  <!-- Horizontal (longer + thicker) -->
+  <path d="M8 35H45" stroke="#9A9A9A" stroke-width="5" stroke-linecap="round"/>
+</svg>

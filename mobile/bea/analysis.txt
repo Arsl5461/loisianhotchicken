@@ -1,0 +1,523 @@
+Analyzing Oapp-Flutter-App...                                   
+
+   info • Parameter 'key' could be a super parameter • lib/core/animations/bottom_nav_animation.dart:47:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/core/animations/bottom_nav_animation.dart:50:3 • library_private_types_in_public_api
+   info • Parameter 'key' could be a super parameter • lib/core/animations/bottom_nav_animation.dart:120:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/core/animations/bottom_nav_animation.dart:128:3 • library_private_types_in_public_api
+   info • 'encryptedSharedPreferences' is deprecated and shouldn't be used. EncryptedSharedPreferences is deprecated and will be removed in v11. The Jetpack Security library is deprecated by Google. Your data will be automatically migrated to custom ciphers on first access. Remove this parameter - it will be ignored • lib/core/network/api_service.dart:17:5 • deprecated_member_use
+   info • The type of the right operand ('ConnectivityResult') isn't a subtype or a supertype of the left operand ('List<ConnectivityResult>') • lib/core/network/api_service.dart:63:31 • unrelated_type_equality_checks
+   info • Parameter 'key' could be a super parameter • lib/core/routing/app_pages.dart:116:9 • use_super_parameters
+   info • Statements in an if should be enclosed in a block • lib/core/routing/app_pages.dart:145:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/routing/app_pages.dart:147:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/routing/app_pages.dart:149:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/routing/app_pages.dart:151:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/routing/app_pages.dart:153:7 • curly_braces_in_flow_control_structures
+   info • 'textScaleFactor' is deprecated and shouldn't be used. Use textScaler instead. Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. This feature was deprecated after v3.12.0-2.0.pre • lib/core/utils/media_query.dart:49:39 • deprecated_member_use
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:79:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:81:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:83:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:85:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:87:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:103:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:105:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:107:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:109:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:111:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:345:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:347:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:349:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:351:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:353:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:355:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:441:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:443:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/utils/media_query.dart:445:7 • curly_braces_in_flow_control_structures
+   info • The imported package 'firebase_core' isn't a dependency of the importing package • lib/main.dart:1:8 • depend_on_referenced_packages
+   info • The prefix 'IO' isn't a lower_case_with_underscores identifier • lib/services/socket_service.dart:5:60 • library_prefixes
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:26:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:30:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:46:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:51:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:56:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:61:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:66:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:71:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:77:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:84:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:87:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:93:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/socket_service.dart:97:5 • avoid_print
+   info • The file name 'ReplyPromptScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/ReplyPromptScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/HomeScreen/ReplyPromptScreen.dart:12:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/view/HomeScreen/ReplyPromptScreen.dart:20:3 • library_private_types_in_public_api
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/ReplyPromptScreen.dart:80:43 • deprecated_member_use
+   info • The file name 'SendLikeScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/SendLikeScreen.dart:1:1 • file_names
+   info • The file name 'AboutCard.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/components/AboutCard.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/HomeScreen/components/AboutCard.dart:11:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/AboutCard.dart:57:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/AboutCard.dart:112:35 • deprecated_member_use
+   info • The file name 'DatingHeartButton.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/components/DatingHeartButton.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/HomeScreen/components/DatingHeartButton.dart:9:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/DatingHeartButton.dart:24:50 • deprecated_member_use
+   info • The file name 'ImagePreviewSlider.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/components/ImagePreviewSlider.dart:1:1 • file_names
+   info • The file name 'ImageViewerModal.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/components/ImageViewerModal.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/HomeScreen/components/ImageViewerModal.dart:11:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/view/HomeScreen/components/ImageViewerModal.dart:18:3 • library_private_types_in_public_api
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/HomeScreen/components/ImageViewerModal.dart:69:17 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/ImageViewerModal.dart:139:38 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/ImageViewerModal.dart:174:45 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/ImageViewerModal.dart:177:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/ImageViewerModal.dart:206:43 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/ImageViewerModal.dart:209:45 • deprecated_member_use
+   info • The file name 'PromptCard.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/components/PromptCard.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/HomeScreen/components/PromptCard.dart:8:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/PromptCard.dart:26:33 • deprecated_member_use
+   info • The file name 'SwipeFeedbackIcon.dart' isn't a lower_case_with_underscores identifier • lib/view/HomeScreen/components/SwipeFeedbackIcon.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/HomeScreen/components/SwipeFeedbackIcon.dart:11:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/SwipeFeedbackIcon.dart:38:34 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/components/SwipeFeedbackIcon.dart:42:39 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:141:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:143:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:150:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:159:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:164:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:166:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:173:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:182:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/HomeScreen/home_screen.dart:187:5 • avoid_print
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/home_screen.dart:386:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/HomeScreen/home_screen.dart:477:61 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/Matches/controller.dart:36:9 • avoid_print
+   info • Invalid use of a private type in a public API • lib/view/Matches/match_01.dart:14:3 • library_private_types_in_public_api
+   info • Statements in an if should be enclosed in a block • lib/view/Matches/match_01.dart:131:35 • curly_braces_in_flow_control_structures
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Matches/match_01.dart:324:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Matches/match_01.dart:488:35 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/Matches/match_01.dart:531:13 • sized_box_for_whitespace
+   info • Parameter 'key' could be a super parameter • lib/view/ProfileMaking/AddressPicker/address_picker.dart:11:9 • use_super_parameters
+   info • The private field _markers could be 'final' • lib/view/ProfileMaking/AddressPicker/address_picker.dart:20:15 • prefer_final_fields
+   info • The private field _currentPosition could be 'final' • lib/view/ProfileMaking/AddressPicker/address_picker.dart:21:10 • prefer_final_fields
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AddressPicker/address_picker.dart:33:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AddressPicker/address_picker.dart:41:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AddressPicker/address_picker.dart:70:5 • avoid_print
+   info • 'desiredAccuracy' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings • lib/view/ProfileMaking/AddressPicker/address_picker.dart:110:9 • deprecated_member_use
+   info • 'timeLimit' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings • lib/view/ProfileMaking/AddressPicker/address_picker.dart:111:9 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AddressPicker/address_picker.dart:131:7 • avoid_print
+   info • Don't use 'BuildContext's across async gaps • lib/view/ProfileMaking/AddressPicker/address_picker.dart:134:28 • use_build_context_synchronously
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AddressPicker/address_picker.dart:142:7 • avoid_print
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/ProfileMaking/AddressPicker/address_picker.dart:233:51 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AddressPicker/address_picker.dart:393:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AddressPicker/address_picker.dart:409:35 • avoid_print
+   info • The import of 'package:flutter/services.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/view/ProfileMaking/AgePicker/agepicker.dart:3:8 • unnecessary_import
+   info • Parameter 'key' could be a super parameter • lib/view/ProfileMaking/AgePicker/agepicker.dart:10:9 • use_super_parameters
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/ProfileMaking/AgePicker/agepicker.dart:90:28 • sized_box_for_whitespace
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AgePicker/agepicker.dart:136:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AgePicker/agepicker.dart:139:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/AgePicker/agepicker.dart:140:29 • avoid_print
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/ProfileMaking/AgePicker/agepicker.dart:176:12 • sized_box_for_whitespace
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/ProfileMaking/AgePicker/agepicker.dart:229:11 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/ProfileMaking/AgePicker/agepicker.dart:251:50 • deprecated_member_use
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/EducationSelection/education_selection.dart:13:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/EducationSelection/education_selection.dart:15:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/EducationSelection/education_selection.dart:161:27 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/EducationSelection/education_selection.dart:162:27 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/EthnicitySelection/ethnicity_selection.dart:11:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/EthnicitySelection/ethnicity_selection.dart:13:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/EthnicitySelection/ethnicity_selection.dart:180:25 • avoid_print
+   info • The file name 'GenderSelection.dart' isn't a lower_case_with_underscores identifier • lib/view/ProfileMaking/GenderSpecification/GenderSelection.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/ProfileMaking/GenderSpecification/GenderSelection.dart:14:9 • use_super_parameters
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/GenderSpecification/GenderSelection.dart:212:21 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/GenderSpecification/GenderSelection.dart:213:21 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/GenderSpecification/GenderSelection.dart:218:21 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/ProfileMaking/HeightPicker/height_picker.dart:13:9 • use_super_parameters
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/HeightPicker/height_picker.dart:87:21 • avoid_print
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/ProfileMaking/HeightPicker/height_picker.dart:105:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/ProfileMaking/HeightPicker/height_picker.dart:134:44 • deprecated_member_use
+   info • Statements in an if should be enclosed in a block • lib/view/ProfileMaking/HeightPicker/height_picker.dart:169:19 • curly_braces_in_flow_control_structures
+   info • Parameter 'key' could be a super parameter • lib/view/ProfileMaking/Hometown/hometown_screen.dart:15:9 • use_super_parameters
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/Hometown/hometown_screen.dart:104:21 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/Hometown/hometown_screen.dart:105:21 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/Icebreakers/icebreakers_screen.dart:14:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/Icebreakers/icebreakers_screen.dart:16:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/Icebreakers/icebreakers_screen.dart:111:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/Icebreakers/icebreakers_screen.dart:118:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/Icebreakers/icebreakers_screen.dart:172:29 • avoid_print
+   info • The file name 'ImageSelection.dart' isn't a lower_case_with_underscores identifier • lib/view/ProfileMaking/ImageSelection/ImageSelection.dart:1:1 • file_names
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/ImageSelection/ImageSelection.dart:15:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/ImageSelection/ImageSelection.dart:17:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/ImageSelection/ImageSelection.dart:237:41 • avoid_print
+   info • Don't use 'BuildContext's across async gaps • lib/view/ProfileMaking/ImageSelection/ImageSelection.dart:280:9 • use_build_context_synchronously
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/JobSelection/job_selection.dart:15:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/JobSelection/job_selection.dart:17:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/JobSelection/job_selection.dart:201:27 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/JobSelection/job_selection.dart:202:27 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/LanguageSelection/language_selection.dart:13:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/LanguageSelection/language_selection.dart:15:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/LanguageSelection/language_selection.dart:182:27 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/LifestyleHabits/lifestyle_habits.dart:14:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/LifestyleHabits/lifestyle_habits.dart:16:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/LifestyleHabits/lifestyle_habits.dart:201:27 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/LifestyleHabits/lifestyle_habits.dart:202:27 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/Name/name_asking.dart:10:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/Name/name_asking.dart:12:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/Name/name_asking.dart:81:27 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/Politics/politics_screen.dart:12:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/Politics/politics_screen.dart:14:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/Politics/politics_screen.dart:133:27 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/ProfileComplete/profile_complete.dart:8:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/ProfileComplete/profile_complete.dart:10:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/ProfileComplete/profile_complete.dart:149:19 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/ProfileMaking/PromptAnswer/prompt_answer_screen.dart:11:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/PromptAnswer/prompt_answer_screen.dart:14:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/PromptAnswer/prompt_answer_screen.dart:178:21 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/PromptSelection/prompt_selection_screen.dart:8:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/PromptSelection/prompt_selection_screen.dart:10:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/ReligiousViews/religious_views.dart:11:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/ReligiousViews/religious_views.dart:13:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/ReligiousViews/religious_views.dart:193:25 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/ProfileMaking/SocialMedia/social_media.dart:12:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/ProfileMaking/SocialMedia/social_media.dart:14:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/SocialMedia/social_media.dart:144:27 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/ProfileMaking/SocialMedia/social_media.dart:147:27 • avoid_print
+   info • The import of 'package:flutter/cupertino.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/view/ProfileMaking/profile_making_controller/controller.dart:4:8 • unnecessary_import
+   info • Statements in an if should be enclosed in a block • lib/view/ProfileMaking/profile_making_controller/controller.dart:254:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/view/ProfileMaking/profile_making_controller/controller.dart:256:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/view/ProfileMaking/profile_making_controller/controller.dart:258:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/view/ProfileMaking/profile_making_controller/controller.dart:260:7 • curly_braces_in_flow_control_structures
+   info • The file name 'SplashScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/SplashScreen/SplashScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/SplashScreen/SplashScreen.dart:10:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/SplashScreen/SplashScreen.dart:140:61 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/SplashScreen/SplashScreen.dart:165:67 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/SplashScreen/SplashScreen.dart:202:44 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/SplashScreen/SplashScreen.dart:215:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/choose_location_controller.dart:81:41 • deprecated_member_use
+   info • 'desiredAccuracy' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings • lib/view/Travel/choose_location_controller.dart:90:9 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/choose_location_controller.dart:135:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/choose_location_controller.dart:179:39 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/choose_location_controller.dart:191:37 • deprecated_member_use
+   info • Unnecessary instance of 'Container' • lib/view/Travel/choose_location_screen.dart:391:14 • avoid_unnecessary_containers
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/choose_location_screen.dart:422:63 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/choose_location_screen.dart:440:43 • deprecated_member_use
+   info • 'desiredAccuracy' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings • lib/view/Travel/location_picker_screen.dart:60:9 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/location_picker_screen.dart:216:45 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/location_picker_screen.dart:262:48 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/location_picker_screen.dart:267:51 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/location_picker_screen.dart:319:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/locations_modal_screen.dart:393:61 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/locations_modal_screen.dart:411:41 • deprecated_member_use
+   info • Unnecessary instance of 'Container' • lib/view/Travel/new_travel_screen.dart:173:14 • avoid_unnecessary_containers
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/new_travel_screen.dart:255:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/stories/Create_posts/post_editor_screen.dart:289:55 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/stories/components/image_carousel.dart:73:43 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/Travel/stories/components/image_carousel.dart:90:17 • avoid_print
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/stories/components/image_carousel.dart:94:41 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/stories/components/image_carousel.dart:95:44 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/stories/components/image_carousel.dart:154:38 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/stories/travel_story_picker_screen.dart:159:45 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/Travel/stories/travel_story_picker_screen.dart:274:39 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/auth/account_setup/account_setup.dart:7:9 • use_super_parameters
+   info • Don't invoke 'print' in production code • lib/view/auth/account_setup/account_setup.dart:82:31 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/auth/loaction picker/loaction_setup.dart:9:9 • use_super_parameters
+   info • 'desiredAccuracy' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings • lib/view/auth/loaction picker/loaction_setup.dart:66:9 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/auth/loaction picker/loaction_setup.dart:69:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/auth/login/controllers/login_controller.dart:111:7 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/auth/login/views/login_screen.dart:8:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/login/views/login_screen.dart:228:55 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/login/views/login_screen.dart:464:41 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/auth/notification_setup/notification_setup.dart:8:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/auth/optionscreen/optionscreen.dart:8:9 • use_super_parameters
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/auth/optionscreen/optionscreen.dart:59:22 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/optionscreen/optionscreen.dart:89:32 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/optionscreen/optionscreen.dart:90:32 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/optionscreen/optionscreen.dart:117:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/optionscreen/optionscreen.dart:132:43 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/optionscreen/optionscreen.dart:137:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/optionscreen/optionscreen.dart:156:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/optionscreen/optionscreen.dart:222:53 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/auth/otp_verification/views/otp_verification_screen.dart:9:9 • use_super_parameters
+   info • Unnecessary braces in a string interpolation • lib/view/auth/phoneVerification/controllers/phone_verification_controller.dart:102:29 • unnecessary_brace_in_string_interps
+   info • Parameter 'key' could be a super parameter • lib/view/auth/phoneVerification/views/phone_verification_screen.dart:8:9 • use_super_parameters
+   info • 'encryptedSharedPreferences' is deprecated and shouldn't be used. EncryptedSharedPreferences is deprecated and will be removed in v11. The Jetpack Security library is deprecated by Google. Your data will be automatically migrated to custom ciphers on first access. Remove this parameter - it will be ignored • lib/view/auth/signin_otp/controllers/otp_signin_controller.dart:91:5 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/auth/signin_otp/views/otp_signin_screen.dart:9:9 • use_super_parameters
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/auth/signup/email_screen.dart:9:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/auth/signup/email_screen.dart:11:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/view/auth/signup/email_screen.dart:123:25 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/auth/signup/signup.dart:9:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/auth/signup/signup.dart:97:51 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/auth/signup/signup.dart:240:35 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/auth/terms/terms_and_guidelines.dart:8:9 • use_super_parameters
+   info • Don't invoke 'print' in production code • lib/view/auth/terms/terms_and_guidelines.dart:123:19 • avoid_print
+   info • The file name 'Chatapp.dart' isn't a lower_case_with_underscores identifier • lib/view/messages/Chatapp.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/messages/Chatapp.dart:403:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/messages/Chatapp.dart:508:48 • deprecated_member_use
+   info • Invalid use of a private type in a public API • lib/view/messages/contact_list.dart:11:3 • library_private_types_in_public_api
+   info • Unnecessary use of 'toList' in a spread • lib/view/messages/contact_list.dart:138:16 • unnecessary_to_list_in_spreads
+   info • Unnecessary use of 'toList' in a spread • lib/view/messages/contact_list.dart:161:18 • unnecessary_to_list_in_spreads
+   info • Don't invoke 'print' in production code • lib/view/messages/controller/chat_controller.dart:58:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/messages/controller/chat_controller.dart:61:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/messages/controller/chat_list_controller.dart:79:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/messages/controller/chat_list_controller.dart:82:7 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:8:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:70:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:76:51 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:126:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:138:29 • avoid_print
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:290:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:343:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/datingprefererncemain.dart:494:35 • deprecated_member_use
+   info • The file name 'education-preference.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:9:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:69:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:75:51 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:106:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:112:51 • deprecated_member_use
+   info • Unnecessary use of 'toList' in a spread • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:194:26 • unnecessary_to_list_in_spreads
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:211:51 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/DatingPrefernecs/education-preference.dart:236:31 • deprecated_member_use
+   info • The file name 'ethniccity-prefernces.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:1:1 • file_names
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:7:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:9:3 • library_private_types_in_public_api
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:71:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:77:53 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:220:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:226:51 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/DatingPrefernecs/ethniccity-prefernces.dart:254:33 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:8:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:112:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:149:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:189:33 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:238:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:270:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:300:44 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:357:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/gender_preference.dart:397:37 • deprecated_member_use
+   info • The file name 'height-preference.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:8:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:89:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:95:53 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:138:25 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:158:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:164:53 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:192:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:288:38 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/height-preference.dart:299:49 • deprecated_member_use
+   info • The file name 'language-prefernces.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:1:1 • file_names
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:6:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:8:3 • library_private_types_in_public_api
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:73:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:79:53 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:214:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:220:51 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/DatingPrefernecs/language-prefernces.dart:248:33 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:7:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:111:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:148:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:188:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:244:33 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:293:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:341:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:371:44 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:415:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/location_preference.dart:454:37 • deprecated_member_use
+   info • The file name 'politics-preference.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:1:1 • file_names
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:7:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:9:3 • library_private_types_in_public_api
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:70:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:76:53 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:215:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:221:51 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/DatingPrefernecs/politics-preference.dart:249:33 • deprecated_member_use
+   info • The file name 'religious-preference.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:1:1 • file_names
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:7:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:9:3 • library_private_types_in_public_api
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:72:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:78:53 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:217:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:223:51 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/DatingPrefernecs/religious-preference.dart:251:33 • deprecated_member_use
+   info • The file name 'EditBirthdayScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Basics/EditBirthdayScreen.dart:1:1 • file_names
+   info • The local variable '_saveAndGoBack' starts with an underscore • lib/view/profileSetting/EditProfile/Basics/EditBirthdayScreen.dart:27:10 • no_leading_underscores_for_local_identifiers
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/EditProfile/Basics/EditBirthdayScreen.dart:125:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/EditProfile/Basics/EditBirthdayScreen.dart:148:50 • deprecated_member_use
+   info • The file name 'EditEducationScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Basics/EditEducationScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Basics/EditEducationScreen.dart:14:9 • use_super_parameters
+   info • The local variable '_saveAndGoBack' starts with an underscore • lib/view/profileSetting/EditProfile/Basics/EditEducationScreen.dart:61:14 • no_leading_underscores_for_local_identifiers
+   info • Unnecessary braces in a string interpolation • lib/view/profileSetting/EditProfile/Basics/EditEducationScreen.dart:68:22 • unnecessary_brace_in_string_interps
+   info • The file name 'EditHometownScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Basics/EditHometownScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Basics/EditHometownScreen.dart:13:9 • use_super_parameters
+   info • The local variable '_saveAndGoBack' starts with an underscore • lib/view/profileSetting/EditProfile/Basics/EditHometownScreen.dart:27:14 • no_leading_underscores_for_local_identifiers
+   info • The file name 'EditLanguagesScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Basics/EditLanguagesScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Basics/EditLanguagesScreen.dart:12:9 • use_super_parameters
+   info • The file name 'EditLocationScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Basics/EditLocationScreen.dart:1:1 • file_names
+   info • The imported package 'http' isn't a dependency of the importing package • lib/view/profileSetting/EditProfile/Basics/EditLocationScreen.dart:7:8 • depend_on_referenced_packages
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Basics/EditLocationScreen.dart:11:9 • use_super_parameters
+   info • 'desiredAccuracy' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings • lib/view/profileSetting/EditProfile/Basics/EditLocationScreen.dart:59:9 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/EditProfile/Basics/EditLocationScreen.dart:175:25 • sized_box_for_whitespace
+   info • The file name 'EditNameScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Basics/EditNameScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Basics/EditNameScreen.dart:11:9 • use_super_parameters
+   info • The local variable '_saveAndGoBack' starts with an underscore • lib/view/profileSetting/EditProfile/Basics/EditNameScreen.dart:24:14 • no_leading_underscores_for_local_identifiers
+   info • The file name 'EditWorkScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Basics/EditWorkScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Basics/EditWorkScreen.dart:14:9 • use_super_parameters
+   info • The local variable '_saveAndGoBack' starts with an underscore • lib/view/profileSetting/EditProfile/Basics/EditWorkScreen.dart:38:14 • no_leading_underscores_for_local_identifiers
+   info • The file name 'Editprofile.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Editprofile.dart:1:1 • file_names
+   info • The file name 'EditPoliticsScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Extra/EditPoliticsScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Extra/EditPoliticsScreen.dart:12:9 • use_super_parameters
+   info • The file name 'EditReligionScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Extra/EditReligionScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Extra/EditReligionScreen.dart:12:9 • use_super_parameters
+   info • The file name 'EditEthnicityScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Physical/EditEthnicityScreen.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Physical/EditEthnicityScreen.dart:12:9 • use_super_parameters
+   info • The file name 'EditGenderScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Physical/EditGenderScreen.dart:1:1 • file_names
+   info • The file name 'EditHeightScreen.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Physical/EditHeightScreen.dart:1:1 • file_names
+   info • The local variable '_saveAndGoBack' starts with an underscore • lib/view/profileSetting/EditProfile/Physical/EditHeightScreen.dart:33:14 • no_leading_underscores_for_local_identifiers
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/EditProfile/Physical/EditHeightScreen.dart:96:12 • sized_box_for_whitespace
+   info • The file name 'ImageSourceBottomSheet.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Profile/ImageSourceBottomSheet.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Profile/ImageSourceBottomSheet.dart:11:9 • use_super_parameters
+   info • The file name 'ProfileImageSlot.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Profile/ProfileImageSlot.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Profile/ProfileImageSlot.dart:16:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/EditProfile/Profile/ProfileImageSlot.dart:114:51 • deprecated_member_use
+   info • The file name 'ProfileItem.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Profile/ProfileItem.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Profile/ProfileItem.dart:11:9 • use_super_parameters
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/EditProfile/Profile/ProfileItem.dart:28:16 • sized_box_for_whitespace
+   info • The file name 'ProfileSectionHeader.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Profile/ProfileSectionHeader.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Profile/ProfileSectionHeader.dart:7:9 • use_super_parameters
+   info • The file name 'PromptEditBottomSheet.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Profile/PromptEditBottomSheet.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Profile/PromptEditBottomSheet.dart:12:9 • use_super_parameters
+   info • The file name 'PromptItem.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/EditProfile/Profile/PromptItem.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/EditProfile/Profile/PromptItem.dart:13:9 • use_super_parameters
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:84:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:92:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:104:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:108:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:110:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:114:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:118:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:120:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:124:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:125:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/EditProfile/edit_controller.dart:128:7 • avoid_print
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/Invite/invite_friends.dart:8:9 • use_super_parameters
+   info • Don't invoke 'print' in production code • lib/view/profileSetting/ProfilrMainPage/profile.dart:361:5 • avoid_print
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/ProfilrMainPage/profile.dart:364:34 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/ProfilrMainPage/profile.dart:392:21 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/ProfilrMainPage/profile.dart:453:50 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/Suggesstions/suggesstion.dart:7:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Suggesstions/suggesstion.dart:115:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Suggesstions/suggesstion.dart:152:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Suggesstions/suggesstion.dart:167:44 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Suggesstions/suggesstion.dart:218:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Suggesstions/suggesstion.dart:288:33 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/Suggesstions/suggesstion.dart:342:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Suggesstions/suggesstion.dart:383:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Suggesstions/suggesstion.dart:499:37 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/Support/support_screen.dart:7:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:149:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:186:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:201:44 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:252:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:309:24 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:311:43 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:339:33 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/Support/support_screen.dart:454:12 • sized_box_for_whitespace
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:495:33 • deprecated_member_use
+   info • Unnecessary use of 'toList' in a spread • lib/view/profileSetting/Support/support_screen.dart:525:16 • unnecessary_to_list_in_spreads
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/Support/support_screen.dart:622:37 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/ContactusFaq/contact_and_faq.dart:8:9 • use_super_parameters
+   info • The file name 'ContactUs.dart' isn't a lower_case_with_underscores identifier • lib/view/profileSetting/settings/ContactusFaq/contactus/ContactUs.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/ContactusFaq/contactus/ContactUs.dart:8:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/ask_general_question_screen.dart:10:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/ask_general_question_screen.dart:286:37 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/billing_screen.dart:8:9 • use_super_parameters
+   info • Unnecessary use of 'toList' in a spread • lib/view/profileSetting/settings/billing_screen.dart:78:26 • unnecessary_to_list_in_spreads
+   info • Unnecessary use of 'toList' in a spread • lib/view/profileSetting/settings/billing_screen.dart:303:22 • unnecessary_to_list_in_spreads
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/login_methods.dart:8:9 • use_super_parameters
+   info • Use 'isNotEmpty' instead of 'length' to test whether the collection is empty • lib/view/profileSetting/settings/login_methods.dart:37:9 • prefer_is_empty
+warning • The declaration '_changePhoneNumber' isn't referenced • lib/view/profileSetting/settings/login_methods.dart:397:8 • unused_element
+   info • Constructors for public widgets should have a named 'key' parameter • lib/view/profileSetting/settings/notification.dart:8:7 • use_key_in_widget_constructors
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/notification.dart:183:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/notification.dart:215:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/notification_settings.dart:11:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/notificationsetting.dart:7:9 • use_super_parameters
+   info • Unnecessary instance of 'Container' • lib/view/profileSetting/settings/notificationsetting.dart:166:12 • avoid_unnecessary_containers
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/settings/notificationsetting.dart:189:15 • deprecated_member_use
+   info • 'MaterialStateProperty' is deprecated and shouldn't be used. Use WidgetStateProperty instead. Moved to the Widgets layer to make code available outside of Material. This feature was deprecated after v3.19.0-0.3.pre • lib/view/profileSetting/settings/notificationsetting.dart:194:34 • deprecated_member_use
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/view/profileSetting/settings/notificationsetting.dart:203:12 • sized_box_for_whitespace
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/premium_upgrade.dart:7:9 • use_super_parameters
+warning • The declaration '_buildPricingPlans' isn't referenced • lib/view/profileSetting/settings/premium_upgrade.dart:142:10 • unused_element
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/premium_upgrade.dart:199:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/premium_upgrade.dart:290:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/premium_upgrade.dart:317:48 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/premium_upgrade.dart:450:46 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/privacy_settings.dart:9:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/privacy_settings_detail.dart:9:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/privacyandseeting.dart:7:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/privacyandseeting.dart:83:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/privacyandseeting.dart:176:33 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/view/profileSetting/settings/privacyandseeting.dart:223:21 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/privacyandseeting.dart:224:57 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/settings.dart:10:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/settings.dart:306:31 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/settings.dart:421:31 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/settings.dart:524:31 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/view/profileSetting/settings/settings.dart:649:31 • deprecated_member_use
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/strictly_necessary.dart:8:9 • use_super_parameters
+   info • Parameter 'key' could be a super parameter • lib/view/profileSetting/settings/subscription_plans.dart:8:9 • use_super_parameters
+   info • Unnecessary use of 'toList' in a spread • lib/view/profileSetting/settings/subscription_plans.dart:314:12 • unnecessary_to_list_in_spreads
+   info • The file name 'CustomBottomNavBar.dart' isn't a lower_case_with_underscores identifier • lib/widgets/ButtomNavigationBar/CustomBottomNavBar.dart:1:1 • file_names
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/ButtomNavigationBar/CustomBottomNavBar.dart:37:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/ButtomNavigationBar/CustomBottomNavBar.dart:162:36 • deprecated_member_use
+   info • The file name 'CloseButton.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Buttons/CloseButton.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Buttons/CloseButton.dart:8:9 • use_super_parameters
+   info • The file name 'CustomContinueButton.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Buttons/CustomContinueButton.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Buttons/CustomContinueButton.dart:15:9 • use_super_parameters
+   info • The file name 'CustomElevatedButtom.dart' isn't a lower_case_with_underscores identifier • lib/widgets/ElevatedButton/CustomElevatedButtom.dart:1:1 • file_names
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/ElevatedButton/CustomElevatedButtom.dart:41:55 • deprecated_member_use
+   info • The file name 'GradientButton.dart' isn't a lower_case_with_underscores identifier • lib/widgets/ElevatedButton/GradientButton.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/ElevatedButton/GradientButton.dart:18:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/ElevatedButton/GradientButton.dart:54:57 • deprecated_member_use
+   info • The file name 'CustomIcons.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Icons/CustomIcons.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Icons/CustomIcons.dart:14:9 • use_super_parameters
+   info • The file name 'Base64OrNetworkImage.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Images/Base64OrNetworkImage.dart:1:1 • file_names
+   info • The file name 'CustomTextField.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Input/CustomTextField.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Input/CustomTextField.dart:27:9 • use_super_parameters
+   info • The file name 'ExpandablePromptWidget.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Input/ExpandablePromptWidget.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Input/ExpandablePromptWidget.dart:25:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/widgets/Input/ExpandablePromptWidget.dart:36:3 • library_private_types_in_public_api
+   info • The file name 'CustomTextFields.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Inputs/CustomTextFields.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Inputs/CustomTextFields.dart:15:9 • use_super_parameters
+   info • The file name 'GradientTextField.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Inputs/GradientTextField.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Inputs/GradientTextField.dart:23:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/Inputs/GradientTextField.dart:53:29 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/Inputs/GradientTextField.dart:54:29 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/Inputs/GradientTextField.dart:55:29 • deprecated_member_use
+   info • The file name 'EditProfileHeader.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Layout/EditProfileHeader.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Layout/EditProfileHeader.dart:12:9 • use_super_parameters
+   info • The file name 'PageTitle.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Layout/PageTitle.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Layout/PageTitle.dart:13:9 • use_super_parameters
+   info • The file name 'ProfileScreenLayout.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Layout/ProfileScreenLayout.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Layout/ProfileScreenLayout.dart:25:9 • use_super_parameters
+   info • The file name 'ProgressIndicator.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Layout/ProgressIndicator.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Layout/ProgressIndicator.dart:13:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/Layout/ProgressIndicator.dart:56:57 • deprecated_member_use
+   info • The file name 'BottomNavigationWithSkip.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Navigation/BottomNavigationWithSkip.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Navigation/BottomNavigationWithSkip.dart:12:9 • use_super_parameters
+   info • The file name 'GoBackLink.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Navigation/GoBackLink.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Navigation/GoBackLink.dart:9:9 • use_super_parameters
+   info • The file name 'ImageSourceBottomSheet.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Profile/ImageSourceBottomSheet.dart:1:1 • file_names
+   info • The file name 'ProgressTracker.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Progress/ProgressTracker.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Progress/ProgressTracker.dart:8:9 • use_super_parameters
+   info • The file name 'CustomCheckbox.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Selection/CustomCheckbox.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Selection/CustomCheckbox.dart:16:9 • use_super_parameters
+   info • The file name 'CustomContainerSelection.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Selection/CustomContainerSelection.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Selection/CustomContainerSelection.dart:21:9 • use_super_parameters
+   info • The file name 'CustomRadioButton.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Selection/CustomRadioButton.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Selection/CustomRadioButton.dart:9:9 • use_super_parameters
+   info • The file name 'SelectableBox.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Selection/SelectableBox.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Selection/SelectableBox.dart:49:9 • use_super_parameters
+   info • The file name 'SelectionBox.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Selection/SelectionBox.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Selection/SelectionBox.dart:17:9 • use_super_parameters
+   info • The file name 'SelectionGrid.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Selection/SelectionGrid.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Selection/SelectionGrid.dart:22:9 • use_super_parameters
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/Selection/SelectionGrid.dart:64:57 • deprecated_member_use
+   info • The file name 'DisplayToggle.dart' isn't a lower_case_with_underscores identifier • lib/widgets/Toggle/DisplayToggle.dart:1:1 • file_names
+   info • Parameter 'key' could be a super parameter • lib/widgets/Toggle/DisplayToggle.dart:12:9 • use_super_parameters
+
+519 issues found. (ran in 2.5s)
