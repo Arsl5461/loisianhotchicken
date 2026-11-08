@@ -1,0 +1,127 @@
+﻿Real-Time Chat Integration Guide (Socket.IO)
+This document explains how to connect to the real-time chat service, authenticate users, send and receive messages, and retrieve chat history using the live backend.
+Live Swagger API Documentation
+https://opp-backend-iooo.vercel.app/api-doc/
+Live Socket Server URL
+https://opp-backend-iooo.vercel.app
+________________
+
+
+1. Connection and Authentication (Socket Handshake)
+A valid JWT is required to establish a Socket.IO connection.
+The token must be provided in the auth object during the initial handshake. The backend validates this token before allowing the connection.
+Client Example
+import { io } from "socket.io-client";
+
+
+const socket = io("https://opp-backend-iooo.vercel.app", {
+  auth: {
+    token: "USER_JWT_TOKEN" // Obtained from Login / Verify API
+  }
+});
+
+
+Connection Status Handling
+socket.on("connect", () => {
+  console.log("Connected. Socket ID:", socket.id);
+});
+
+
+socket.on("connect_error", (err) => {
+  console.error("Authentication failed:", err.message);
+});
+
+
+If authentication fails, the server will reject the socket connection.
+________________
+
+
+2. Client-to-Server Socket Events
+These events are emitted from the frontend to the backend.
+Event Name
+	Payload
+	Description
+	joinChat
+	targetUserId (String)
+	Required. Call this when opening a chat window. Joins the private room for the specified match.
+	sendMessage
+	{ receiverId: "ID", message: "Text" }
+	Sends a message to the matched user. The backend stores the message in the database and delivers it in real time.
+	________________
+
+
+3. Server-to-Client Socket Events
+These events are emitted from the backend to the frontend.
+Event Name
+	Payload
+	Description
+	receiveMessage
+	{ _id, senderId, receiverId, message, timestamp }
+	Triggered when a new message is received. Use this event to update the chat UI in real time.
+	error
+	{ message: "...", details: "..." }
+	Emitted when a user attempts to chat with someone they are not matched with or violates chat rules.
+	________________
+
+
+4. Message History (REST API)
+When a user opens a chat, load the recent message history using the REST API before relying on socket events.
+Endpoint
+GET /api/chat/history/{targetUserId}
+
+
+Headers
+Authorization: Bearer <JWT_TOKEN>
+
+
+Response
+* Returns the last 100 messages
+* Messages are scoped to the authenticated user and the specified match
+This request should be made once when the chat view is initialized.
+________________
+
+
+5. Example End-to-End Workflow
+Step A: Join a Chat Room
+Triggered when the user selects a match.
+socket.emit("joinChat", "65a1b2c3...");
+
+
+Step B: Send a Message
+const onSend = (text) => {
+  socket.emit("sendMessage", {
+    receiverId: "65a1b2c3...",
+    message: text
+  });
+};
+
+
+Step C: Receive Messages in Real Time
+socket.on("receiveMessage", (data) => {
+  setMessages(prev => [...prev, data]);
+});
+
+
+________________
+
+
+Important Note: Serverless Environment (Vercel)
+Since the backend is deployed on Vercel (serverless), WebSocket connections may disconnect after a period of inactivity.
+Required Frontend Handling
+Your frontend should listen for disconnect events and automatically reconnect when needed.
+socket.on("disconnect", () => {
+  console.warn("Socket disconnected. Attempting to reconnect...");
+  socket.connect();
+});
+
+
+Without reconnection handling, users may miss incoming messages.
+________________
+
+
+Summary
+* JWT authentication is mandatory for socket connections
+* joinChat must be called before sending messages
+* Messages are persisted and delivered in real time
+* Chat history is retrieved via REST (last 100 messages)
+* Automatic socket reconnection logic is required due to serverless hosting

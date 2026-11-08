@@ -1,0 +1,13 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    constant_identifier_names: ignore
+  exclude:
+    - image_editor_plus/**
+
+linter:
+  rules:
+    avoid_print: true
+    annotate_overrides: true
+    use_key_in_widget_constructors: true

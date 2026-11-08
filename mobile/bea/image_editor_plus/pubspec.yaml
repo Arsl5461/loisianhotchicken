@@ -1,0 +1,23 @@
+name: image_editor_plus
+description: Custom image editor extracted from PlateSpot
+version: 0.0.1
+
+environment:
+  sdk: ">=3.2.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  permission_handler: ^12.0.0+1
+  colorfilter_generator: ^0.0.8
+  extended_image: ^10.0.1
+  hand_signature: ^3.1.0+2
+  flex_color_picker: ^3.7.2
+  reorderables: ^0.6.0
+  screenshot: ^3.0.0
+  image: ^4.5.4
+  image_picker: ^1.0.4
+
+flutter:
+  uses-material-design: true

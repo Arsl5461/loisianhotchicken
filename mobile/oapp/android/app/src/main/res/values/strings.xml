@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bubba</string>
+    <string name="google_maps_api_key">AIzaSyD6sMV4vKkwEHLZ19yEhC3EfBX5mjWbWPw</string>
+    <string name="facebook_app_id">2065949583949397</string>
+    <string name="facebook_client_token">c1cf32b1990afe11ced96e86d587d825</string>
+    <string name="fb_login_protocol_scheme">fb2065949583949397</string>
+</resources>
